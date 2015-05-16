@@ -1,0 +1,47 @@
+<% layout('../layout') %>
+<% include ../util/errors %>
+
+<h2 style="text-align: center">Import CSV File</h2>
+<hr>
+
+<form role="form" method="POST" action="/misc/do_import_csv" enctype="multipart/form-data">
+    <div class="form-group">
+	    <label><b>Organization</b>:</label>
+	    <select name="OrganizationId" id="OrganizationId" class="form-control">
+			
+		<% organizations.forEach(function(org) { %>
+			<option value = "<%= org.id %>"><%= org.name %></option>
+		<% }); %>
+		</select>
+	</div>
+	
+	<div class="form-group">
+	    <label><b>Batch</b>:</label>
+	    <select name="RoleId" id="RoleId" class="form-control">
+			
+		<% roles.forEach(function(role) { %>
+			<option value = "<%= role.id %>"><%= role.name %></option>
+		<% }); %>
+		</select>
+	</div>
+	
+	<div class="form-group">
+	  	<input type="checkbox" name="isProfileCompleted" />&nbsp;<label><b>Profile Completed</b></label>
+	  	&nbsp;&nbsp;&nbsp;
+	  	<input type="checkbox" name="isTestTaken" />&nbsp;<label><b>Test Taken</b></label>
+	  	&nbsp;&nbsp;&nbsp;
+	  	<input type="checkbox" name="isMetCoach" />&nbsp;<label><b>Met Coach</b></label>
+	  	&nbsp;&nbsp;&nbsp;
+	  </div>
+  
+  <div class="form-group">
+  	<div style="margin: 8px auto">
+	    <label>Upload file</label>&nbsp;
+	    <input type="file" name="csv" class="form-control" id="csv"/>
+    </div>
+  </div>
+ 
+ <input type="submit" class="btn btn-default" value="Submit" />   
+</form>
+
+

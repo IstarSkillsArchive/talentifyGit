@@ -1,0 +1,49 @@
+<div class="animated fadeIn padded bg-info manage-roles" id="report-ajax" style="overflow: hidden; position: relative">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<h2 class="thin no-margin-top" style="padding-left: 10px">Manage Roles</h2>
+	<div class="row pull-left" style="width: 100%; margin-left: 0px; margin-right: 0px">
+	  	<div class="col-md-3">
+	        <div class="captionable captionable-effect-flip horizontal">
+	        	<div class="captionable-flip">
+	        		<div class="captionable-front">
+						<div class="panel panel-success">
+							  <div class="panel-heading panel-tile">
+							    <div class="panel-title text-center panel-tile-table-cell">
+							      <i class="icm icm-plus-circle2 icm-4x"></i>
+							      Add new role
+							    </div>
+							  </div>
+						</div><!-- end panel -->
+					</div>
+					<div class="captionable-caption captionable-back panel-body-info padded bg-white">
+			            <div class="panel panel-default">
+							  <div class="panel-heading panel-tile">
+							    <div class="panel-title text-center panel-tile-table-cell">
+							      <label><b>Enter role name</b></label>
+							      <input type="text" class="form-control" id="role-name" style="border: 1px solid #ccc; color: #43494d"/>
+							      <input type="button" class="btn btn-success" value="Submit" style="margin-top: 8px" onclick="create_role('<%= currentUser.OrganizationId %>')"/>
+							    </div>
+							  </div>
+						</div><!-- end panel -->
+			       	</div>
+				</div>
+			</div><!-- end captionable -->
+		</div>
+	  	<% roles.forEach(function(role,i) { %>
+	  		<div class="col-md-3">
+		        <div class="captionable">
+					<div class="panel <%= i%4 == 0 ? 'panel-warning' : (i%4 == 1 ? 'panel-primary' : (i%4 == 2 ? 'panel-success' : 'panel-danger')) %> manage-roles-panel">
+						  <div class="panel-heading panel-tile">
+						    <div class="panel-title text-center panel-tile-table-cell" onclick="manage_roles_opacity(this);ajax_call('/hr_admin/get_skills_for_role/<%= role.id %>','role-skills-div'); show_id('role-skills-div')" style="cursor: pointer">
+						      <i class="icm icm-map3 icm-4x"></i>
+						      <span><%= role.name %></span>
+						    </div>
+						  </div>
+					</div><!-- end panel -->
+				</div><!-- end captionable -->
+			</div>
+	  	<% }); %>
+	  	<div class="role-skills-div display-none padded" id="role-skills-div" style="margin-left: 10px;background-color: #f2f4f8">
+		</div>
+	</div>
+</div>

@@ -1,0 +1,40 @@
+<div class="input-group input-group-margin-top-10">
+  <div class="input-group-btn">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><%= val.charAt(0).toUpperCase() + val.slice(1) %> <span class="caret"></span></button>
+    <ul class="dropdown-menu" role="menu">
+      <li><a onclick="ajax_call('/content/searchByFieldModule/title','content-search-group')">Title</a></li>
+      <li><a onclick="ajax_call('/content/searchByFieldModule/skill','content-search-group')">Skill</a></li>
+    </ul>
+  </div>
+  <input type="text" class="form-control" id="search" style="width: 220px; height: 30px; background: #fff; border: 1px solid #ccc" placeholder="Search content by <%= val %>">
+  <input type="hidden" id="search-id" value=""/>
+  <a class="btn btn-success" onclick="searchByFieldModule('<%= val %>')"><i class="icm icm-search2"></i></a>
+</div>
+
+<script type="text/javascript">
+	$("#search").autocomplete({
+      source: function( request, response ) {
+      	$.ajax({
+          	<% if(val == 'title') { %>
+			  url : "/content/search_module_by_title/"+request.term,
+			<% } %>
+			<% if(val == 'skill') { %>
+			  url : "/content/search_module_by_skill/"+request.term,
+			<% } %>
+          success: function(data) {
+	      	response(data);
+	      }
+        });
+      },
+      minLength: 1,
+      select: function( event, ui ) {
+      	<% if(val == 'title') { %>
+		  ajax_call("/content/list_module_by_title/"+ui.item.value, "content-admin-display");
+		<% } %>
+		<% if(val == 'skill') { %>
+		  ajax_call("/content/list_module_by_skill/"+ui.item.value, "content-admin-display");
+		<% } %>
+      	return false;
+      }
+	});
+</script>

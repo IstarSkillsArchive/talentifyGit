@@ -1,0 +1,334 @@
+<div class="animated fadeIn padded bg-info" id="careers">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<h2 class="thin no-margin-top">Placement Center</h2>
+  	
+  	<!-- start careers -->
+  	<div class="row" rel="panels">
+  			<!-- interview -->
+  			<div class="col-md-3 panels col-md-3-panel">
+	
+		      <div class="captionable  horizontal">
+		        <div class="captionable-flip">
+		          <div class="captionable-front">
+		            
+					<div class="panel panel-primary">
+					  <div class="panel-heading">
+					    <div class="panel-title text-center">
+					      Interviews
+					    </div>
+					  </div>
+					  <div class="panel-body no-padding-top interview-slick-carousel">
+					    
+						<% if(job_interviews.length == 0) { %>
+					    	<ul class="nav nav-stacked nano-content height">
+					    		<li class="padding text-center">No job interviews</li>
+					    	</ul>
+					    <% } %>
+			            <% job_interviews.forEach(function(job, i) { %>
+			            	<div>
+							    <ul class="nav nav-stacked nano-content">
+						        	<li class="chat-contact unread">
+									  <a class="media">
+									    <img class="media-object pull-left img-circle" src="/wrap/images/faker/avatars/48/Faces_Users-22.png">
+									    <div class="media-body">
+									      <div class="media-heading" style="color: #43494d;">
+									        ABC BANK
+									      </div>
+									      <small class="last-message">
+									        Banking solutions
+									      </small>
+									    </div>
+									  </a>
+									</li>
+									<li class="padding"><%= job.name %></li>
+									<li class="padding"><%= job.description %></li>
+									<li class="padding">Posted: <%= job.createdDate %></li>
+									<li class="padding">Salary: <%= job.salary %></li>
+									<li class="padding">Location: <%= job.location %></li>
+								</ul>
+							    <div class="padding text-center">
+							    	<a class="btn btn-primary btn-xs">Join</a>
+							    </div>
+							</div>
+						<% }); %>
+						 <!--<% if(job_interviews.length > 1) { %> 
+						  	  <div class="row ">
+								  <div class="col-xs-4 text-center">
+								    <a class="btn btn-success btn-xs" title="Prev" id="job_interview_prev"><i class="icm icm-arrow-left" onclick="nav_prev(1,<%= job_interviews.length %>,'job_interview')"></i></a>
+								  </div>
+								  <div class="col-xs-4 text-center">
+								    <a class="btn btn-default"><span id="job_interview_count">1</span>/<%= job_interviews.length %></a>
+								  </div>
+								  <div class="col-xs-4 text-center">
+								    <a class="btn btn-success btn-xs" title="Next" id="job_interview_next"><i class="icm icm-arrow-right2" onclick="nav_next(1,<%= job_interviews.length %>,'job_interview')"></i></a>
+								  </div>
+							   </div>
+					 	  <% } %>-->
+						</div>
+					</div>
+		
+		          </div>
+		        </div>
+		      </div>
+		
+		    </div>
+  			<!-- end interview -->
+  			
+  			<!-- test -->
+  			<div class="col-md-3 panels ">
+	
+		      <div class="captionable  horizontal">
+		        <div class="captionable-flip">
+		          <div class="captionable-front">
+		            
+					<div class="panel panel-warning">
+					  <div class="panel-heading">
+					    <div class="panel-title text-center">
+					      Tests
+					    </div>
+					  </div>
+					  <div class="panel-body no-padding-top test-slick-carousel">
+					    
+					    <% if(job_tests.length == 0) { %>
+					    	<ul class="nav nav-stacked nano-content height">
+					    		<li class="padding text-center">No job tests</li>
+					    	</ul>
+					    <% } %>
+					    <% job_tests.forEach(function(job, i) { %>
+						    <div>
+							    <ul class="nav nav-stacked nano-content">
+						        	<li class="chat-contact unread">
+									  <a class="media">
+									    <img class="media-object pull-left img-circle" src="/wrap/images/faker/avatars/48/Faces_Users-22.png">
+									    <div class="media-body">
+									      <div class="media-heading" style="color: #43494d;">
+									        DEF BANK
+									      </div>
+									      <small class="last-message">
+									        Banking solutions
+									      </small>
+									    </div>
+									  </a>
+									</li>
+									<li class="padding"><%= job.name %></li>
+									<li class="padding"><%= job.description %></li>
+								</ul>
+							    <div class="padding text-center">
+							    	<a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="ajax_call('/content/start_test/job/<%= job.id %>','uide4b3dde6bb5097375d99eb18a83d7146')">Take Test</a>
+							    </div>
+							</div>
+						<% }); %>
+						  
+					  </div>
+					</div>
+		
+		          </div>
+		        </div>
+		      </div>
+		
+		    </div>
+  			<!-- end test -->
+  			
+  			<!-- offer -->
+  			<div class="col-md-3 panels">
+	
+		      <div class="captionable  horizontal">
+		        <div class="captionable-flip">
+		          <div class="captionable-front">
+		            
+					<div class="panel panel-success">
+					  <div class="panel-heading">
+					    <div class="panel-title text-center">
+					      Offers
+					    </div>
+					  </div>
+					  <div class="panel-body no-padding-top offer-slick-carousel">
+					    	<% if(job_selections.length == 0) { %>
+						    	<ul class="nav nav-stacked nano-content height">
+						    		<li class="padding text-center">No job offers</li>
+						    	</ul>
+						    <% } %>
+						    <% job_selections.forEach(function(job, i) { %>
+							    <div>
+								    <ul class="nav nav-stacked nano-content">
+							        	<li class="chat-contact unread">
+										  <a class="media">
+										    <img class="media-object pull-left img-circle" src="/wrap/images/faker/avatars/48/Faces_Users-22.png">
+										    <div class="media-body">
+										      <div class="media-heading" style="color: #43494d;">
+										        GHI BANK
+										      </div>
+										      <small class="last-message">
+										        Banking solutions
+										      </small>
+										    </div>
+										  </a>
+										</li>
+										<li class="padding"><%= job.name %></li>
+										<li class="padding"><%= job.description %></li>
+										<li class="padding">Posted: <%= job.createdDate %></li>
+										<li class="padding">Salary: <%= job.salary %></li>
+										<li class="padding">Location: <%= job.location %></li>
+									</ul>
+								    <div class="padding text-center">
+								    	<a class="btn btn-success btn-xs">Selected</a>
+								    </div>
+								</div>
+							<% }); %>
+						  
+					  </div>
+					</div>
+		
+		          </div>
+		        </div>
+		      </div>
+		
+		    </div>
+  			<!-- end offer -->
+  			
+  			<!-- workshop -->
+  			<div class="col-md-3 panels ">
+	
+		      <div class="captionable  horizontal">
+		        <div class="captionable-flip">
+		          <div class="captionable-front">
+		            
+					<div class="panel panel-danger">
+					  <div class="panel-heading">
+					    <div class="panel-title text-center">
+					      Workshops
+					    </div>
+					  </div>
+					  <div class="panel-body no-padding-top workshop-slick-carousel">
+					    
+						  
+					    <% if(events.length == 0) { %>
+					    	<ul class="nav nav-stacked nano-content height">
+					    		<li class="padding text-center">No workshops</li>
+					    	</ul>
+					    <% } %>
+					    <% events.forEach(function(job, i) { %>
+					    	<div>
+							    <ul class="nav nav-stacked nano-content">
+						        	<li class="chat-contact unread">
+									  <a class="media">
+									    <img class="media-object pull-left img-circle" src="/wrap/images/faker/avatars/48/Faces_Users-22.png">
+									    <div class="media-body">
+									      <div class="media-heading" style="color: #43494d;">
+									        JKL BANK
+									      </div>
+									      <small class="last-message">
+									        Banking solutions
+									      </small>
+									    </div>
+									  </a>
+									</li>
+									<li class="padding"><%= job.name %></li>
+									<li class="padding"><%= job.description %></li>
+									<li class="padding">Posted: <%= job.date %></li>
+									<li class="padding">Status: <%= job.status %></li>
+									<li class="padding">Location: <%= job.location %></li>
+								</ul>
+							    <div class="padding text-center">
+							    	<% if(job.rsvp != 'RSVP Yes') { %>
+				                        <a href="/rsvp/<%= user.id %>/<%= job.id %>" target="_blank" class="btn btn-danger btn-xs">RSVP</a>
+				                    <% } %>
+				                 	<% if(job.rsvp == 'RSVP Yes') { %>
+				                        <a href="#" class="btn btn-danger btn-xs">RSVP Yes</a>
+				                    <% } %>
+							    </div>
+							</div>
+						<% }); %>
+						  
+						  
+					</div>
+					</div>
+		
+		          </div>
+		        </div>
+		      </div>
+		
+		    </div>
+  			<!-- end workshop -->
+  			
+  		</div>
+	
+
+    <!-- start job offers -->
+    <% if(jobs.length == 0) { %>
+    <div class="row text-center">
+    	<p>There are no job ads</p>
+    </div>
+    <% } %>
+    <% if(jobs && jobs.length != 0) { %>
+  	<div class="row jobs-slick-carousel" rel="panels">
+  		<% jobs.forEach(function(job, i) { %>
+  		
+		    <div class="col-md-3 panels">
+		
+		      <div class="captionable  horizontal">
+		        <div class="captionable-flip">
+		          <div class="captionable-front">
+		            
+					<div class="panel panel-primary">
+					  <div class="panel-heading">
+					    <div class="panel-title text-center">
+					      Job <%= (i+1) %>
+					    </div>
+					  </div>
+					  <div class="panel-body no-padding-top">
+					    
+						  <ul class="nav nav-stacked nano-content">
+				        	<li class="chat-contact unread">
+							  <a class="media">
+							    <img class="media-object pull-left img-circle" src="/wrap/images/faker/avatars/48/Faces_Users-22.png">
+							    <div class="media-body">
+							      <div class="media-heading" style="color: #43494d;">
+							        XYZ BANK
+							      </div>
+							      <small class="last-message">
+							        Banking solutions
+							      </small>
+							    </div>
+							  </a>
+							</li>
+							<li class="padding"><%= job.name %></li>
+							<li class="padding"><%= job.description %></li>
+							<li class="padding">Posted: <%= job.createdDate %></li>
+							<li class="padding">Salary: <%= job.salary %></li>
+							<li class="padding">Location: <%= job.location %></li>
+						</ul>
+					    <div class="padding text-center">
+					    	<a href="/rsvp_job/<%= user.id %>/<%= job.id %>" target="_blank" class="btn btn-primary">Apply</a>
+					    </div>
+							
+					  </div>
+					</div>
+		
+		          </div>
+		          
+		        </div>
+		      </div>
+		
+		    </div>
+		
+	    <% }); %>
+	    
+	</div>
+	<% } %>
+    <!-- end job offers -->
+    
+    <!-- end careers -->
+  	
+</div>
+<script>
+	$('.interview-slick-carousel').slick({infinite: false});
+	$('.test-slick-carousel').slick({infinite: false});
+	$('.offer-slick-carousel').slick({infinite: false});
+	$('.workshop-slick-carousel').slick({infinite: false});
+	$('.jobs-slick-carousel').slick({
+	  slidesToShow: 4,
+	  slidesToScroll: 4,
+	  infinite: false
+	});
+</script>

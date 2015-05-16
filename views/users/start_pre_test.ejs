@@ -1,0 +1,16 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+      	
+      <div class="modal-header">
+        <a href="/users/updateIsTestTaken/<%= currentUser.id %>" class="close">&times;</a>
+        <h4 class="modal-title" id="myModalLabel">Test</h4>
+      </div>
+      <div class="modal-body">
+			
+			<iframe src="https://docs.google.com/forms/d/139zL6jJ3S3tookyz_ptB_OSk_oGSqbAqLaPsWXVf7rc/viewform?embedded=true" style="border: 0px;" height="450" width="550" border="0" id="test_iframe"></iframe>
+			<br/>
+			<a href="/users/updateIsTestTaken/<%= currentUser.id %>" class="btn btn-default" style="margin-top: 2%" id="end">End</a>
+			
+      </div>
+    </div>
+</div>

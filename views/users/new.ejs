@@ -1,0 +1,195 @@
+<% if(currentUser.isManager()) { %>
+	<% layout('../new-layout') %>
+<% } %>
+<% if(currentUser.isAdmin()) { %>
+	<% layout('../layout') %>
+<% } %>
+<% include ../util/errors %>
+
+<style>
+	.radio { margin-top: 0px; } 
+	.form-group { display: inline-block; width: 100%}
+	.form-group .form-control {
+		width: 500px;
+	}
+	@media (max-width: 767px) {
+		.form-group .form-control {
+			width: 100%	
+		  }
+	}
+</style>
+
+<% if(currentUser && currentUser.isManager() && currentFlag == 'create') { %>
+	<div class="navbar navbar-inverse" role="navigation" style="">
+	  
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+		      <span class="sr-only">Toggle navigation</span>
+		  </button>
+	      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+	    </div>
+	    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+			<% if(currentUser) { %>
+				<ul class="nav navbar-nav">
+					<li class="li_tab"><a href="/hr_admin/dashboard">Company L&D Stats</a></li>
+				  	<li class="li_tab"><a href="/hr_admin/track">Employee Stats</a></li>
+				  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>">Roles</a></li>
+				 	<li class="li_tab active"><a href="/users/list">Manage Users</a></li>
+				 	<li class="li_tab"><a href="/hr_admin/list_events">Events</a></li>
+				</ul>
+				 <ul class="nav navbar-nav pull-right">
+				 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+				 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+				 </ul>
+			<% } %>
+		</div>
+	</div>
+<% } %>
+
+	<form action="/users/list">
+		<input type="submit" class="btn btn-primary" value="List Users" style="">
+	</form>
+
+	
+	
+	<h4 style="text-align: center; font-weight: 300">Create User</h4>
+	
+	<form role="form" method="POST" action="/users/create">
+	  <input type="hidden" name="currentUserId" value="<%= currentUser.id %>"/>
+	  <!--<div class="form-group">
+	    <input type="text" name="user_id" class="form-control" id="user_id" placeholder="User Id">
+	  </div>-->
+	  <div class="form-group">
+	    <input type="text" name="username" class="form-control" id="username" placeholder="Username">
+	  </div>
+	  <div class="form-group">
+	    <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+	  </div>
+	  <div class="form-group">
+	    <input type="text" name="first_name" class="form-control" id="first_name" placeholder="First Name">
+	  </div>
+	  <div class="form-group">
+	    <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Last Name">
+	  </div>
+	  <div class="form-group">
+	    <input type="email" name="email" class="form-control" id="email" placeholder="Email">
+	  </div>
+	  <!--<div class="form-group">
+	    <input type="text" name="department" class="form-control" id="department" placeholder="Department">
+	  </div>-->
+	  
+	   <div class="form-group">
+		    <label><b>Coach</b>:</label>
+		    <select name="CoachId" id="coachId" class="form-control">
+				
+			<% coaches.forEach(function(coach) { %>
+				<option value = "<%= coach.id %>"><%= coach.first_name %></option>
+			<% }); %>
+			</select>
+		</div>
+	  
+	  <div class="form-group">
+	    <label><b>Role</b>:</label>
+	    <% if(currentUser.isManager() || currentUser.isAdmin()) { %>
+			<select name="RoleId" id="roleId" class="form-control">
+				<% roles.forEach(function(role) { %>
+					<option value = "<%= role.id %>"><%= role.name %></option>
+				<% }); %>
+			</select>
+			
+		<% } %>
+	    
+	  </div>
+	  
+	  <div class="form-group">
+	  	<label><b>Organization</b>:</label>
+	  	<select name="OrganizationId" id="OrganizationId" class="form-control">
+	  		<% if(currentUser.isAdmin()) { %>
+				<% organizations.forEach(function(organization) { %>
+					<option value = "<%= organization.id %>"><%= organization.name %></option>
+				<% }); %>
+			<% } %>
+			
+			<% if(currentUser.isManager()) { %>
+				<option value = "<%= organization.id %>"><%= organization.name %></option>
+			<% } %>
+	  	</select>
+	  </div>
+	  
+	  <div class="form-group">
+	  	<input type="checkbox" name="isProfileCompleted" id="isProfileCompleted" />&nbsp;<label><b>Profile Completed</b></label>
+	  	&nbsp;&nbsp;&nbsp;
+	  	<input type="checkbox" name="isTestTaken" id="isTestTaken" />&nbsp;<label><b>Test Taken</b></label>
+	  	&nbsp;&nbsp;&nbsp;
+	  	<input type="checkbox" name="isMetCoach" id="isMetCoach" />&nbsp;<label><b>Met Coach</b></label>
+	  	&nbsp;&nbsp;&nbsp;
+	  </div>
+	  
+	  <div class="form-group">
+			<div class="display_inline_block" style="padding-left: 0px">
+				<label>
+					<b>Permission</b>:
+				</label>
+			</div>
+			
+			<% if(currentUser.isAdmin()) { %>
+			<div class="">
+				<label>
+					<input type="radio" name="permission" id="role" value="admin">
+					Admin
+				</label>
+			</div>
+			<div class="">
+				<label>
+					<input type="radio" name="permission" id="role" value="manager">
+					Manager
+				</label>
+			</div>
+			<div class="">
+				<label>
+					<input type="radio" name="permission" id="role" value="contentAdmin">
+					Content Admin
+				</label>
+			</div>
+			<div class="">
+				<label>
+					<input type="radio" name="permission" id="role" value="istarCoordinator">
+					Istar Coordinator
+				</label>
+			</div>
+			<% } %>
+			
+			<div class="">
+				<input type="radio" name="permission" id="role" value="trainer">
+				<label>
+					
+					Trainer
+				</label>
+			</div>
+			
+			<div class="">
+				<input type="radio" name="permission" id="role" value="recruiter">
+				<label>
+					
+					Recruiter
+				</label>
+			</div>
+			
+			<div class="">
+				<input type="radio" name="permission" id="role" value="coach">
+				<label>
+					
+					Coach
+				</label>
+			</div>
+			<div class="">
+				<input type="radio" name="permission" id="role" value="user" checked>
+				<label>
+					
+					User
+				</label>
+			</div>
+	   </div>
+	<button type="submit" class="btn btn-default">Submit</button>
+	</form>
+

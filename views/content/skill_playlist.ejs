@@ -1,0 +1,177 @@
+<input type="button" class="first-btn btn btn-primary" value="List Skills" onclick="ajax_call('/skill/list_skills','content-admin-display')">
+
+<h2 class="text-gradient-info-dk text-center">Edit Skill</h2>
+<hr>
+<div id="create_skill">
+	<div class="col-md-6">
+		<div class="panel panel-primary gradient-diag1" id="rid0a5949b0e9f2e06afbd43ec07c3d3fc02">  
+			<div class="panel-heading panel-handle panel-colorize">
+	    	    <div class="panel-title">
+			      <span class="" data-type="text">
+			        Skill Details
+			      </span>
+			    </div>
+	  		</div>
+			  <div class="panel-body-collapse collapse in">
+			      <div class="panel-body">
+			      		<form role="form" method="POST" action="/content/do_edit_skill" target="target-frame">
+				  		  <input type="hidden" id="skill_id" name="skill_id" value="<%= skill.id %>" />
+						  <div class="form-group">
+						    <label>Name</label>
+						    <input type="text" name="skill_name" class="form-control" id="skill_name" value="<%= skill.name %>">
+						  </div>
+						  
+						  <div class="form-group">
+						    <label>Description</label>
+						    <textarea name="skill_description" class="form-control" id="skill_description"><%= skill.description %></textarea>
+						  </div>
+						  
+						  <div class"form-group">
+						  	<button type="submit" class="btn btn-success">Edit Skill</button>
+						  </div>
+						  
+						</form>
+						<iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+			      </div>
+				</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="panel panel-primary gradient-diag1" id="rid0a5949b0e9f2e06afbd43ec07c3d3fc02">  
+			  <div class="panel-heading panel-handle panel-colorize">
+	    	    <div class="panel-actions pull-right">
+			        <span class="panel-action panel-refresh">
+			          <a class="btn btn-transparent-light btn-xs btn-primary pull-right" data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="ajax_call('/content/add_test/skill/<%= skill.id %>','uide4b3dde6bb5097375d99eb18a83d7146');">Add Test</a>
+			        </span>
+			  	</div>
+	    	    <div class="panel-title">
+			      <span class="" data-type="text">
+			        Test
+			      </span>
+			    </div>
+	  		  </div>
+			  <div class="panel-body-collapse collapse in">
+			  		<div class="panel-body">
+				  		<table class="table	table-bordered">
+							<thead>
+								<th>Id</th>
+								<th>Name</th>
+								<th>Description</th>
+								<th colspan="2">Action</th>
+							<thead>
+							<tbody>
+								<% tests.forEach(function(test, i) { %>
+								<tr>
+									<td><%= i+1 %></td>
+									<td><%= test.name %></td>
+									<td><%= test.description %></td>
+									<td><a onclick=ajax_call("/content/edit_test/<%= test.id %>","content-admin-display")>View</a></td>
+									<td><a href="#">Delete</a></td>
+								</tr>
+								<% }); %>
+							</tbody>
+						</table>
+					</div>
+			  </div>
+		</div>
+	</div>
+	
+	<div class="col-md-12">
+		<hr class="no-margin-top">
+		<div class="col-md-6">
+			<div class="panel panel-primary gradient-diag1" id="rid0a5949b0e9f2e06afbd43ec07c3d3fc02">  
+			  <div class="panel-heading panel-handle panel-colorize">
+	    	    <div class="panel-title">
+			      <span class="" data-type="text">
+			        Module Playlist
+			      </span>
+			    </div>
+	  		  </div>
+			  <div class="panel-body-collapse collapse in">
+			  		<div class="panel-body" id="div_playlist">
+			  			<% if(playlists.length == 0) { %>
+			  				<p> No modules in the playlist </p>
+			  			<% } %>
+			  			<% if(playlists.length > 0) { %>
+							  <table class="table table-bordered"> 
+							  		<% playlists.forEach(function(playlist,i) { %>
+							  			<tr class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+							  				<td style="width: 400px">
+							  					<input type="hidden" id="search_span_<%= playlist.id %>" value="<%= playlist.id %>"/>
+							  					<span id=""><%= playlist.name %></span>
+							  					<br/>
+							  					<%= playlist.description != null ? playlist.description : '' %>
+							  				</td>
+							  				<td class="text-center">
+							  					<span onclick="show_preview_module('search_span_<%= playlist.id %>','1','false')" style="font-size: 12px; cursor: pointer" title="Preview"><i class="icm icm-search3"></i></span>
+							  				</td>
+							  				<td class="text-center">
+							  					<a class="close" onclick="ajax_call('/content/delete_module_from_playlist/<%= skill.id %>/<%= playlist.id %>','div_playlist')" style="font-size: 12px" title="Delete"><i class="icm icm-cancel-circle2"></i></a>
+							  				</td>
+							  			</tr>
+							  		<% }); %>
+							  </table>
+						  <% } %>
+			  		</div>
+			  </div>
+			</div>
+		</div>
+		
+		<div class="col-md-6">
+			<!-- start -->
+			<div class="panel panel-primary" id="rid3d271956147df2ebd2ebe7c8be0f95552">
+				  <div class="panel-header panel-handle panel-colorize">
+				    
+				    <ul class="nav nav-tabs panel-actions-sibling" rel="tabdrop">
+				      <li class="active">
+				        <a data-toggle="tab" href="#uid671c5427434cc1818e778ce60ac0e4d6">Search</a>
+				      </li>
+				        <li>
+				          <a data-toggle="tab" href="#uid234031a40beddbc7053641c8178e89ae" onclick="ajax_call('/module/browse_modules','uid234031a40beddbc7053641c8178e89ae')">Browse</a>
+				        </li>
+				    </ul>
+				  </div>
+				
+				  <div class="panel-body-collapse collapse in">
+				    <div class="panel-body tab-content">
+					      <div class="tab-pane fade in active" id="uid671c5427434cc1818e778ce60ac0e4d6">
+					        <div class="form-group">
+								<input name="search" id="search" type="text" placeholder="Search module by title" class="form-control" value=""/>
+								<input type="hidden" id="search-id" value=""/>
+							</div>
+							<div class="form-group">
+								<input type="button" id="search_button" class="btn btn-warning btn-sm" onclick="build_skill_playlist('search-id','1')" value="Add to Playlist" />
+								<input type="button" id="search_button" class="btn btn-info btn-sm" onclick="show_preview_module('search-id','1','true')" value="Show Preview" />
+						  	</div>
+						  </div>
+					        <div class="tab-pane fade in" id="uid234031a40beddbc7053641c8178e89ae">
+					          
+					        </div>
+				    </div>
+				  </div> <!-- end panel-body -->
+			</div>
+			<!-- end -->
+		</div>
+	</div>
+
+</div>
+	
+<script type="text/javascript">
+	$("#search").autocomplete({
+	      source: function( request, response ) {
+	      	$.ajax({
+	          url: "/content/search_module/"+request.term,
+		      success: function(data) {
+		      	response(data);
+		      }
+	        });
+	      },
+	      minLength: 1,
+	      select: function( event, ui ) {
+	      	$('#search').val(ui.item.label);
+	      	$('#search-id').val(ui.item.value);
+	      	return false;
+	      }
+	});
+</script>

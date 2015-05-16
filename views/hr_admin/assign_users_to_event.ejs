@@ -1,0 +1,41 @@
+<div class="panel panel-primary" id="jsrid5493609495">
+      <div class="panel-header panel-colorize" style="height: 37px">
+            <div class="panel-title panel-header-title" style="width: 100%; padding-left: 0px">
+              <div class="col-md-3">
+              	<span>Filter by:</span>
+              </div>
+              <div class="col-md-3 filter-div">
+              	<span>Roles <b class="caret"></b></span>	
+              	<ul class="filter-dropdown">
+              		<% roles.forEach(function(role,i) { %>
+              			<li>
+              				<input type="checkbox" value="<%= role.id %>" class="role-filter-checkbox" onclick="get_role_filter_checkbox_values('<%= val %>')"/> <%= role.name %>
+              			</li>
+              		<% }); %>
+              	</ul>
+              </div>
+              <div class="col-md-3 filter-div">
+              	<span>Batches <b class="caret"></b></span>	
+              	<ul class="filter-dropdown" id="filter-dropdown-batches">
+              		<li>Select a role first</li>
+              	</ul>
+              </div>
+              <div class="col-md-3 filter-div">
+              	<span>Skills <b class="caret"></b></span>	
+              	<ul class="filter-dropdown" id="filter-dropdown-skills">
+              		<li>Select a role first</li>
+              	</ul>
+              </div>
+            </div>
+		</div>
+
+      <div class="tab-content">
+        <div class="tab-pane fade active in" id="role-filter" style="height: 422px; overflow-y: auto; overflow-x: hidden">
+        </div>
+      </div>
+      <div class="panel-heading" style="position: relative; z-index: 2; overflow: hidden; color: #ffffff; background-color: #177bbb">
+		    <div class="panel-title pull-right">
+		    	<a class="btn btn-transparent-light btn-sm" title="Add Users" onclick="add_users_to_event('<%= val %>')"><b>Add Users</b></i></a>
+			</div>
+	  </div> <!-- end panel footer -->
+</div>

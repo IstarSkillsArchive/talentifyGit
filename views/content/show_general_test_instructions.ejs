@@ -1,0 +1,54 @@
+
+
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Test Instructions</h4>
+	      </div>
+	      <div class="modal-body" style="font-size: 14px">
+	      		<% if(message != null) { %>
+	      			<div class="form-group"><%= message %></div>
+	      			<% if(report != null) { %>
+	      				<div class="form-group">
+	      					<label>Score:</label>&nbsp;<%= report.score %>
+	      				</div>
+	      				<div class="form-group">
+	      					<label>Result:</label>&nbsp;<%= report.isPassed == true ? 'Pass' : 'Fail' %>
+	      				</div>
+	      				<% if(report.score == 0 || report.reason.indexOf('Oops! you ran out of time') > -1) { %>
+		      				<div class="form-group">
+		      					Please call your test coordinator to reset test.
+		      				</div>
+		      				<div class="form-group">
+		      					<a class="btn btn-danger" onclick="modal_ajax_call('/content/reset_test/<%= test.id %>/<%= currentUser.id %>','uide4b3dde6bb5097375d99eb18a83d7146');">Reset Test</a>
+		      				</div>
+	      				<% } %>
+	      			<% } %>
+	      		<% } %>
+				<% if(message == null && test != null) { %>
+					<% if(rd != null && rd != 'null' && rd != '') { %>
+					<div class="form-group">
+						<b>You have already answered <%= rd %> out of the total <%= test_problem_count %> questions.</b>
+					</div>
+					<% } %>
+					<div class="form-group">
+						<label>Name:</label>&nbsp;<%= test.name %>
+					</div>
+					<div class="form-group">
+						<label>Pass score:</label>&nbsp;<%= test.passScore != null ? test.passScore : 0 %>
+					</div>
+					<div class="form-group">
+						<label>Duration(mins):</label>&nbsp;<%= test.duration %>
+					</div>
+					<div class="form-group">
+						<label>Total no. of questions:</label>&nbsp;<%= test_problem_count %>
+					</div>
+					<div class="form-group" style="text-align: center">
+						<a class="btn btn-info" onclick="modal_ajax_call('/content/show_test_question/<%= test.id %>','uide4b3dde6bb5097375d99eb18a83d7146');"><%= rd != null && rd != 'null' && rd != '' ? 'Resume' : 'Start' %> Test</a>
+					</div>
+				<% } %>
+			</div>
+		</div>
+	</div>

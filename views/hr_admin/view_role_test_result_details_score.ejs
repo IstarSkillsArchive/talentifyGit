@@ -1,0 +1,28 @@
+<table class="table table-bordered test-report-card-table">
+	<tr>
+		<th>Username</th>
+		<th>Name</th>
+		<th>Email</th>
+		<th>Phone</th>
+		<th style="width: 300px">Result</th>
+		<th colspan="2">Score</th>
+	</tr>
+	<% users.forEach(function(user, i) { %>
+		<tr class="<%= !user.isPassed ? 'fail-row' : '' %>">
+			<td><%= user.username %></td>
+			<td>
+				<% if(user.first_name != null && user.first_name != '') { %>
+					<%= user.first_name %>&nbsp;<%= user.last_name != null ? user.last_name : '' %>
+				<% } %>
+				<% if(user.first_name == null || user.first_name == '') { %>
+					<%= user.username %>
+				<% } %>
+			</td>
+			<td><%= user.email != null ? user.email : '' %></td>
+			<td><%= user.phone != null ? user.phone : '' %></td>
+			<td><%= user.isPassed == true ? 'Pass' : user.reason %></td>
+			<td><%= user.score %>/<%= test.total_score %></td>
+			<td title="View More" style="cursor: pointer" onclick="ajax_call('/hr_admin/view_detailed_report_card/<%= user.id %>/<%= test.id %>/<%= user.RoleId %>','report_details_inner')"><i class="icm icm-expand3"></i></td>
+		</tr>	
+	<% }) %>
+</table>

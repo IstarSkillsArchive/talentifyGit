@@ -1,0 +1,26 @@
+<table class="table table-bordered test-report-card-table">	
+	<tr>
+		<th>Username</th>
+		<th>Name</th>
+		<th>Result</th>
+		<% w.domain.forEach(function(y) { %>
+			<th><%= y %></th>
+		<% }) %>
+		<th colspan="2">Score</th>
+	</tr>
+	<% users.forEach(function(user, j) { %>
+		<tr class="<%= user.score == max ? 'max-row' : (!user.isPassed ? 'fail-row' : '')%>">
+			<td><%= user.username %></td>
+			<td><%= user.first_name %></td>
+			<td><%= user.isPassed == true ? 'Pass' : 'Fail' %></td>
+			<% w.totalScore.forEach(function(y,i) { %>
+				<td><%= user.domainScore[i] %>/<%= y %></td>
+			<% }) %>
+			<td><%= user.score %>/<%= ps %></td>
+			<td title="View More" style="cursor: pointer" onclick="ajax_call('/hr_admin/view_detailed_event_report_card/<%= user.username %>/<%= test.id %>/<%= event_id %>','report_details')"><i class="icm icm-expand3"></i></td>
+		</tr>
+	<% }) %>
+</table>
+
+
+

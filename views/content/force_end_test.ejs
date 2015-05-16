@@ -1,0 +1,19 @@
+
+
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="hide_div('opentok');hide_class('DimBg')">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Test Instructions</h4>
+	      </div>
+	      <div class="modal-body">
+	      		<% if(message != null) { %>
+	      			<%= message %>
+	      		<% } %>
+				<div class="form-group" style="text-align: center">
+					<a class="btn btn-info" onclick="ajax_call('/content/show_content_test_report_details/<%= test_id %>/<%= skill_id %>/<%= message %>','uide4b3dde6bb5097375d99eb18a83d7146');">Go to Test Report</a>
+				</div>
+			</div>
+		</div>
+	</div>

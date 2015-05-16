@@ -1,0 +1,47 @@
+<input type="button" class="first-btn btn btn-primary" value="Create New Question" onclick="ajax_call('/content/new_question','content-admin-display')">
+
+<h2 class="text-gradient-info-dk text-center">Question List</h2>
+<hr>
+<table class="table	table-bordered">
+	<thead>
+		<th>ID</th>
+		<th>Text</th>
+		<th>What Is Tested</th>
+		<th>Difficulty Level</th>
+		<th colspan="2">Action</th>
+	<thead>
+	<tbody>
+		<% problems.forEach(function(problem, i) { %>
+		<tr>
+			<td><%= page > 1 ? ((page-1)*10)+(i+1) : i+1 %></td>
+			<td style="width: 400px"><%= problem.text %></td>
+			<td><%= problem.whatIsTested %></td>
+			<td><%= problem.difficultyLevel %></td>
+			<td class="text-center" title="Edit"><a onclick="ajax_call('/content/edit_question/<%= problem.id %>','content-admin-display')"><i class="icm icm-pencil5"></i></a></td>
+			<td class="text-center" title="Delete"><a onclick="coordinator_event_details('show');modal_ajax_call('/content/delete_problem/<%= problem.id %>/content-admin-display','uide4b3dde6bb5097375d99eb18a83d7146')"><i class="icm icm-remove"></i></a></td>
+		</tr>
+		<% }); %>
+	</tbody>
+</table>
+
+<% if(pages > 1) { %>
+	<ul class="pagination">
+	  <% if(prev == true) { %>
+	  	<li><a onclick='ajax_call("/problem/list_questions/<%= page-1 %>","content-admin-display")'>«</a></li>
+	  <% } %>
+	  <% if(prev == false) { %>
+	  	<li class="disabled"><a>«</a></li>
+	  <% } %>
+	  <% for(i = 0; i < pages ; i++) { %>
+	  <li class="<%= i+1 == page ? 'active' : ''%>"><a onclick='ajax_call("/problem/list_questions/<%= i+1 %>","content-admin-display")'><%= i+1 %></a></li>
+	  <% } %>
+	  <% if(next == true) { %>
+	  	<li><a onclick='ajax_call("/problem/list_questions/<%= page+1 %>","content-admin-display")'>»</a></li>
+	  <% } %>
+	  <% if(next == false) { %>
+	  	<li class="disabled"><a>»</a></li>
+	  <% } %>
+	</ul>
+<% } %>
+
+

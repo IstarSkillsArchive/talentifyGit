@@ -1,0 +1,67 @@
+
+	
+    <% if((old_content == null || old_content.length == 0) && (new_content == null || new_content.length == 0) && (current_content == null || current_content == '')) { %>
+		<p style="margin-left: 2%; text-align: center">There is no content for this module.</p>
+	<% } %>
+	<% if((old_content && old_content.length > 0) || (new_content && new_content.length > 0) || current_content != null || current_content != '') { %>
+		<% if(old_content != null && old_content != 'null' && old_content != '') { %>
+			<% old_content.forEach(function(content, i) { %>
+				<!--<div class="col-md-3 panels">
+					<div class="captionable  horizontal">
+				        <div class="captionable-flip">
+				          <div class="captionable-front">
+				            <div class="panel panel-primary">
+							  <div class="panel-heading">
+							    <div class="panel-title text-center">
+							      <%= content.name %>
+							    </div>
+							  </div>
+							  <div class="panel-body no-padding-top">
+							      <div class="padded">
+							      	<div class="text-center"><b><%= content.description != null ? content.description : ''  %></b></div>
+								  </div>
+								 	
+									<div class="row ">
+									  <div class="text-center">
+									    <a class="btn btn-primary" title="Play" onclick="ajax_call('/users/view_content/<%= content.id %>/<%= skill_id %>', 'turbo-content-open-id');">Play</a>
+									  </div>
+									</div>
+							
+							  </div>
+							</div>
+						  </div>
+				        </div>
+					</div>
+				</div>-->
+				<div class="review-content">
+					<h5><b><%= content.name %></b></h5>
+					<h6><%= content.description != null ? content.description : '' %></h6>
+					<a style="color:#fff" class="btn btn-primary" title="Play" onclick="ajax_call('/users/view_content/<%= content.id %>/<%= skill_id %>', 'turbo-content-open-id');">Play</a>
+				</div>
+			<% }); %>
+		<% } %>
+		
+		<% if(current_content != null && current_content != 'null' && current_content != '') { %>
+			<div class="review-content-current">
+				<h5><b><%= current_content.name %></b></h5>
+				<h6><%= current_content.description != null ? current_content.description : '' %></h6>
+				<a class="btn btn-default" title="Play" onclick="ajax_call('/users/view_content/<%= current_content.id %>/<%= skill_id %>', 'turbo-content-open-id');">Play</a>
+			</div>
+		<% } %>	
+		
+		<% if(new_content != null && new_content != 'null' && new_content != '') { %>
+			<% new_content.forEach(function(content, i) { %> 
+				<div class="review-content">
+					<h5><b><%= content.name %></b></h5>
+					<h6><%= content.description != null ? content.description : '' %></h6>
+					<a style="color:#fff" class="btn btn-primary" title="Play" onclick="alert('View the earlier content to unlock this content')">Play</a>
+				</div>
+			<% }); %>
+		<% } %>   
+		
+	<% } %>
+
+
+<!--<div style="position: absolute; width: 100%; height: 100%; top: -57px; left: 0px; background: #fff; z-index: 2; padding: 8px" id="review_content_iframe" class="display_none">
+</div>-->
+    

@@ -1,0 +1,51 @@
+<style>
+	.modal-dialog {
+		width: auto;
+		position: absolute;
+		top: 5%;
+		bottom: 5%;
+		left: 25%;
+		right: 25%;
+		width: auto;
+		margin: auto;
+	}
+	@media (max-width: 767px) {
+		.modal-dialog {
+			top: 15%;
+			bottom: 15%;
+			left: 1%;
+			right: 1%;	
+		  }
+		  .modal-header h4 {
+		  	font-size: 1.5em;
+		  }
+	}
+</style>
+<div class="modal-dialog">
+    <div class="modal-content">
+      		
+      <div class="modal-header">
+        <a class="close" href="#" onclick="hide_class('DimBg');hide_div('modal_preview')">&times;</a>
+      	<h4><%= test.name %></h4>
+      </div>
+      
+      <div class="modal-body">
+			<ul class="nav nav-tabs">
+				<li class="li_tab"><a onclick="ajax_call('/hr_admin/test_analytics/all/<%= test_id %>','modal_preview')" style="cursor:pointer">All</a></li>
+			 	<li class="li_tab"><a onclick="ajax_call('/hr_admin/test_analytics/test_taken/<%= test_id %>','modal_preview')" style="cursor:pointer">Test taken</a></li>
+			  	<li class="li_tab active"><a onclick="ajax_call('/hr_admin/test_analytics/test_not_taken/<%= test_id %>','modal_preview')" style="cursor:pointer">Test not taken</a></li>
+				<li class="li_tab"><a onclick="ajax_call('/hr_admin/test_analytics/passed/<%= test_id %>','modal_preview')" style="cursor:pointer">Passed</a></li>
+				<li class="li_tab"><a onclick="ajax_call('/hr_admin/test_analytics/failed/<%= test_id %>','modal_preview')" style="cursor:pointer">Failed</a></li>
+			</ul>
+			<table class="table	table-bordered" style="border-collapse: inherit; border-top: 0px">
+				<tbody>
+					<% users.forEach(function(user, i) { %>
+						<tr>
+							<td style="border-top: <%= i == 0 ? '0px' : '1px'%>"><%= user.first_name %>&nbsp;<%= user.last_name %></td>
+						</tr>
+					<% }); %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

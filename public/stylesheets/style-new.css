@@ -1,0 +1,662 @@
+.display-none {
+	display: none;
+}
+.display-inline-block {
+	display: inline-block;
+}
+.display-table, .tab-pane.active.fade.in.display-table {
+	display: table;
+	width: 100%;
+}
+.display-table-cell {
+	display: table-cell;
+	vertical-align: middle;
+}
+.gym-skill-pagination-div {
+	width: 100%;
+	text-align: center;
+	margin: 8px auto 30px;
+	display: block;
+	float: left;
+}
+.gym-skill-pagination-div span {
+	cursor: pointer;
+}
+.test-detail-table td.rd-td.active {
+	border: 1px solid #22ba93;
+}
+.test-detail-table td.rd-td.active-default {
+	border: 1px solid #999999;
+}
+.table-bordered.test-report-card-table > tbody > .max-row td {
+	background: #22ba93;
+	color: #fff;
+}
+.table-bordered.test-report-card-table > tbody > .fail-row td {
+	background: #e04959;
+	color: #fff;
+}
+.rd-span.active-text {
+	color: #22ba93;
+	font-weight: bold;
+}
+.test-detail-table td.rd-td-no-border-right {
+	border-right: 0px;
+}
+.test-detail-table td.rd-td-border-right {
+	border-right: 1px solid #22ba93;
+}
+.DimBg{ 
+	position:fixed; 
+	top:0; 
+	left:0; 
+	width:100%; 
+	display:none; 
+	text-align:left; 
+	background:#000; 
+	opacity: 0.5;-moz-opacity:0.50;filter: alpha(opacity=50); 
+	z-index: 10000;
+	height:100%;
+}
+.spinner {
+    position: fixed;
+    top: 50%;
+    left: 10%;
+    right: 10%; 
+    margin-top: -50px; 
+    text-align:center;
+    z-index:10001;
+    overflow: auto;
+    display: none; 
+}
+/* d3 tooltip */
+.d3-tip {
+  /*line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;*/
+  position: absolute;           
+  text-align: center;           
+  width: 64px;                  
+  height: 34px;                 
+  padding: 2px;             
+  font: 12px sans-serif;        
+  background: #000;
+  color: #fff;   
+  border: 0px;      
+  border-radius: 8px;           
+  pointer-events: none;
+  z-index: 20000;
+}
+
+/* Creates a small triangle extender for the tooltip */
+/*.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}*/
+
+/* Style northward tooltips differently */
+/*.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}*/
+/* end d3 tooltip */
+/* axis */
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #43494d;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path, .y.axis path {
+  display: none;
+}
+
+.x.axis .tick-display-none {
+	display: none;
+}
+
+.grid .tick {
+    stroke: lightgrey;
+    opacity: 0.7;
+}
+.grid path {
+      stroke-width: 0;
+}
+.login-bar {
+	fill: #e35b69;
+	opacity: 0.7;
+	stroke: #e35b69;
+}
+.Easy-login-bar {
+	fill: #22ba93;
+	opacity: 0.7;
+	stroke: #22ba93;
+}
+.Medium-login-bar {
+	fill: #fbb23e;
+	opacity: 0.7;
+	stroke: #fbb23e;
+}
+.Difficult-login-bar {
+	fill: #e04959;
+	opacity: 0.7;
+	stroke: #e04959;
+}
+/* end axis */
+/* misc */
+.panel-heading.panel-tile {
+	height: 145px;
+	display: table;
+	width: 100%;
+}
+.hr.panel-heading.panel-tile {
+	height: 90px;
+}
+.panel-tile .panel-tile-table-cell, .panel-tile-table-cell {
+	display: table-cell;
+	vertical-align: middle;
+}
+.manage-users-div .panel-heading.panel-tile, .panel-heading.panel-tile.small {
+	height: 105px;
+	cursor: pointer;
+}
+.role-filter-users .active-td-role-filter-users {
+	border: 1px solid #22ba93;
+	position: relative;
+}
+.role-filter-users td.active-td-role-filter-users.active-td-role-filter-users-last .icm-arrow-right3{
+	display: inline-block;
+	position: absolute;
+}
+.role-filter-users .icm-arrow-right3 {
+	display: none;
+}
+.add-users-div .form-control, .add-users-div .form-message-div {
+	border: 1px solid #ccc;
+}
+
+.add-users-div .form-message-div {
+	display: block;
+	width: 100%;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 13px;
+	line-height: 1.53846;
+	color: #43494d;
+	background-color: rgba(242, 244, 248, 0.4);
+	background-image: none;
+	border: 1px solid none;
+	border-radius: 2px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+.add-users-div .form-message-div.success {
+	border: 1px solid #22ba93;
+}
+.add-users-div .form-message-div.danger {
+	border: 1px solid #dc3361;
+}
+.form-message-div span {
+	vertical-align: middle;
+}
+.form-message-div span:last-child {
+	margin-left: 8px;
+}
+.form-message-div .icm {
+	position: relative;
+	top: -1px;
+}
+.form-message-div.display-none {
+	display: none;
+}
+.manage-roles #role-skills-div {
+	/*position: absolute;
+	right: 0px;
+	left: 0px;*/
+	border: 1px solid #ccc;
+	background: #fff;
+	width: 100%;
+	float: left
+}
+.skills-for-role {
+	width: 180px;
+	display: inline-block;
+	margin-right: 20px
+}
+.close-btn {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+/* end misc */
+/* wizard */
+.visibility-hidden, .tooltip.visibility-hidden {
+	visibility: hidden;
+}
+.visibility-visibile {
+	visibility: visible;
+}
+/* end wizard */
+/* filter dropdown */
+.filter-div, .col-md-3.filter-div {
+	position: relative;
+}
+.filter-div:hover .filter-dropdown {
+	display: block;
+}
+.filter-dropdown {
+	position: absolute;
+	border: 1px solid #ccc;
+	display: none;
+	background: #fff;
+	z-index: 2;
+	right: 0px;
+}
+ul.filter-dropdown {
+	list-style-type: none;
+	padding: 2px;
+	margin-bottom: 0px;
+	height: 150px;
+	overflow: auto;
+	width: 170px;
+}
+ul.filter-dropdown li {
+	color: #43494d;
+}
+/* end filter dropdown */
+/* start static gym layout */
+.gym .panel-heading.panel-tile {
+	height: 135px;
+}
+.gym .panel-tile .panel-tile-table-cell {
+	font-size: 18px;
+}
+.lg-table-display {
+	height: 260px;
+	display: table;
+	width: 100%;
+}
+.sm-table-display {
+	height: 84px;
+}
+.table-cell-display {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 18px;
+}
+.large-captionable-fixed-height {
+	height: 246px;
+}
+.panel-fixed-height {
+	height: 290px;
+	overflow: hidden;
+}
+.large-captionable-fixed-height.slick-carousel {
+	height: 290px;
+}
+.panel-footer-bottom {
+	
+}
+.icm.icm-36 {
+	font-size: 30px;
+}
+.panel-footer-bottom i {
+	display: inline-block;
+	margin: 0px 10px;
+	cursor: pointer;
+	background: #115d8e;
+	padding: 8px;
+	border-radius: 2px;
+	box-shadow: 1px 1px 1px #177bbb;
+}
+.panel-footer-bottom.small i {
+	padding: 2px;
+}
+.panel-body.panel-body-no-padding {
+	padding: 0px;
+}
+.panel-pink {
+	background: rgb(255,11,106);
+	border: 1px solid rgb(255,11,106);
+	color: #fff;
+}
+.panel-orange {
+	background: rgb(237,103,24);
+	border: 1px solid rgb(237,103,24);
+	color: #fff;
+}
+.btn.panel-orange:hover {
+	background: rgb(237,103,24);
+	border: 1px solid rgb(237,103,24);
+	color: #fff;
+}
+.panel-purple {
+	background: rgb(102,0,102);
+	border: 1px solid rgb(102,0,102);
+	color: #fff;
+}
+.panel-blue {
+	background: rgb(17,93,142);
+	border: 1px solid rgb(17,93,142);
+	color: #fff;
+}
+#careers {
+	overflow: hidden;
+}
+#careers .panel-body, #user-calendar .panel-body {
+	color: #43494d;
+}
+#careers .nav {
+	height: 215px;
+	overflow: auto;
+}
+#careers .nav.height {
+	height: 239px;
+}
+#careers .nav li.padding {
+	padding: 4px 15px;
+	margin-top 0px;
+}
+#careers div.padding {
+	padding-top: 4px;
+}
+#careers .nav li:nth-child(even) {
+	background: #f2f4f8;
+}
+/* slick */
+#calendar-week .slick-prev:before, #calendar-week .slick-next:before, #careers .offer-slick-carousel .slick-prev:before, #careers .offer-slick-carousel .slick-next:before, .certificates .panel-success .icm {
+	color: #22ba93;
+}
+#careers .interview-slick-carousel .slick-prev:before, #careers .interview-slick-carousel .slick-next:before, .certificates .panel-primary .icm {
+	color: #177bbb;
+}
+#careers .test-slick-carousel .slick-prev:before, #careers .test-slick-carousel .slick-next:before, .certificates .panel-warning .icm {
+	color: #fbb23e;
+}
+#careers .workshop-slick-carousel .slick-prev:before, #careers .workshop-slick-carousel .slick-next:before, .certificates .panel-danger .icm {
+	color: #e33244;
+}
+#careers .jobs-slick-carousel .slick-prev {
+	left: -6px;
+}
+#careers .jobs-slick-carousel .slick-next {
+	right: -6px;
+}
+/* end slick */
+.placement-summary.panel-body {
+	padding: 0px;
+}
+.placement-summary table {
+	margin-bottom: 0px;
+}
+.placement-summary table tr:first-child td {
+	border-top: 0px;
+}
+.placement-summary td {
+	font-size: 24px;
+}
+.placement-summary td .icm {
+	font-size: 28px;
+}
+.placement-summary .table td {
+	vertical-align: middle;
+	padding: 6px 10px;
+}
+.placement-summary .table tr td:last-child {
+	font-size: 20px;
+}
+.certificates .icm {
+	font-size: 10em;
+}
+/* end static gym layout */
+.trainer-events-list {
+	overflow: hidden;
+	border-bottom: 1px solid #ccc;
+}
+.trainer-events-list:last-child {
+	border-bottom: 0px;
+}
+.trainer-events-list.padded {
+	padding-left: 0px;
+}
+.trainer-events-list .col-md-9 {
+	padding-left: 0px;
+}
+.trainer-events-list:first-child.padded {
+	padding-top: 0px;
+}
+.trainer-events-list .icm, #attendance .icm {
+	cursor: pointer;
+}
+#calendar-today .btn {
+	color: #fff;
+}
+#calendar-today .btn {
+	margin-top: 2px;
+}
+#attendance .icm {
+	font-size: 24px;
+}
+#attendance .icm.present {
+	color: #22ba93;
+}
+#attendance .icm.absent {
+	color: #e33244;
+}
+#class-rating-details {
+	width: 100%;
+	float: left;
+}
+#trainer-feedback .padded, #attendance .padded {
+	padding-top: 0px;
+	overflow: hidden;
+}
+#attendance {
+	height: 380px;
+	overflow: auto;
+}
+#trainer-feedback .col-md-9, #trainer-feedback .col-md-12, #trainer-feedback .padded, #trainer-feedback .col-md-3 {
+	padding-left: 0px;
+}
+#attendance .table-bordered tr td {
+	border-color: #ccc;
+}
+#event-steps .badge.disabled {
+	opacity: 0.5;
+	cursor: none;
+}
+#event-steps .badge {
+	cursor: pointer;
+	padding: 7px 10px;
+}
+#calendar-week .slick-prev {
+	left: 0px;
+	bottom: 0px;
+}
+#calendar-week .slick-next {
+	right: 18px;
+	bottom: 0px;
+}
+#calendar-week .slick-prev:before, #calendar-week .slick-next:before {
+	font-size: 40px;
+}
+#calendar-datepicker.datepicker table tr td span:hover, #calendar-datepicker.datepicker table tr td.day:hover, #calendar-datepicker.datepicker thead tr:first-child th:hover, #calendar-datepicker.datepicker tfoot tr th:hover {
+	background: #aaa;
+}
+#calendar-datepicker.datepicker, #calendar-datepicker .datepicker {
+	width: 100%;
+}
+.mobile-table {
+	height: 80px;
+	display: table;
+	width: 100%;
+}
+.mobile-table > div {
+	vertical-align: middle;
+	display: table-cell;
+	text-align: center;
+	font-size: 18px;
+}
+.mobile-table.small {
+	height: 70px;
+}
+.mobile-table > div div:first-child {
+	margin-bottom: 6px;
+}
+.mobile-table.small > div {
+	font-size: 14px;
+	font-weight: normal;
+}
+#gym-captionable-front, #gym-captionable-back {
+   -webkit-backface-visibility: hidden;
+   -moz-backface-visibility: hidden;
+   -ms-backface-visibility: hidden;
+   -o-backface-visibility: hidden;
+   backface-visibility: hidden;
+   -webkit-transition: -webkit-transform 0.35s;
+   -moz-transition: -moz-transform 0.35s;
+   -o-transition: -o-transform 0.35s;
+   transition: transform 0.35s;
+   -webkit-transform-style: preserve-3d;
+   -moz-transform-style: preserve-3d;
+   -ms-transform-style: preserve-3d;
+   -o-transform-style: preserve-3d;
+   transform-style: preserve-3d; 
+}
+  
+#gym-captionable-front/*, #notice-board .captionable-front*/ {
+   position: relative;
+   z-index: 2;
+   -webkit-transform: rotateY(0deg);
+   -moz-transform: rotateY(0deg);
+   -ms-transform: rotateY(0deg);
+   -o-transform: rotateY(0deg);
+   transform: rotateY(0deg); 
+}
+
+#gym-captionable-back {
+   position: absolute;
+   min-height: 100%;
+   width: 100%;
+   top: 0;
+   left: 0;
+   -webkit-transform: rotateY(-180deg);
+   -moz-transform: rotateY(-180deg);
+   -ms-transform: rotateY(-180deg);
+   -o-transform: rotateY(-180deg);
+   transform: rotateY(-180deg); 
+}
+
+#captionable {
+  -webkit-perspective: 1000px;
+  -moz-perspective: 1000px;
+  -ms-perspective: 1000px;
+  -o-perspective: 1000px;
+  perspective: 1000px; 
+  position: relative;
+}
+
+#captionable-flip {
+   -webkit-transform-style: preserve-3d;
+   -moz-transform-style: preserve-3d;
+   -ms-transform-style: preserve-3d;
+   -o-transform-style: preserve-3d;
+   transform-style: preserve-3d; 
+}
+
+#notice-board .captionable-back {
+	width: 100%;
+}
+
+#map-canvas {
+	width: 100%;
+	height: 300px;
+}
+
+#map-canvas1 {
+	width: 100%;
+	height: 550px;
+}
+
+#calendar-popup {
+	background: #fff;
+	position: absolute;
+	display: none;
+	width: 300px;
+	border-radius: 2px;
+	border: 1px solid #ccc;
+}
+
+/* start content-admin */
+.content-admin .panel-heading.panel-tile {
+	height: 75px;
+	width: 106px;
+	cursor: pointer;
+}
+.content-admin .panel-tile .panel-tile-table-cell span{
+	display: inline-block;
+	width: 100%;
+	white-space: nowrap;
+}
+.content-admin a {
+	cursor: pointer;
+}
+.contentf-admin h2 {
+	margin-top: 0px;
+}
+.content-admin .first-btn {
+	margin-top: 10px;
+	float: right;
+}
+.input-group-margin-top-10 {
+	margin-top: 10px;
+}
+.content-admin h2.text-gradient-info-dk {
+	margin-top: 10px;
+}
+input.form-control, textarea.form-control, div.form-control, select.form-control {
+	border: 1px solid #e1e1e1;
+}
+.content-admin span.label-primary {
+	margin: 4px;
+	padding: 4px;
+	display: inline-block;
+}
+.no-margin-top {
+	margin-top: 0px;
+}
+/* end content-admin */
+#hr-placement td {
+	cursor: pointer;
+}
+#hr-placement table td:first-child {
+	width: 20px;
+}
+.review-content {
+	background: #eee;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+.review-content-current {
+	background: #22ba93;
+	color: #fff;
+	padding: 10px;
+	margin-bottom: 10px;
+}

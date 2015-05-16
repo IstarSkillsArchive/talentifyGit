@@ -1,0 +1,46 @@
+<% layout('../layout') %>
+<% include ../util/errors %>
+
+<h2 style="text-align: center">Create Users (Bulk)</h2>
+<hr>
+
+<form role="form" method="POST" action="/misc/do_bulk_user_create">
+    <div class="form-group">
+	    <label><b>Organization</b>:</label>
+	    <select name="OrganizationId" id="OrganizationId" class="form-control">
+			
+		<% organizations.forEach(function(org) { %>
+			<option value = "<%= org.id %>"><%= org.name %></option>
+		<% }); %>
+		</select>
+	</div>
+	
+	<div class="form-group">
+	    <label><b>Batch</b>:</label>
+	    <select name="RoleId" id="RoleId" class="form-control">
+			
+		<% roles.forEach(function(role) { %>
+			<option value = "<%= role.id %>"><%= role.name %></option>
+		<% }); %>
+		</select>
+	</div>
+	
+	<div class="form-group">
+	    <label><b>Coach</b>:</label>
+	    <select name="CoachId" id="CoachId" class="form-control">
+			
+		<% coaches.forEach(function(org) { %>
+			<option value = "<%= org.id %>"><%= org.first_name %>&nbsp;<%= org.last_name != null ? org.last_name : '' %></option>
+		<% }); %>
+		</select>
+	</div>
+	
+	<div class="form-group">
+		<label><b>No. of Users</b></label>
+		<input type="text" class="form-control" name="count" id="count"/>
+	</div>
+ 
+ <input type="submit" class="btn btn-default" value="Submit" />   
+</form>
+
+

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>iLab</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <script src="/modernizr/modernizr.js"></script>
+        <script src="/jquery/jquery.min.js"></script>
+		<script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script type="text/javascript" src="/javascripts/script.js"></script>
+        <link rel="stylesheet" href="/stylesheets/style.css">
+        <!--<link href="/flat-ui/css/flat-ui.css" rel="stylesheet">-->
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/dashboard">iLab</a>
+        </div>
+        <div class="navbar-collapse collapse">
+					<% if(currentUser) { %>
+          <ul class="nav navbar-nav pull-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i><%= (currentUser.first_name != null && currentUser.first_name != '') ? currentUser.first_name : currentUser.username %> (<%= currentUser.permission %>) <b class="caret"></b></i>
+							</a>
+							<ul class="dropdown-menu">
+								<% if(currentUser.isAdmin()) { %>
+									<li><a href="/misc/upload_batches">Create Batches</a></li>
+									<li><a href="/misc/bulk_user_create">Create users (bulk)</a></li>
+									<li><a href="/misc/import_csv">Import CSV</a></li>
+									<li><a href="/organization/new">Create Organization</a></li>
+									<li><a href="/users/new/<%= currentUser.id %>">Create User</a></li>
+									<li><a href="/hr_admin/new_role/<%= currentUser.id %>">Create Role</a></li>
+									<li><a href="/hr_admin/new_module/<%= currentUser.id %>">Create Module</a></li>
+									<li><a href="/organization/list">List Organizations</a></li>
+									<li><a href="/users/list">List Users</a></li>
+									<li><a href="/hr_admin/list_roles/<%= currentUser.id %>">List Roles</a></li>
+									<li><a href="/hr_admin/list_modules/<%= currentUser.id %>">List Modules</a></li>
+									<li><a href="/content/upload">Upload</a></li>
+								<% } %>
+								<% if(currentUser.isManager()) { %>
+									<li><a href="/hr_admin/new_role/<%= currentUser.id %>">Create Role</a></li>
+									<li><a href="/users/new/<%= currentUser.id %>">Create User</a></li>
+								<% } %>
+								<% if(currentUser.isContentAdmin()) { %>
+									<li><a href="/content/new_module">Create Module</a></li>
+									<li><a href="/content/list_modules">List Modules</a></li>
+									<li><a href="/content/upload">Upload</a></li>
+								<% } %>
+								<li><a href="/users/change_password/<%= currentUser.id %>">Change Password</a></li>
+							</ul>
+						</li>
+						<li class="divider"></li>
+						<li><a href="/logout">Logout</a></li>
+          </ul>
+					<% } else { %>
+						<ul class="nav navbar-nav">
+							<li class="active"><a href="#">Home</a></li>
+							<li><a href="#about">About</a></li>
+							<li><a href="#contact">Contact</a></li>
+						</ul>
+					<% } %>
+
+				<% if(!currentUser) { %>
+						<form class="navbar-form navbar-right" action="/login" method="post">
+							<div class="form-group">
+								<input name="username" type="text" placeholder="Username" class="form-control">
+							</div>
+							<div class="form-group">
+								<input name="password" type="password" placeholder="Password" class="form-control">
+							</div>
+							<button type="submit" class="btn btn-success">Sign in</button>
+						</form>
+					<% } %>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+	
+	<div id="spinner" class="spinner" style="display:none;">
+        <img src="/images/ajax-loader.gif" alt="Spinner"/>
+    </div>
+	
+    <div class="container">
+			<% if(typeof(failure) === 'string' && failure !== null) { %>
+				<div class="row" style="position: relative; top: 10px;">
+					<p class="alert alert-danger"><%= failure %></p>
+				</div>
+			<% } %>
+			<% if(typeof(successFlash) === 'string' && successFlash !== null) { %>
+				<div class="row" style="position: relative; top: 10px;">
+					<p class="alert alert-success"><%= successFlash %></p>
+				</div>
+			<% } %>
+			<div class="row" style="padding: 0 15px; margin-top: 10px;">
+				<% if(currentUser && currentUser.isManager() && currentFlag == 'create') { %>
+					<ul class="nav nav-tabs">
+					 	<li class="li_tab"><a href="/hr_admin/dashboard">Company L&D Stats</a></li>
+					  	<li class="li_tab"><a href="/hr_admin/track">Employee Stats</a></li>
+					  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>">Roles</a></li>
+					 	<li class="li_tab active"><a href="/users/list">Manage Users</a></li>
+					</ul>
+				<% } %>
+				<%- body %>	
+			</div>
+      <footer style="margin-top: 50px; text-align: center;">
+        <p>&copy; LePo 2014</p>
+      </footer>
+    </div> <!-- /container -->        
+	
+	</body>
+</html>

@@ -1,0 +1,31 @@
+
+<script type="text/javascript">
+	var apiKey = <%= apikey %>,
+		sessionId = <%= sessionId %>,
+		token = <%= token %>;
+
+var session = TB.initSession(sessionId); // Sample session ID. 
+			
+		session.addEventListener("sessionConnected", sessionConnectedHandler);
+		session.addEventListener("streamCreated", streamCreatedHandler);
+		session.connect(apiKey, token); // OpenTok sample API key and sample token string. 
+		alert("####################From opentok client: apikey: "+apiKey+" token: "+token);
+	  function sessionConnectedHandler(event) {
+	     subscribeToStreams(event.streams);
+	     session.publish();
+	  }
+	
+	  function streamCreatedHandler(event) {
+	    subscribeToStreams(event.streams);
+	  }
+	
+	  function subscribeToStreams(streams) {
+	    for (i = 0; i < streams.length; i++) {
+	      var stream = streams[i];
+	      if (stream.connection.connectionId != session.connection.connectionId) {
+	        session.subscribe(stream);
+	      }
+	    }
+	  }
+  
+  </script>

@@ -1,0 +1,262 @@
+<% layout('../new-layout') %>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<li class="li_tab"><a href="/hr_admin/dashboard">Company L&D Stats</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/track">Employee Stats</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>">Roles</a></li>
+			 	<li class="li_tab"><a href="/users/list">Manage Users</a></li>
+			 	<li class="li_tab active"><a href="/hr_admin/list_events">Events</a></li>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<style>
+	label { font-weight: bold; }
+	.form-group { display: inline-block; width: 100%}
+	.form-group .form-control {
+		width: 500px;
+	}
+	@media (max-width: 767px) {
+		.form-group .form-control {
+			width: 100%	
+		  }		 
+	}
+</style>
+
+<% include ../util/errors %>
+
+<form action="/hr_admin/list_events">
+	<input type="submit" class="btn btn-primary" value="Back" style="margin-top: 0%">
+</form>
+
+
+<h4 style="text-align: center;font-weight: 300">Edit Event</h4>
+
+<form role="form" method="POST" action="/hr_admin/do_edit_event" id="create_event_form" name="create_event_form">
+  <input type="hidden" name="event_id" value="<%= event.id %>" id="event_id" />
+  
+  <div class="form-group">
+    <label>Name</label>
+    <input type="text" name="name" class="form-control" id="name" value="<%= event.name %>">
+  </div>
+  
+  <div class="form-group">
+    <label>Description</label>
+    <input type="text" name="description" class="form-control" id="description" value="<%= event.description %>">
+  </div>
+  
+  <div class="form-group">
+  	<label>Type</label>
+  	<select name="type" class="form-control">
+  		<% if(event.type != null ) { %>
+  			<option value="<%= event.type %>"><%= event.type %></option>
+  		<% } %>
+  		<option value="Meeting">Meeting</option>
+  		<option value="Test">Test</option>
+  	</select>
+  </div>
+  
+  <div class="form-group">
+    <label>Location</label>
+    <input type="text" name="location" class="form-control" id="location" value="<%= event.location != null ? event.location : '' %>">
+  </div>
+  
+  <div class="form-group">
+    <label>Date</label>
+    <input type="text" name="date" class="form-control" id="date" value="<%= event.date %>">
+  </div>
+  
+  <div class="form-group">
+    <label>Time</label>
+    <input type="text" name="time" class="form-control" id="time" value="<%= event.time != null ? event.time: '' %>">
+  </div>
+  
+  <% if(event_trainer == null || event.status == 'Trainer Rejected Invite') { %>
+	  <div class="playlist wide" id="search_trainer_div">
+		  <div class="form-group">
+		  	<label>Search Trainer</label>
+		  </div>
+		  <div class="playlist wide" style="border: 0px; overflow: hidden">
+			  	<div class="form-group search_trainer_div_form_group" id="search_trainer_div_form_group">
+		            <div class="input-group">
+					  <input type="text" class="form-control" placeholder="Search trainers by tags" name="Moderator_Id" id="Moderator_Id">
+					  <input type="hidden" name="ModeratorId" id="ModeratorId" value=""/>
+					  <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+					</div>
+		        </div>
+		        <div class="trainer_profile_div">
+		        	<div class="trainer_profile_div_scroll">
+		        	</div>
+		        </div>
+		  </div>
+	  </div>
+  <% } %>
+  <% if(event_trainer != null && event.status != 'Trainer Rejected Invite') { %>
+  	<div class="playlist wide" id="search_trainer_div">
+		  <div class="form-group">
+		  	<label>Trainer</label>
+		  </div>
+		  <div class="playlist wide" style="border: 0px">
+				<div class="trainer_profile_div_scroll">
+				  	<div class="trainer_profile skill_report">
+						<div class="width_100">
+							<div class="todo-icon" style="padding: 0px; float: left"><img src="/flat-ui/images/demo/browser-pic-1.jpg"></div>
+					        <div class="todo-content" style="padding-left: 8px;text-align: left">
+					          <a href="#" style="color: #2a6496"><b><%= event_trainer.first_name %>&nbsp;<%= event_trainer.last_name %></b></a>
+					          <br/>
+					          <span class="role-name">
+					          	<label><%= event_trainer.location != null ? event_trainer.location : '' %></label>
+					          </span> 
+					        </div>
+					  	</div>
+					  	<div class="width_100" style="float: left; text-align: left; margin-top: 2px">
+					  		<label>Billing rate:</label>
+					  		<label> <%= event_trainer.rate %> per hour</label>
+					  	</div>
+					  	<span class="trainer_profile_btn">
+					  		<span class="btn btn-primary" id="trainer_profile_btn_invited">Invited</span>
+					  	</span>
+					</div>
+				</div>
+		  </div>
+	  </div>
+  <% } %>
+  
+  <% if(test_name != null) { %>
+  <div class="playlist wide" id="search_test_div" style="margin-top: 20px">
+	 <label>Test</label>
+	 
+	  <div class="playlist wide" style="border: 0px; overflow: hidden">
+	  	<div class="form-group search_trainer_div_form_group" id="search_test_div_form_group">
+            <div class="input-group">
+			  <input type="text" class="form-control" name="Test_Name" id="Test_Name" value="<%= test_name != null ? test_name : '-' %>">
+			</div>
+        </div>
+	  </div>
+  </div>
+  <% } %>
+  
+  </form>
+  
+  <!-- START -->
+  	  <br/>
+	  <div class="playlist wide">
+		  <div class="form-group">
+				<label>User List</label>
+		  </div>
+		  
+		  <% if(playlists.length > 0) { %>
+			  <div class="form-group">
+			  		<div class="playlist" id="div_playlist">
+				  		<% playlists.forEach(function(playlist,i) { %>
+				  			<div class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+			  					<% if(playlist.status != 'RSVP Yes') { %>
+			  						<a class="close" href="#" onclick="ajax_call('/content/delete_user_from_event/<%= event.id %>/<%= playlist.id %>','div_playlist')" style="font-size: 12px">&nbsp;[x]</a>
+			  					<% } %>
+			  					<span style="float:right;color: green; font-weight: bold"><%= playlist.status != null ? playlist.status : '' %></span>
+			  					<span>
+				  					<span id="search_span_<%= playlist.id %>"><%= playlist.first_name %>&nbsp;<%= playlist.last_name %></span>
+				  				</span>
+			  				</div>
+				  			
+						<% }); %>
+					</div>
+			  </div>
+		  <% } %>	
+		  
+		  <br/>
+		  
+		  <!--<ul class="nav nav-tabs">
+				<li class="li_tab active"><a href="#search_content" data-toggle="tab">Search</a></li>
+			 	<li class="li_tab"><a href="#browse_content" onclick="ajax_call('/content/browse/1','browse_content')" data-toggle="tab">Browse</a></li>
+		  </ul>-->
+		  
+		  
+		  <!-- START BROWSE -->
+		  
+		  <div class="form-group">
+			  	<label>Add Users</label>
+			  </div>
+			  
+			  <div class="playlist wide" id="filter_results">
+			  	<label>Filter Results</label>
+			  	
+			  	<form role="form" method="POST" action="/content/do_edit_module" style="display: inline-block">
+				  	<select name="skill" onchange="ajax_filter_users_skill(this, '1')" id="skill">
+				  		<option>Select a skill</option>
+				  		<% skills.forEach(function(playlist,i) { %>
+				  			<option value="<%= playlist.id %>"><%= playlist.name %></option>
+				  		<% }); %>
+				  	</select>
+				  	
+				  	<select name="role" onchange="ajax_filter_users_role(this, '1')" id="role">
+				  		<option>Select a role</option>
+				  		<% roles.forEach(function(playlist,i) { %>
+				  			<option value="<%= playlist.id %>"><%= playlist.name %></option>
+				  		<% }); %>
+				  	</select>
+				  	
+				  	<!--
+				  	<div class="btn-group btn-group-xs">
+				  		<input type="submit" value="Go" class="btn btn-default"/>
+				  	</div>
+				  	-->
+				  	
+				</form>
+			  	
+			  </div>
+			  
+			  <br/>
+			  
+			  <div class="form-group">
+			  	<div class="playlist wide" id="content">
+			  		<% users.forEach(function(playlist,i) { %>
+			  			<div class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+							<a class="close" href="#" onclick="add_user_to_event('<%= playlist.id %>','1')" style="font-size: 12px">Add User</a>
+							<span>
+			  					<span id="search_span_<%= playlist.id %>"><%= playlist.first_name %>&nbsp;<%= playlist.last_name %></span>
+			  				</span>
+						</div>
+			  			
+					<% }); %>
+			  	</div>
+			  </div>
+		  
+		  <!-- END BROWSE -->
+	  </div>	
+  <!-- END -->
+  <br/>
+  <div class="form-group">
+  	<button type="button" class="btn btn-success" onclick="submit_form('create_event_form')">Save Attendee List</button>
+  </div>
+  
+  <script type="text/javascript">
+$("#Moderator_Id").keyup(function(){
+      
+      $.ajax({
+          url: "/trainer/get_trainers/"+$(this).val()+"/1",
+	      success: function(data) {
+	      	//response(eval(data));
+	      	$('.trainer_profile_div').show();
+	      	$('.trainer_profile_div_scroll').html(data);
+	      }
+        });
+});
+</script>
+

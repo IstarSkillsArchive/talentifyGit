@@ -1,0 +1,8 @@
+
+
+	<% if(att.status == 'Present') { %>
+		<i class="icm icm-checkmark-circle present" onclick="ajax_call('/trainer/mark_attendance/<%= user.id %>/<%= att.EventId %>/Absent','user-attendance-<%= user.id %>')"></i>
+	<% } %>
+	<% if(att.status == 'Absent') { %>
+		<i class="icm icm-cancel-circle absent" onclick="ajax_call('/trainer/mark_attendance/<%= user.id %>/<%= att.EventId %>/Present','user-attendance-<%= user.id %>')"></i>
+	<% } %>

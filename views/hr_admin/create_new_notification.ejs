@@ -1,0 +1,25 @@
+
+<div class="animated fadeIn padded bg-info">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<a class="btn btn-success pull-right" onclick="ajax_call('/hr_admin/list_notifications/<%= currentUser.id %>','turbo-content-open-id')" style="margin-right: 10px">List all</a>
+  	<h2 class="thin no-margin-top">Create Notification</h2>
+	<form role="form" method="POST" action="/hr_admin/do_create_notification" target="upload_target" id="create_notification" name="create_notification">
+  
+	  <div class="form-group">
+	    <input type="text" name="text" class="form-control" id="text" placeholder="Text" style="width:50%"/>
+	  </div>
+	  
+	  <div class="form-group">
+	    <textarea name="description" class="form-control" rows="4" id="description" style="width:50%">Description</textarea>
+	  </div>
+	  
+	  <div class="form-group">
+	    <input type="hidden" name="UserId" id="UserId" value="<%= user_id %>" />
+	    <input type="submit" class="btn btn-success" value="Submit" />
+	  </div>
+	</form>	
+	<iframe id="upload_target" name="upload_target" style="width:0;height:0;border:0px"></iframe>
+</div>
+
+
+

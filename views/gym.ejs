@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en" class="high">
+<head>
+  
+<meta charset="utf-8">
+
+<!-- Always force latest IE rendering engine or request Chrome Frame -->
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+
+<meta name="viewport" content="width=device-width, minimal-ui, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+
+<!-- Apple Touch -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/wrap/images/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/wrap/images/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/wrap/images/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/wrap/images/apple-touch-icon-57-precomposed.png">
+
+<!-- Favicon -->
+<link rel="shortcut icon" href="/wrap/images/favicon.png">
+
+<!-- Use title if it's in the page YAML frontmatter -->
+<title>Gym</title>
+
+<script type="text/javascript">
+    var polyfilter_scriptpath = "/wrap/polyfills/filters/";
+    window.polyfilter_skip_stylesheets = true
+</script>
+
+ <link href="/wrap/stylesheets/application.css" rel="stylesheet" type="text/css" />
+ <link href="/stylesheets/style-new.css" rel="stylesheet" type="text/css" />
+ <link href="/stylesheets/slick/slick.css" rel="stylesheet" type="text/css" />
+ 
+<!--[if lte IE 9]>
+<link href="/wrap/stylesheets/application_split2.css" rel="stylesheet" type="text/css" /><link href="/wrap/stylesheets/application_split3.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+  <script src="/wrap/javascripts/application.js" type="text/javascript"></script>
+  <script src="/wrap/javascripts/demo.js" type="text/javascript"></script>
+  <script src="/wrap/javascripts/init.js" type="text/javascript"></script>
+  
+</head>
+
+<body class="high emerald-default htmls htmls_dashboard">
+<% if(!user.isAgreedToTerms) { %>
+	<div class="modal-backdrop fade in"></div>
+<% } %>
+<!-- start modal -->
+<div class="modal modal-light fade" id="uide4b3dde6bb5097375d99eb18a83d7146">
+	<div class="modal-footer">
+    	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+  	</div>
+</div>
+<div class="modal modal-light fade" id="opentok">
+	<div class="modal-footer">
+    	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+  	</div>
+</div>
+<!-- end modal -->
+
+<div class="modal blur jump-to-modal" id="jump-to-menu">
+  <div class="modal-dialog modal-lg">
+    <div class="clearfix">
+      <button type="button" class="close pull-right text-white-dk" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="container-fluid">
+		<div class="row text-center vpadded-row">        
+			<div class="col-sm-4">
+				<a href="/users/gym/<%= currentUser.id %>">            
+					<div class="jump-to-element padded text-gradient-white text-component-shadow">
+              			<i class="icm icm-screen4 icm-4x"></i>
+              			<h5>Gym</h5>
+            		</div>
+				</a>       
+			</div>
+        	<div class="col-sm-4">
+				<a>            
+					<div class="jump-to-element padded text-gradient-white text-component-shadow">
+              			<i class="icm icm-grid icm-4x"></i>
+              			<h5>Placement Center</h5>
+            		</div>
+				</a>        
+			</div>
+        </div>
+	</div>    
+  </div>  
+</div>
+
+<div class="modal fade" id="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header ">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        A eaque nemo saepe architecto. laboriosam rem repellat facere molestiae voluptatibus dolores omnis in alias commodi distinctio culpa est. dolores eveniet voluptas aut excepturi vero et sed modi fugit. impedit provident assumenda incidunt et expedita natus sequi veniam qui exercitationem tempore iste aliquid cumque. ut repellendus error voluptas neque quod et et. quisquam corrupti eum et optio qui repudiandae quibusdam excepturi in voluptatem aut odio rerum omnis. repellat esse magnam fuga cumque amet facere error sed recusandae ut est totam
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="spinner" class="spinner">
+    <img src="/images/ajax-loader.gif" alt="Spinner"/>
+</div>
+
+<div id="node-dialog-container"></div>
+
+
+<div class="oc-xs-push-push oc-sm-squeeze-push oc-md-squeeze-push oc-lg-squeeze-push modal-blur-content">
+
+	<div id="oc-wrapper" class="oc-wrapper
+       oc-lg-open-left oc-md-partial-left oc-sm-partial-left
+       oc-lg-left-squeeze oc-md-left-squeeze oc-sm-left-squeeze oc-xs-left-push
+       oc-lg-right-push oc-md-right-push oc-sm-right-push oc-xs-right-push
+       ">
+
+    <div class="oc-push" style="overflow-x: hidden; overflow-y: auto">
+      
+      <aside id="main-oc-sidebar-left" class="oc-sidebar oc-sidebar-left oc-sidebar-fixed nano">
+        <div class="nano-content">
+          
+
+<div class="oc-sidebar-header">
+  <ul class="nav nav-justified-all">
+    <li>
+      <a id="oc-left-toggle" href="#oc-wrapper"
+         class="btn-nav" style="width: 50px;"
+         data-toggle="offcanvas" data-control="left"
+         data-states="open,partial"
+         data-persist="lg,md,sm"
+         data-parent="body" data-sibling="right">
+        <i class="icm icm-menu6 oc-partial-rotate"></i>
+      </a>
+    </li>
+    <!--<li>
+<a class="btn-nav" data-toggle="modal" href="#jump-to-menu">        <i class="icm icm-arrow-right6"></i>
+</a>    </li>-->
+    <!--<li>
+      <a class="btn-nav" href="#" rel="popover-click"
+         data-toggle="popover"
+         data-container="body"
+         data-placement="bottom">
+        <i class="icm icm-bubbles5 has-corner-badge animated tada">
+          <span class="badge badge-corner badge-corner-top-right badge-info-dk">
+            <i class="fa fa-exclamation"></i>
+          </span>
+        </i>
+      </a>
+    </li>-->
+    <!-- <li>
+<a href="pages/inbox.html">          <i class="icm icm-envelope3 has-corner-badge">
+            <span class="badge badge-corner badge-corner-top-right badge-primary-dk">4</span>
+          </i>
+</a>    </li>-->
+  </ul>
+</div>
+
+<div class="oc-sidebar-content" id="collapseAvatarLeft">
+  <ul class="nav nav-stacked oc-sidebar-nav visible-xs">
+    <li class="dropdown">
+      <a href="#dropdownUserSidebar" class="collapsed"  data-toggle="collapse" data-parent="#collapseAvatarLeft">
+        <div class="media">
+          <img class="img-circle media-object pull-left" src="/wrap/images/faker/avatars/48/Faces_Users-23.png" />
+          <div class="media-body">
+            <h4 class="media-heading"><%= currentUser.first_name != null ? currentUser.first_name : currentUser.username %></h4>
+            Et repellat at laudantium corporis laboriosam q...
+          </div>
+        </div>
+      </a>
+      <ul class="collapse dropdown-menu" id="dropdownUserSidebar" style="display: block">
+        <li>
+          <a href="/logout">
+            <i class="icm icm-switch text-danger"></i> <span class="text-danger">Sign out</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  
+
+</div>
+
+        </div>
+      </aside>
+
+      <div id="main-oc-container" class="oc-container" style="margin-left: 0px">
+        <nav class="navbar navbar-default navbar-static-top navbar-inplace" role="navigation">
+		  <ul class="nav navbar-nav navbar-left pull-left hidden-sm hidden-md hidden-lg">
+		    <li>
+		      <a id="oc-left-toggle-xs" href="#oc-wrapper"
+		         class="btn-nav pull-left "
+		         data-toggle="offcanvas" data-control="left"
+		         data-states="open,hidden"
+		         data-persist="lg,md,sm"
+		         data-parent="body" data-sibling="right">
+		        <i class="icm icm-menu6"></i>
+		      </a>
+		    </li>
+		  </ul>
+		<a class="navbar-brand" href="">    
+		    <span class="text-gradient-success-dk"><i class="icm icm-cube icm-2x"></i>&nbsp;iLAB</span>
+		</a>  
+		  <ul class="nav navbar-nav navbar-right pull-right hidden-xs">
+		    <li class="dropdown">
+		      <a href="#" data-toggle="dropdown" class="navbar-img-link">
+		        <img class="img-circle" src="/wrap/images/faker/avatars/48/Faces_Users-11.png" />
+		        <span class="hidden-xs hidden-sm hidden-md"><%= currentUser.first_name %></span>
+		        <b class="caret"></b>
+		      </a>
+		      <ul class="dropdown-menu animated fadeIn fast">
+		        <!--<li>
+		<a href="">            <i class="fa fa-user"></i> Profile
+		</a>        </li>
+		        <li>
+		<a href="">            <i class="fa fa-cog"></i> Settings
+		</a>        </li>-->
+		        <li>
+		          
+		<a href="/logout">              <i class="fa fa-power-off text-danger"></i>
+		              <span class="text-danger">Sign out</span>
+		</a>          
+		        </li>
+		      </ul>
+		    </li>
+		  </ul>
+		  
+		</nav>
+
+	<!-- start container-fluid -->
+    <div class="container-fluid turbo-cols-static turbo-grid-wrap gym">
+		
+		<div class="turbo-grid"> <!-- start turbo grid -->
+		 	<div class="row" rel="panels"> <!-- start first row -->
+		 		
+		 		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6"> <!-- start first row, first col -->
+		 			
+		 			<div class="captionable">
+						<div class="panel panel-pink">
+							  <div class="panel-heading panel-tile">
+							    <div class="panel-title text-center panel-tile-table-cell turbo-card turbo-toggle" data-back-class="bg-info" data-turbo-url="/users/get_users_test_events/<%= currentUser.id %>">
+							      <i class="icm icm-pencil5 icm-4x"></i>
+							      Tests
+							    </div>
+							  </div>
+						</div><!-- end panel -->
+						
+						<div class="panel panel-success">
+							  <div class="panel-heading panel-tile">
+							    <div class="panel-title text-center panel-tile-table-cell turbo-card turbo-toggle" data-back-class="bg-info" data-turbo-url="/users/get_users_live_events/<%= currentUser.id %>">
+							      <div style="position: relative; display: inline-block">
+							      	<i class="icm icm-screen icm-4x"></i>
+							      	<i class="icm icm-user icm-2x" style="position: absolute; top: 7px; left: 17px"></i>
+							      </div>
+							      Live Classes
+							    </div>
+							  </div>
+						</div><!-- end panel -->
+						
+					</div><!-- end captionable -->
+		 			
+		 		</div> <!-- end first row, first col -->
+		 		
+		 		<div class="col-md-6"> <!-- start first row, second col -->
+		 			<div id="captionable">
+			        	<div id="captionable-flip">
+			        		
+			        		<div id="gym-captionable-front">
+			        			<div class="panel bg-primary-lt gradient-diag1 large-captionable-fixed-height" style="height: 292px;">
+						 			<div class="panel-heading bg-primary">
+									    <div class="panel-title">
+									      <h3>Learn <icm class="icm icm-eye3" onclick="show_gym_skills('tile')" title="Show All" style="cursor: pointer"></i></h3>
+									    </div>
+									 </div>
+									 <div class="gym-slick-carousel">
+							 			<% skills.forEach(function(skill, i) { %>
+							 				
+											  
+											  <div class="<%= i == 0 ? '' : 'display-none'%>">
+												  <div class="text-center">
+												  	<h4 style="font-size: 20px"><%= skill.name %></h4>
+												  </div>
+												  <div class="panel-body-collapse collapse in">
+												    <div class="panel-body tab-content" style="padding-top: 10px">
+												     	<div class="row">
+												     		<div class="col-md-4 text-center">
+												     			<div class="hpadded">
+												     				<div class="sm-table-display display-table">
+												     					<div class="table-cell-display">
+												     						<i class="icm <%= i%4 == 0 ? 'icm-wand' : (i%4 == 1 ? 'icm-king' : (i%4 == 2 ? 'icm-knight' : 'icm-pawn')) %> icm-4x"></i>
+												     					</div>
+												     				</div>
+												     				<div class="text-center"><b><%= i%4 == 0 ? 'Novice' : (i%4 == 1 ? 'Apprentice' : (i%4 == 2 ? 'Master' : 'Wizard')) %></b></div>
+												     			</div>
+												     		</div>
+												     		<div class="col-md-4 text-center">
+												     			<div class="hpadded turbo-card turbo-toggle" data-back-class="bg-info" data-turbo-url="/users/skill_overview/<%= currentUser.id %>/<%= skill.id %>">
+															        <div class="easy-pie-chart easy-pie-chart-normal" data-percent="<%=  userSkills[i].totalModules != 0 ? userSkills[i].completedModules/userSkills[i].totalModules*100 : '' %>" data-color="white" data-size="80" data-line-width="8" data-scale-color="false" data-track-color="rgba(255,255,255,0.3)">
+															          <span><%=  userSkills[i].totalModules != 0 ? Math.round(userSkills[i].completedModules/userSkills[i].totalModules*100) : '0' %>%</span>
+															        </div>
+															        <div class="text-center"><b>Modules Completed</b></div>
+															    </div>
+												     		</div>
+												     		<div class="col-md-4 text-center">
+												     			<div class="hpadded">
+												     				<div class="sm-table-display display-table">
+												     					<div class="table-cell-display">
+												     						<i class="icm icm-trophy-star icm-4x"></i>
+												     					</div>
+												     				</div>
+												     				<div class="text-center"><b>Achievements</b></div>
+												     			</div>
+												     		</div>
+												     	</div>
+												    </div>
+												  </div> <!-- end panel-body-collapse -->
+												  <div class="panel-footer-bottom text-center" style="padding: 10px">
+											     		<i class="icm icm-rotate icm-36 turbo-card turbo-toggle" title="Review" data-back-class="bg-info" data-turbo-url="/users/review_module/<%= skill.id %>"></i>
+											     		<i class="icm icm-play4 icm-36 turbo-card turbo-toggle" title="Play" data-back-class="bg-info" data-turbo-url="/skill/get_modules_for_skill_ajax/<%= skill.id %>" onclick="toggleFullScreen()"></i>
+											     		<i class="icm icm-stats icm-36 turbo-card turbo-toggle" title="Report" data-back-class="bg-info" data-turbo-url="/users/report_card_ajax/<%= currentUser.id %>/<%= skill.id %>"></i>
+											      </div>
+											
+										</div> 
+										<% }); %>	
+									</div>
+								</div>
+							</div> <!-- end captionable front -->
+			        		
+			        		<div id="gym-captionable-back">
+					            <div class="panel panel-default gradient-diag1 panel-fixed-height" style="overflow: auto">
+								 	<span class="label label-default" onclick="show_gym_skills('carousel')" style="cursor: pointer">Back</span>
+								 	<div class="panel-body tab-content">
+								    	<% skills.forEach(function(skill, i) { %>	
+									    	<div class="col-md-4">
+									    		<!-- start -->
+									    		<div class="panel panel-primary panel-colorize">
+												 	<!--<div class="panel-heading text-center">
+													    <div class="panel-title">
+													      <%= skill.name %>
+													    </div>
+													</div>-->
+												 	
+											    	<div class="captionable captionable-effect-flip horizontal" title="<%= skill.name %>">
+		        										<div class="captionable-flip">
+		        											<div class="captionable-front">
+		        												<div class="panel-body gradient-diag1 tab-content padded text-center panel-colorize" style="height: 49px; overflow: hidden">
+		        													<%= skill.name %>
+		        												</div>
+		        											</div>
+		        											<div class="captionable-back">
+		        												<div class="panel-body gradient-diag1 tab-content padded text-center panel-colorize panel-footer-bottom small">
+			        												<i class="icm icm-rotate turbo-card turbo-toggle" title="Review" data-back-class="bg-info" data-turbo-url="/users/review_module/<%= skill.id %>"></i>
+											     					<i class="icm icm-play4 turbo-card turbo-toggle" title="Play" data-back-class="bg-info" data-turbo-url="/skill/get_modules_for_skill_ajax/<%= skill.id %>"></i>
+											     					<i class="icm icm-stats turbo-card turbo-toggle" title="Report" data-back-class="bg-info" data-turbo-url="/users/report_card_ajax/<%= currentUser.id %>/<%= skill.id %>"></i>
+		        												</div>
+		        											</div>
+		        										</div>
+		        									</div>
+												    
+												</div>
+									    		<!-- end -->
+									    	</div>
+									    <% }); %>
+									</div>
+								</div>
+					       	</div> <!-- end captionable back -->
+			        	</div> <!-- end captionable flip -->
+			        </div> <!-- end captionable -->
+		 				
+				</div> <!-- end first row, second col -->
+		 		
+		 		<div class="col-md-3"> <!-- start first row, third col -->
+		 			<!-- start -->
+			    	<div class="captionable captionable-effect-flip horizontal">
+			        	<div class="captionable-flip">
+			        		<div class="captionable-front">
+			        			<div class="panel panel-orange gradient-diag1">
+								 	<div class="panel-body tab-content">
+								    	<div class="lg-table-display">
+											<div class="table-cell-display">
+												<i class="icm icm-office icm-4x"></i>
+							      				Placement Center
+											</div>
+										</div>
+								    </div>
+								</div>
+							</div>
+							<div class="captionable-caption captionable-back large-captionable-fixed-height">
+					            <div class="panel panel-default gradient-diag1">
+								 	<div class="panel-body tab-content placement-summary">
+								    	<table class="table">
+								    		<tbody>
+								    			<tr>
+								    				<td><i class="icm icm-bell2"></i></td>
+								    				<td><%= new_jobs_count != null ? new_jobs_count : 0 %></td>
+								    				<td>New Jobs</td>
+								    			</tr>
+								    			<tr>
+								    				<td><i class="icm icm-user7"></i></td>
+								    				<td><%= job_interviews_count != null ? job_interviews_count : 0 %></td>
+								    				<td>Interviews</td>
+								    			</tr>
+								    			<tr>
+								    				<td><i class="icm icm-pencil5"></i></td>
+								    				<td><%= job_tests_count != null ? job_tests_count : 0 %></td>
+								    				<td>Tests</td>
+								    			</tr>
+								    			<tr>
+								    				<td><i class="icm icm-envelope-opened"></i></td>
+								    				<td><%= job_offers_count != null ? job_offers_count : 0 %></td>
+								    				<td>Offers</td>
+								    			</tr>
+								    			<tr>
+								    				<td><i class="icm icm-users"></i></td>
+								    				<td><%= workshops_count != null ? workshops_count : 0 %></td>
+								    				<td>Workshops</td>
+								    			</tr>
+								    			<tr>
+								    				<td colspan="3" class="text-center">
+								    					<a class="btn panel-orange turbo-card turbo-toggle" data-back-class="bg-info" data-turbo-url="/users/careers/<%= currentUser.id %>">Launch</a>
+								    				</td>
+								    			</tr>
+								    		</tbody>
+								    	</table>
+								    </div>
+								</div>
+					       	</div>
+						</div>
+					</div><!-- end captionable -->
+			    	<!-- end -->
+		 		</div> <!-- end first row, third col -->
+		 		
+		    </div> <!-- end first row -->
+		    
+		    <div class="row" rel="panels"> <!-- start second row -->
+		    
+		    	<div class="col-md-3"> <!-- start second row, first col -->
+		 			<!-- start -->
+		 			<div class="captionable captionable-effect-flip horizontal" id="notice-board">
+			        	<div class="captionable-flip">
+			        		<div class="captionable-front" style="position: relative">
+			        			<div class="panel panel-purple gradient-diag1">
+								 	<div class="panel-body tab-content">
+								    	<div class="lg-table-display">
+											<div class="table-cell-display">
+												<i class="icm icm-bubbles7 icm-4x"></i>
+							      				Notice Board <span class="badge badge-default"><%= notifications.length %></span>
+											</div>
+										</div>
+								    </div>
+								</div>
+							</div>
+							<div class="captionable-caption captionable-back">
+					            <div class="panel panel-purple gradient-diag1 panel-fixed-height notification-slick-carousel" style="overflow: auto">
+									<% notifications.forEach(function(notification, i) { %>
+										<div>
+										 	<div class="panel-heading text-center">
+											    <div class="panel-title">
+											      <h3 style="font-size: 18px"><i class="icm icm-bubbles7 icm-2x"></i> Notice board <span class="badge badge-default"><%= i+1 %>/<%= notifications.length %></span></h3>
+											    </div>
+											</div>
+										 	<div class="panel-body tab-content">
+										    	<div class="padded">
+										    		<h3 class="text-white base-header major"><%= notification.text %></h4>
+													<h5 class="text-white base-header"><%= notification.description %></h5>
+												</div>
+											</div>
+										</div>
+									<% }); %>
+								</div>
+					       	</div>
+						</div>
+					</div><!-- end captionable -->
+		 			<!-- end -->
+		 		</div> <!-- end second row, first col -->
+		 		
+		 		<div class="col-md-3"> <!-- start second row, second col -->
+		 			<!-- start -->
+		 			<div class="captionable captionable-effect-flip horizontal">
+			        	<div class="captionable-flip">
+			        		<div class="captionable-front">
+			        			<div class="panel panel-warning bg-warning">
+								 	<div class="panel-body tab-content">
+								    	<div class="lg-table-display">
+											<div class="table-cell-display">
+												<i class="icm icm-calendar2 icm-4x"></i>
+							      				Calendar
+											</div>
+										</div>
+								    </div>
+								</div>
+							</div>
+							<div class="captionable-caption captionable-back">
+					            <div class="panel panel-warning bg-warning">
+								 	<div class="panel-body tab-content" style="padding-top:0px; padding-bottom:11px">
+								    	<div class="datepicker" id="calendar-datepicker"></div>
+								    	<div class="text-center" style="margin-top: -8px">
+								    		<a class="btn <!--btn-transparent-light--> btn-default btn-sm turbo-card turbo-toggle" data-back-class="bg-info" data-turbo-url="/users/calendar/<%= currentUser.id %>">Launch</a>
+								    	</div>
+								    </div>
+								</div>
+					       	</div>
+						</div>
+					</div><!-- end captionable -->
+		 			<!-- end -->
+		 		</div> <!-- end second row, second col -->
+		 		
+		 		<div class="col-md-3"> <!-- start second row, third col -->
+		 		
+		 			<!-- start -->
+		 			<div class="captionable">
+						<div class="panel panel-pink">
+							  <div class="panel-heading panel-tile">
+							    <div class="panel-title text-center panel-tile-table-cell turbo-card turbo-toggle" data-back-class="bg-info" data-turbo-url="/users/certificates/<%= currentUser.id %>">
+							      <i class="icm icm-certificate icm-4x"></i>
+							      Certificates
+							    </div>
+							  </div>
+						</div><!-- end panel -->
+						
+						<div class="panel panel-success">
+							  <div class="panel-heading panel-tile">
+							    <div class="panel-title text-center panel-tile-table-cell turbo-card turbo-toggle" data-back-class="bg-info" data-turbo-url="/users/get_users_coach_appointments/<%= currentUser.id %>">
+							      <i class="icm icm-calendar icm-4x"></i>
+							      Appointments
+							    </div>
+							  </div>
+						</div><!-- end panel -->
+						
+					</div><!-- end captionable -->
+		 			<!-- end -->
+		 			
+		 		</div> <!-- end second row, third col -->
+		 		
+		 		<div class="col-md-3"> <!-- start second row, fourth col -->
+		 			<!-- start -->
+		 			<div class="captionable captionable-effect-flip horizontal">
+			        	<div class="captionable-flip">
+			        		<div class="captionable-front">
+			        			<div class="panel panel-blue">
+								 	<div class="panel-body tab-content">
+								    	<div class="lg-table-display">
+											<div class="table-cell-display">
+												<i class="icm icm-podium icm-4x"></i>
+							      				Leader Board
+											</div>
+										</div>
+								    </div>
+								</div>
+							</div>
+							<div class="captionable-caption captionable-back">
+								<div class="panel panel-blue">
+								 	<div class="panel-body tab-content">
+										<div class="lg-table-display">
+											<div class="table-cell-display">
+												<h4 class="text-white base-header" style="display: inline-block">Leader Board</h4>
+										        <h2 class="text-white base-header major">85th Percentile</h2>
+										        <h5>24 ranks <i class="fa fa-caret-up"></i> from last month</h5>
+										        <div class="easy-pie-chart easy-pie-chart-normal"
+										             data-percent="85"
+										             data-color="white"
+										             data-size="80"
+										             data-line-width="8"
+										             data-scale-color="false"
+										             data-track-color="rgba(255,255,255,0.3)">
+										          <span>85%</span>
+										        </div>
+											</div>
+										</div>
+									</div>
+								</div>
+			            	</div>
+						</div>
+					</div><!-- end captionable -->
+		 			<!-- end -->
+		 		</div> <!-- end second row, fourth col -->
+		    
+		    </div> <!-- end second row -->
+		
+		</div> <!-- end turbo grid -->
+	
+	</div>
+	<!-- end container fluid -->	  
+	
+	<a class="display-none" id="invisible-btn" data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="ajax_call('/users/terms/<%= currentUser.id %>','uide4b3dde6bb5097375d99eb18a83d7146')"></a>	 
+		
+</div>
+</div>
+</div>
+</div>
+
+  
+<!-- Needed by BSE.Mq.screen() helper in utils.js -->
+<div id="mq"></div>
+
+<!-- Needed by EmVars helper in _emerald.js -->
+<div id="emvars"></div>
+<script src="/javascripts/script.js" type="text/javascript"></script>
+<script src="/javascripts/slick.min.js" type="text/javascript"></script>
+<script>
+	$(document).ready(function(){
+        $('.gym-slick-carousel').slick({
+        	dots: true,
+        	autoplay: true
+        });
+        $('.notification-slick-carousel').slick({
+        	//autoplay: true
+        	//dots: true
+        });
+        $( ".datepicker" ).datepicker();
+        
+        <% if(!user.isAgreedToTerms) { %>
+	        var a = document.getElementById("invisible-btn");
+			var evnt = a.onclick;
+			
+			if (typeof(evnt) == "function") {
+			    evnt.call(a);
+			}
+			
+			$('body').addClass('modal-open');
+			$('#uide4b3dde6bb5097375d99eb18a83d7146').addClass("in");
+			$('#uide4b3dde6bb5097375d99eb18a83d7146').show();
+		<% } %>
+    });  
+</script>
+</body>
+</html>

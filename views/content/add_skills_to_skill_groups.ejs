@@ -1,0 +1,59 @@
+<a onclick=ajax_call("/skillgroup/list_skill_groups","content-admin-display") class="first-btn btn btn-primary" style="margin-top: 2%">Back</a>
+
+<h2 class="text-gradient-info-dk text-center">Add Skills</h2>
+
+<hr>
+
+<div class="col-md-6">
+	  <style>.row { margin-left: 0px } </style>
+	  <!--<div class="row">
+	  	<h5 class="navbar-left"><b>Id:</b>&nbsp;&nbsp;<%= skill_group.id %></h5>
+	  </div>-->
+	  <div class="row">
+	  	<h5 class="navbar-left"><b>Name:</b>&nbsp;&nbsp;<%= skill_group.name %></h5>
+	  </div>
+	  <div class="row">
+	  	<h5 class="navbar-left"><b>Description:</b>&nbsp;&nbsp;<%= skill_group.description %></h5>
+	  </div>
+	  
+	  <div class="row" id="tags" style="margin: 2% auto">
+	  		<% if(skill_group.skills.length > 0) { %>
+				<% skill_group.skills.forEach(function(skill) { %>
+					<span class='label label-primary'><%= skill.name %><a style='color: #fff; margin-left: 10px; cursor: default' onclick=ajax_call('/content/delete_skill_from_skill_group/<%= skill.id %>/<%= skill_group.id %>','content-admin-display')>X</a></span>
+				<% }); %>
+			<% } %>
+	  </div>
+	  
+	  <div class="row">
+	  	<form role="form" method="POST" action="/content/do_map_skill_to_skill_group" target="target-frame" id="add_skills_form">
+			<input type="hidden" name="skill_group_id" value="<%= skill_group.id %>"/>
+			
+			<div class="input-group">
+				<input type="hidden" name="skill-id" id="skill-id">
+				<input type="text" name="name" class="form-control" id="name" placeholder="Type and Press Enter">
+				<span class="input-group-addon" style="border: 1px solid #e1e1e1; cursor: pointer" onclick="submit_form('add_skills_form')">Add</span>
+			</div>
+				
+		</form>
+		<iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+	  </div>
+</div>
+
+<script type="text/javascript">
+$("#name").autocomplete({
+      source: function( request, response ) {
+      	$.ajax({
+          url: "/hr_admin/get_skills/"+request.term,
+	      success: function(data) {
+	      	response(data);
+	      }
+        });
+      },
+      minLength: 1,
+      select: function( event, ui ) {
+      	$('#name').val(ui.item.label);
+      	$('#skill-id').val(ui.item.value);
+      	return false;
+      }
+});
+</script>

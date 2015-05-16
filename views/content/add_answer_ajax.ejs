@@ -1,0 +1,54 @@
+
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      	<% if(typeof successFlash != 'undefined') { %>
+	      	<div class="row" style="position: relative; top: 10px;margin:4px">
+				<p class="alert alert-success"><%= successFlash %></p>
+			</div>
+		<% } %>		
+      <div class="modal-header">
+        <a class="close" href="#" onclick="coordinator_event_details('hide')">&times;</a>
+        <h4 class="modal-title" id="myModalLabel">Add Answer</h4>
+      </div>
+      
+      <div class="modal-body">
+		<form role="form" method="POST" action="/content/do_add_answer_ajax" target="target-frame">
+				<div class="form-group">
+				  	<label>Text</label>
+				  	<textarea class="form-control" rows="3" name="text" id="text"></textarea>
+				</div>
+			  
+			  <!--<div class="form-group">
+			  	<label>Upload File</label>
+			  	<input type="file" name="file" class="form-control display_none" id="file"/>
+			  </div>-->
+			  
+			  <!--<div class="form-group">
+			  	<label>Score</label>
+			  	<input type="text" class="form-control" name="score" id="score" />
+			  </div>-->
+			  
+			  <div class="form-group">
+			  	<label>What answer indicates</label>
+			  	<textarea class="form-control" rows="3" name="whatAnswerIndicates" id="whatAnswerIndicates"></textarea>
+			  </div>
+			  
+			  <div class="form-group">
+			    <input type="checkbox" name="isAnswer" class="">&nbsp;&nbsp;<label>Correct Answer</label>
+			    <!--&nbsp;&nbsp;&nbsp;&nbsp;
+			    <input type="checkbox" name="isMultimedia" class="">&nbsp;&nbsp;<label>Multimedia</label>-->
+			  </div>
+			  
+			  <input type="hidden" value="<%= question_id %>" name="ProblemId" />
+			  <input type="hidden" value="<%= test_id %>" name="TestId" />
+			  
+			  <button type="submit" class="btn btn-success">Submit</button>
+			  <button type="button" class="btn btn-default" onclick="coordinator_event_details('hide')">Close</button>
+      	</form>
+      	<iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+      </div>
+      
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+

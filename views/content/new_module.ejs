@@ -1,0 +1,121 @@
+<input type="submit" class="first-btn btn btn-primary" value="List Modules" onclick="ajax_call('/module/list_modules','content-admin-display')">
+
+<h2 class="text-gradient-info-dk text-center">Create Module</h2>
+<hr>
+<div id="create_module">
+	<div class="col-md-6">
+	  <form action="/content/do_create_module_ajax" method="POST" target="target-frame">
+		  <input type="hidden" name="user_id" id="user_id" value="<%= user_id %>">
+		  
+		  <div class="form-group">
+		    <label>Name</label>
+		    <input type="text" name="name" class="form-control" id="name" placeholder="Name">
+		  </div>
+		  
+		  <div class="form-group">
+		    <label>Description</label>
+		    <textarea name="description" class="form-control" id="description" placeholder="Description"></textarea>
+		  </div>
+		  
+		  <input type="hidden" name="OrganizationId" value="<%= organization.id %>" />
+		  
+		  <div class="form-group">
+		  	<input type="submit" value="Submit" class="btn btn-success"/>
+		  </div>
+		</form>
+		<iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+	</div> 
+	  <!--
+	  <div class="form-group">
+	  	<select name="role_id" id="role_id" class="form-control">
+	  		<% roles.forEach(function(role) { %>
+				<option value = "<%= role.id %>"><%= role.name %></option>
+			<% }); %>
+	  	</select>
+	  </div>
+	  -->
+	  <!--
+	  <div class="form-group">
+	    <input type="radio" name="isPublic" class="" checked="checked" value="true" onclick="hide_div('organization_dropdown')">&nbsp;&nbsp;<label>Public</label>
+	    &nbsp;&nbsp;&nbsp;&nbsp;
+	    <input type="radio" name="isPublic" class="" value="false" onclick="show_id('organization_dropdown')">&nbsp;&nbsp;<label>Private</label>
+	  </div>
+	  
+	  <div class="form-group display_none" id="organization_dropdown">
+	  	<label>Organization</label>
+	  	<select name="OrganizationId" id="OrganizationId" class="form-control">
+	  		<option value = "<%= organization.id %>"><%= organization.name %></option>
+		</select>
+	  </div>
+	 -->
+	  <!--
+		<div class="form-group">
+			<label>Map Skills</label>
+			<div class="row" id="tags" style="margin: auto"></div>
+			<input type="text" name="skill_name" class="form-control" style="width:45%;display: inline-block" id="skill_name" placeholder="Type and Click Add">
+			&nbsp;
+			<div class="btn-group btn-group-sm">
+				<button type="button" class="btn btn-primary" onclick="add_tag('skill_name')">Add</button>
+			</div>
+		</div>
+	  -->
+	  <!--
+	  <br/>
+	  
+	  <div class="playlist wide">
+		  <div class="form-group">
+				<label>Content Playlist</label>
+		  </div>
+		  
+		  <div class="form-group">
+		  		<div class="playlist" id="div_playlist">
+			  		Empty Playlist
+				</div>
+		  </div>
+		  
+		  <br/>	
+		  
+		  <ul class="nav nav-tabs">
+				<li class="li_tab active"><a href="#search_content" data-toggle="tab">Search</a></li>
+			 	<li class="li_tab"><a href="#browse_content" onclick="ajax_call('/content/browse/0','browse_content')" data-toggle="tab">Browse</a></li>
+		  </ul>
+		  
+		  <div class="form-group tab-pane fade in active" id="search_content">
+				<br/>
+				<div class="input-group">
+				  <span class="input-group-addon glyphicon glyphicon-search"></span>
+				  <input name="search" id="search" type="text" placeholder="Search content by tag" class="form-control">
+				</div>
+				<br/>
+				<div class="btn-group btn-group-sm">
+					<input type="button" id="search_button" class="btn btn-default" onclick="build_module_content_playlist('search','0')" value="Add to Playlist" />
+				</div>
+				&nbsp;
+				<div class="btn-group btn-group-sm">
+					<input type="button" id="search_button" class="btn btn-default" onclick="show_preview('search','0')" value="Show Preview" />
+				</div>
+		  </div>
+		  
+		  <div class="tab-pane fade in" id="browse_content">
+		  </div>
+		
+	</div>	  			
+	  -->
+	  <!--
+	  <button type="submit" class="btn btn-success">Submit</button>
+	  -->
+</div>
+
+<script type="text/javascript">
+$("#search").autocomplete({
+      source: function( request, response ) {
+      	$.ajax({
+          url: "/content/search_content/"+request.term,
+	      success: function(data) {
+	      	response(data);
+	      }
+        });
+      },
+      minLength: 3
+});
+</script>

@@ -1,0 +1,19 @@
+<div class="animated fadeIn padded bg-info">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<h2 class="thin no-margin-top">Coach Appointments</h2>
+  	
+  	<table class="table table-striped bg-white">
+		<% appointments.forEach(function(appointment, i) { %>
+		  	<tr class="row-mid">
+				<td>
+		          <%= appointment.meetingName != null ? appointment.meetingName : 'Meeting' %>
+		        </td>
+				<td><b>Date:&nbsp;</b> <%= appointment.date %>&nbsp;&nbsp;<b>Time:&nbsp;</b> <%= appointment.time %></td>
+		     	<td>
+		     		<a class="btn btn-primary btn-xs" onclick='ajax_call("/zoom/join_meeting/<%= user.CoachId %>/<%= user.id %>","turbo-content-open-id")'>Join</a>
+		     	</td>
+		     </tr>
+		<% }); %>
+	</table>
+  	
+</div>

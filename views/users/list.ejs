@@ -1,0 +1,116 @@
+<% if(currentUser.isManager()) { %>
+	<% layout('../new-layout') %>
+<% } %>
+<% if(currentUser.isAdmin()) { %>
+	<% layout('../layout') %>
+<% } %>
+
+<% if(currentUser && currentUser.isManager() && currentFlag == 'create') { %>
+	<div class="navbar navbar-inverse" role="navigation" style="">
+	  
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+		      <span class="sr-only">Toggle navigation</span>
+		  </button>
+	      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+	    </div>
+	    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+			<% if(currentUser) { %>
+				<ul class="nav navbar-nav">
+					<li class="li_tab"><a href="/hr_admin/dashboard"><%= hr.organization.type == 'College' ? 'College' : 'Company'%> L&D Stats</a></li>
+				  	<li class="li_tab"><a href="/hr_admin/track"><%= hr.organization.type == 'College' ? 'Student' : 'Employee'%> Stats</a></li>
+				  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>"><%= hr.organization.type == 'College' ? 'Batches' : 'Roles'%></a></li>
+				 	<li class="li_tab active"><a href="/users/list">Manage Users</a></li>
+				 	<li class="li_tab"><a href="/hr_admin/list_events">Events</a></li>
+				</ul>
+				 <ul class="nav navbar-nav pull-right">
+				 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+				 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+				 </ul>
+			<% } %>
+		</div>
+	</div>
+<% } %>
+
+<!--<form action="/users/new/<%= currentUser.id %>">
+	<input type="submit" class="btn btn-primary" value="Create New User" style="margin-top: 2%">
+</form>-->
+
+<div class="form-group">
+	<label><b>Filter By Organization</b>:</label>
+    <select name="org_id" id="org_id" class="form-control" onchange="listUsersByOrg(this)" style="display: inline-block; width: 40%">
+		<option>All</option>
+		<% organizations.forEach(function(org) { %>
+			<option value = "<%= org.id %>"><%= org.name %></option>
+		<% }); %>
+	</select>
+</div>
+
+<h4 style="text-align: center">User List</h4>
+<div class="table-responsive">
+	<table class="table	table-bordered">
+		<thead>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Username</th>
+			<th>Email</th>
+			<th>Role</th>
+			<th>Organization</th>
+			<th>Permission</th>
+			<th>Phone</th>
+			<% if(currentUser.isAdmin() || currentUser.isManager()) { %>
+				<th>Action</th>
+			<% } %>
+		<thead>
+		<tbody>
+			<% users.forEach(function(user) { %>
+			<tr>
+				<td><%= user.id %></td>
+				<td><%= user.first_name %> <%= user.last_name != null && user.last_name != 'null' && user.last_name != '' ? user.last_name : '' %></td>
+				<td><%= user.username %></td>
+				<td><%= user.email %></td>
+				<td><%= user.role != null && user.role != 'null' && user.role != '' ? user.role.name : '-' %></td>
+				<td><%= user.organization.name %></td>
+				<td><%= user.permission %></td>
+				<td><%= user.phone != null ? user.phone : '' %></td>
+				<% if(currentUser.isAdmin() || currentUser.isManager()) { %>
+					<td>
+						<% if(currentUser.id != user.id && !user.isAdmin()) { %>
+							<a href="/users/<%= user.id %>/delete">Delete</a>
+						<% } %>
+					</td>
+				<% } %>
+			</tr>
+			<% }); %>
+		</tbody>
+	</table>
+	<ul class="pagination">
+	  <% if(prev == true) { %>
+	  	<li><a href="/users/list/<%= page-1 %>">«</a></li>
+	  <% } %>
+	  <% if(prev == false) { %>
+	  	<li class="disabled"><a>«</a></li>
+	  <% } %>
+	  <% for(i = 0; i < pages ; i++) { %>
+	  <li class="<%= i+1 == page ? 'active' : ''%>"><a href="/users/list/<%= i+1 %>"><%= i+1 %></a></li>
+	  <% } %>
+	  <% if(next == true) { %>
+	  	<li><a href="/users/list/<%= page+1 %>">»</a></li>
+	  <% } %>
+	  <% if(next == false) { %>
+	  	<li class="disabled"><a>»</a></li>
+	  <% } %>
+	</ul>
+</div>
+
+<% if(currentUser.isAdmin()) { %>
+	<script>
+    	$('link[rel=stylesheet][href="/wrap/stylesheets/application.css"]').remove();
+    	$('script[src="/wrap/javascripts/application.js"]').remove();
+    	$('script[src="/wrap/javascripts/init.js"]').remove();
+    	$('script[src="/wrap/javascripts/demo.js"]').remove();
+    </script>
+    <link rel="stylesheet" href="/flat-ui/bootstrap/css/bootstrap.css">
+    
+<% } %>
+

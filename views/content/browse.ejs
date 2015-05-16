@@ -1,0 +1,89 @@
+ 
+ <!-- <div class="playlist wide">
+  	<label>Filter Results</label>
+  	
+  	<form role="form" method="POST" action="/content/do_edit_module" style="display: inline-block">
+	  	<select name="skill_group">
+	  		<option>Select a skill group</option>	
+	  		<option>Communication</option>
+	  		<option>Sales</option>
+	  	</select>
+	  	
+	  	<select name="skill" onchange="ajax_load(this, 'module', '<%= val %>')" id="skill">
+	  		<option>Select a skill</option>
+	  		<% skills.forEach(function(playlist,i) { %>
+	  			<option value="<%= playlist.id %>"><%= playlist.name %></option>
+	  		<% }); %>
+	  	</select>
+	  	
+	  	<select name="module" onchange="ajax_load(this, 'content', '<%= val %>')" id="module">
+	  		<option>Select a module</option>
+	  		<% modules.forEach(function(playlist,i) { %>
+	  			<option value="<%= playlist.id %>"><%= playlist.name %></option>
+	  		<% }); %>
+	  	</select>
+	  	
+	  	
+	  	
+	</form>
+  	
+  </div>
+  
+  <br/>-->
+  
+  <!--<div class="form-group">
+  	<div class="playlist wide" id="content">
+  		<% contents.forEach(function(playlist,i) { %>
+  			<div class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+				<a class="close" href="#" onclick="show_preview('search_span_<%= playlist.id %>','<%= val %>')" style="font-size: 12px">&nbsp;Preview</a>
+				
+				<a class="close" href="#" onclick="build_module_content_playlist('search_span_<%= playlist.id %>','<%= val %>')" style="font-size: 12px">Add to Playlist &nbsp;</a>
+				<span>
+  					<span id="search_span_<%= playlist.id %>"><%= playlist.name %></span>
+  					<br/>
+  					<%= playlist.description != null ? playlist.description : '' %>
+  				</span>
+			</div>
+  			
+		<% }); %>
+  	</div>
+  </div>-->
+  
+  <table class="table table-bordered"> 
+  		<% contents.forEach(function(playlist,i) { %>
+  			<tr class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+  				<td style="width: 400px">
+  					<input type="hidden" id="search_span_<%= playlist.id %>" value="<%= playlist.id %>"/>
+  					<span id=""><%= playlist.name %></span>
+  					<br/>
+  					<%= playlist.description != null ? playlist.description : '' %>
+  				</td>
+  				<td class="text-center">
+  					<span onclick="build_module_content_playlist('search_span_<%= playlist.id %>','<%= val %>')" style="font-size: 12px; cursor: pointer" title="Add to Playlist"><i class="icm icm-plus-circle"></i></span>
+  				</td>
+  				<td class="text-center">
+  					<a class="close" onclick="show_preview('search_span_<%= playlist.id %>','<%= val %>')" style="font-size: 12px" title="Preview"><i class="icm icm-search3"></i></a>
+  				</td>
+  			</tr>
+  		<% }); %>
+  </table>
+  
+  <% if(pages > 1) { %>
+		<ul class="pagination">
+		  <% if(prev == true) { %>
+		  	<li><a onclick='ajax_call("/content/browse/<%= val %>/<%= page-1 %>","uid234031a40beddbc7053641c8178e89ae")'>«</a></li>
+		  <% } %>
+		  <% if(prev == false) { %>
+		  	<li class="disabled"><a>«</a></li>
+		  <% } %>
+		  <% for(i = 0; i < pages ; i++) { %>
+		  <li class="<%= i+1 == page ? 'active' : ''%>"><a onclick='ajax_call("/content/browse/<%= val %>/<%= i+1 %>","uid234031a40beddbc7053641c8178e89ae")'><%= i+1 %></a></li>
+		  <% } %>
+		  <% if(next == true) { %>
+		  	<li><a onclick='ajax_call("/content/browse/<%= val %>/<%= page+1 %>","uid234031a40beddbc7053641c8178e89ae")'>»</a></li>
+		  <% } %>
+		  <% if(next == false) { %>
+		  	<li class="disabled"><a>»</a></li>
+		  <% } %>
+		</ul>
+	<% } %>

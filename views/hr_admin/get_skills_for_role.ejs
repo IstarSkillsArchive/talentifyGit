@@ -1,0 +1,64 @@
+
+	<button type="button" class="close pull-right" onclick="hide_div('role-skills-div')">&times;</button>
+	<% if(test == null) { %>
+		<button type="button" class="btn btn-success btn-xs pull-left" data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="ajax_call('/hr_admin/add_pre_test/<%= role_id %>','uide4b3dde6bb5097375d99eb18a83d7146')" style="margin-right: 8px">Add Pre-Test </button>
+	<% } %>
+	<button type="button" class="btn btn-success btn-xs pull-left" onclick="ajax_call('/hr_admin/add_skills_to_role/<%= role_id %>','role-skills-div')">Add Skills</button>
+	<div class="row pull-left" style="width: 100%; margin-top: 20px; margin-left: 0px; margin-right: 0px; overflow-x: auto; white-space: nowrap">
+	  	<% if(test != null) { %>
+	  		<div class="skills-for-role">
+		        <div class="captionable captionable-effect-flip horizontal" style="position: relative">
+		        	<div class="captionable-flip">
+		        		<div class="captionable-front">
+							<div class="panel panel-danger">
+								  <div class="panel-heading">
+								    <div class="panel-title text-center vpadded">
+								      <i class="icm icm-question5 icm-2x"></i>
+								      <%= test.name %>
+								    </div>
+								  </div>
+							</div><!-- end panel -->
+						</div> <!-- end captionable-front -->
+						<div class="captionable-back">
+				            <div class="panel panel-danger">
+								  <div class="panel-heading">
+								    <div class="panel-title text-center vpadded" style="white-space: normal">
+								      <span><%= test.description != null ? test.description : 'No description' %></span>
+								    </div>
+								  </div>
+							</div><!-- end panel -->
+				       	</div> <!-- end captionable back -->
+					</div><!-- end captionable-flip-->
+					<button type="button" class="btn btn-dark btn-xs close-btn" onclick="ajax_call('/hr_admin/delete_pre_test/<%= role_id %>/<%= test.id %>','role-skills-div')">&times;</button>
+				</div><!-- end captionable -->
+			</div>
+	  	<% } %>
+	  	<% skills.forEach(function(skill,i) { %>
+	  		<div class="skills-for-role">
+		        <div class="captionable captionable-effect-flip horizontal" style="position: relative">
+		        	<div class="captionable-flip">
+		        		<div class="captionable-front">
+							<div class="panel <%= i%4 == 0 ? 'panel-warning' : (i%4 == 1 ? 'panel-primary' : (i%4 == 2 ? 'panel-success' : 'panel-danger')) %>">
+								  <div class="panel-heading">
+								    <div class="panel-title text-center vpadded">
+								      <i class="icm icm-bookmark3 icm-2x"></i>
+								      <span><%= skill.name %></span>
+								    </div>
+								  </div>
+							</div><!-- end panel -->
+						</div> <!-- end captionable-front -->
+						<div class="captionable-back">
+				            <div class="panel <%= i%4 == 0 ? 'panel-warning' : (i%4 == 1 ? 'panel-primary' : (i%4 == 2 ? 'panel-success' : 'panel-danger')) %>">
+								  <div class="panel-heading">
+								    <div class="panel-title text-center vpadded" style="white-space: normal">
+								      <span><%= skill.description != null ? skill.description : 'No description' %></span>
+								    </div>
+								  </div>
+							</div><!-- end panel -->
+				       	</div> <!-- end captionable back -->
+					</div><!-- end captionable-flip-->
+					<button type="button" class="btn btn-dark btn-xs close-btn" onclick="ajax_call('/skill/delete_role_skill/<%= currentUser.id %>/<%= role_id %>/<%= skill.id %>','role-skills-div')">&times;</button>
+				</div><!-- end captionable -->
+			</div>
+	  	<% }); %>
+	</div>

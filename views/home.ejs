@@ -1,0 +1,145 @@
+
+<!--
+<div class="masthead" style="text-align: center;">
+	<p style="font-size: 50px; font-weight: 100; margin-top: 1%; margin-bottom: 1%;visibility: hidden">Get the skills to get ahead</p>
+</div>
+<div class="slides" style="margin-top: 20px; width: 750px; margin: 0 auto;">
+	
+</div>
+
+
+
+<div class="row">
+	<div class="col-sm-7">
+		
+	</div>
+	<div class="col-sm-4 bg-green-sea">
+		
+		<div class="signup-form">
+            <form>
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <div>
+                        <input type="password" class="form-control" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-block btn-primary">Login</button>
+                </div>
+            </form>
+        </div>
+        <div class="additional-links">
+        	<a href="#">Forgot Password?</a>
+        </div>
+	</div>
+</div>
+-->
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <title>iLAB</title>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link rel="shortcut icon" href="/flat-ui/images/favicon.ico">
+        <link rel="stylesheet" href="/flat-ui/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/flat-ui/css/flat-ui.css">
+        <!-- Using only with Flat-UI (free)-->
+        <link rel="stylesheet" href="/flat-ui/common-files/css/icon-font.css">
+        <!-- end -->
+        <link rel="stylesheet" href="/flat-ui/css/style.css">
+        
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <script src="/modernizr/modernizr.js"></script>
+        <script src="/jquery/jquery.min.js"></script>
+		<script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script type="text/javascript" src="/javascripts/script.js"></script>
+        
+    </head>
+    
+    <body>
+		<div class="page-wrapper bg-green-sea">
+			<!--<div class="login-icon">
+	            <img src="/flat-ui/images/login/icon.png" alt="Welcome to Mail App">
+	            <h4>Welcome to <small>Mail App</small></h4>
+	        </div>-->
+	        <% if(typeof(failure) === 'string' && failure !== null) { %>
+				<div class="row" style="position: relative; top: 10px;">
+					<p class="alert alert-danger failure"><%= failure %></p>
+				</div>
+			<% } %>
+	        <div id="login">
+	        	<h4 style="font-size: 40px; font-weight: bold; margin-bottom: 20px">iLAB</h4>
+				<div class="login-form">
+			        <form action="/login" method="post">
+				        <div class="form-group">
+				          <input type="text" class="form-control login-field" value="" placeholder="Username" id="username" name="username" autofocus="autofocus">
+				          <label class="login-field-icon fui-user" for="username"></label>
+				        </div>
+				
+				        <div class="form-group">
+				          <input type="password" class="form-control login-field" value="" placeholder="Password" id="password" name="password">
+				          <label class="login-field-icon fui-lock" for="password"></label>
+				        </div>
+				
+				        <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+				        <a class="login-link" href="#">Lost your password?</a>
+				    </form>
+				</div>
+				<img src="/images/logo-1.png" />
+			</div>
+		</div>
+		<script>
+        	$('link[rel=stylesheet][href="/wrap/stylesheets/application.css"]').remove();
+        	$('script[src="/wrap/javascripts/application.js"]').remove();
+        	$('script[src="/wrap/javascripts/init.js"]').remove();
+        	$('script[src="/wrap/javascripts/demo.js"]').remove();
+        </script>
+        <link rel="stylesheet" href="/flat-ui/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/flat-ui/css/flat-ui.css">
+        <link rel="stylesheet" href="/flat-ui/css/style.css">
+        <style>
+        	.page-wrapper.bg-green-sea {
+        		background: #16a085;
+        	}
+        	#login {
+        		height: 400px;
+        		width: 300px;
+        		position: absolute;
+        		top: 50%;
+        		left: 50%;
+        		margin-left: -150px;
+        		margin-top: -200px; 
+        	}
+        	h4 {
+        		color: #fff;
+        		font-size: 20px;
+				font-weight: 300;
+				line-height: 34px;
+				opacity: 0.95;
+				font-family: "Lato", Helvetica, Arial, sans-serif;
+				text-align: center;
+        	}
+        	h4 small {
+	        	color: inherit;
+				display: inline-block;
+				font-size: inherit;
+				font-weight: 700;
+				font-family: inherit;
+			}
+			.page-wrapper.bg-green-sea .alert.alert-danger.failure {
+				padding: 4px;
+				font-size: 12px;
+				padding-left: 20px;
+			}
+        </style>
+	</body>
+

@@ -1,0 +1,31 @@
+<style>
+	#report-ajax .panel-body {
+		height: 150px;
+	}
+</style>
+<div class="animated fadeIn padded bg-info" id="skill-ajax" style="overflow: hidden">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<% if(user == null || user == 'null' || user == '') { %>
+  		<p>No search results found</p>
+  	<% } %>
+  	<% if(user != null && user != 'null' && user != '') { %>
+	  	<ul class="nav nav-tabs">
+			<% skills.forEach(function(skill, i) { %>
+				<li class="test_tab <%= i == 0 ? 'active' : '' %>" onclick="change_test_tab(this)"><a onclick="ajax_call('/users/report_card_ajax/<%= user.id %>/<%= skill.id %>/hide','skill-detail')"><%= skill.name %></a></li>
+			<% }); %>
+		</ul>
+	  	<div class="tab-content padded margin-bottom" style="padding: 0px">
+			  <div class="tab-pane fade in active">
+				<div id="skill-detail">
+				</div>
+			</div>
+		</div>
+	<% } %>
+</div>
+<script>
+	<% if(user != null && user != 'null' && user != '' && skills.length > 0) { %>
+		ajax_call('/users/report_card_ajax/<%= user.id %>/<%= skills[0].id %>/hide','skill-detail');
+	<% } %>
+</script>
+
+

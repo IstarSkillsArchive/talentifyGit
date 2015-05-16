@@ -1,0 +1,57 @@
+<script src="/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/javascripts/script.js"></script>
+<link href="/stylesheets/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/javascripts/jquery-ui-1.10.0.custom.min.js"></script>
+
+<style>
+	.modal-dialog {
+		width: auto;
+		position: absolute;
+		top: 25%;
+		bottom: 25%;
+		left: 25%;
+		right: 25%;
+		width: auto;
+		margin: auto;
+	}
+	@media (max-width: 767px) {
+		.modal-dialog {
+			top: 15%;
+			bottom: 15%;
+			left: 1%;
+			right: 1%;	
+		  }
+		  .modal-header h4 {
+		  	font-size: 1.5em;
+		  }
+	}
+</style>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+      	
+      <div class="modal-header">
+        <a class="close" href="#" onclick="hide_div('opentok');hide_class('DimBg')">&times;</a>
+        <h4 class="modal-title" id="myModalLabel">Reset Module</h4>
+      </div>
+      <div class="modal-body">
+			
+			<form role="form">
+				<div class="form-group" style="text-align: left">
+					<label><b>Module</b>:</label>
+					<select name="ModuleId" id="ModuleId" class="form-control">
+						<% for(var i=0; i<modules.length; i++) {%>
+						   <option value="<%= modules[i].id %>"><%= modules[i].name %></li>
+						<% } %>
+				  	</select>
+				</div>
+				
+				<button type="button" class="btn btn-success" onclick="reset_module('<%= user_id %>','<%= skill_id %>','user_skills')">Submit</button>
+				<button type="button" class="btn btn-default" onclick="hide_div('opentok');hide_class('DimBg')">Close</button>
+			</form>
+			
+      </div>
+    </div>
+  </div>
+
+

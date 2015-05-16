@@ -1,0 +1,75 @@
+<style>
+	.modal-dialog {
+		width: auto;
+		position: absolute;
+		top: 10%;
+		/*bottom: 15%;*/
+		left: 25%;
+		right: 25%;
+		width: auto;
+		margin: auto;
+	}
+	.form-group {
+		margin-bottom: 0px;
+	}
+	h4 {
+		font-size: 20px;
+	}
+	@media (max-width: 767px) {
+		.modal-dialog {
+			top: 5%;
+			/*bottom: 5%;*/
+			left: 1%;
+			right: 1%;	
+		  }
+		  h4 {
+		  	font-size: 1.5em;
+		  }
+	}
+</style>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="hide_div('appointment');hide_class('DimBg')">&times;</button>
+        <h4 class="modal-title">Schedule Appointment</h4>
+      </div>
+      <div class="modal-body">
+      		<form role="form" method="POST" action="/coach/schedule_appointment">
+				<input type="hidden" name="coach_id" class="form-control" id="coach_id" value="<%= coach_id %>">
+			  	<input type="hidden" name="user_id" class="form-control" id="user_id" value="<%= user_id %>">
+			  	
+			  	<% if(appointments.length > 0) { %>
+			  		<h4 class="modal-title" style="margin-bottom: 1%"><u>Choose an option</u></h4>
+			  	<% } %>
+			  	
+			  	<% appointments.forEach(function(appointment, i) { %>
+			  		<div class="form-group">
+					    <input type="radio" name="appointment_option" value="<%= appointment.id %>"/>
+					    <label><b>Option: <%= appointment.option %></b></label>
+					</div>
+					<div class="form-group">
+						<label><b>Date: <%= appointment.date %></b></label>
+						<label><b>Time: <%= appointment.time %></b></label>
+					</div>
+				<% }); %>
+				
+				<% if(appointments.length > 0) { %>
+					<h4 class="modal-title" style="margin-bottom:1%">OR</h4>
+				<% } %>
+				
+				<h4 class="modal-title" style="margin-bottom: 1%"><u>Create a new appointment</u></h4>
+				<div class="form-group">
+				    <input type="text" name="date_1" class="form-control" id="date_1" placeholder="Date: dd/mm/yyyy">
+				</div>
+				<div class="form-group">
+			    	<input type="text" name="time_1" class="form-control" id="time_1" placeholder="Time: hh:mm">
+			  	</div>
+			 	<div style="margin-top: 4px">
+			 		<button type="submit" class="btn btn-success">Submit</button>
+			 		<button type="button" class="btn btn-default" onclick="hide_div('appointment');hide_class('DimBg')">Cancel</button>
+				</div>
+			</form>
+		</div>
+    </div>
+</div>	

@@ -1,0 +1,170 @@
+<% layout('new-layout') %>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<% if(currentUser.isProfileCompleted == true && currentUser.isTestTaken == true && currentUser.isMetCoach == true) { %>
+					<li id="gym_li"><a href="/users/gym/<%= currentUser.id %>" >Gym</a></li>
+					<li><a href="/users/calendar" >Placements</a></li>
+					<li class="active"><a href="/users/report_card/<%= currentUser.id %>">Report Card</a></li>
+					<li><a href="/users/profile/<%= currentUser.id %>">Profile</a></li>
+				<% } %>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<section class="skill_report">
+    <div class="container">
+    	<h3>Skill Reports</h3>
+    	<div class="col-md-4" id="skill_report_left_div">
+    		<div style="height:550px;overflow:auto">
+		    	<!-- start skill reports-->
+		    	<div class="todo">
+		    		<p style="text-align: center; color: #34495e; margin: 5px auto">SKILLS</p>
+		    	</div>
+		    	<% user.skills.forEach(function(skill, i) { %>
+			        <div class="todo">
+			            <ul>
+			              <li class="first_child <%= i == 0 ? 'active' : '' %>" onclick="change_todo_tab(this);ajax_call('/users/view_test_details/<%= skill.id %>','test_detail');ajax_call('/users/notes/<%= user.id %>/<%= skill.id %>/<%= skill.notes %>/0', 'todo_li_div_notes');ajax_call('/users/coach_rating_history/<%= user.id %>/<%= skill.id %>', 'todo_li_div_rating');ajax_call('/users/modules_completed/<%= skill.id %>', 'todo_li_div_modules');">
+			                <div class="todo-icon" style="padding: 0px"><img src="/flat-ui/images/demo/browser-pic-<%= (i%6)+1 %>.jpg" /></div>
+			                <div class="todo-content" style="padding-left: 4px;">
+			                  <h4 class="todo-name">
+			                    <%= skill.name %>
+			                  </h4>
+			                  <%= skill.description != null ? skill.description : '-' %>
+			                </div>
+			              </li>
+			              
+			              <!--<li id="todo_li_div_<%= skill.id %>" class="report_notes">
+			              </li>
+			              
+			              <li>
+			              	<table style="width: 100%; color: #fff">
+			              		<tr>
+			              			<td title="Notes" align="center" onclick="show_id('todo_li_div_<%= skill.id %>');ajax_call('/users/notes/<%= user.id %>/<%= skill.id %>/<%= skill.notes %>/0', 'todo_li_div_<%= skill.id %>')">
+			              				<span class="glyphicon glyphicon-list-alt"></span>
+			              			</td>
+			              			<td title="Coach Rating" align="center" onclick="show_id('todo_li_div_<%= skill.id %>');ajax_call('/users/coach_rating_history/<%= user.id %>/<%= skill.id %>', 'todo_li_div_<%= skill.id %>')">
+			              				<span class="glyphicon glyphicon-eye-open"></span>
+			              			</td>
+			              			<td title="Modules Completed" align="center">
+			              				<span class="glyphicon glyphicon-dashboard"></span>
+			              			</td>
+			              		</tr>
+			              		<tr>
+			              			<td title="Notes" align="center" onclick="show_id('todo_li_div_<%= skill.id %>');show_id('todo_li_div_<%= skill.id %>');ajax_call('/users/notes/<%= user.id %>/<%= skill.id %>/<%= skill.notes %>/0', 'todo_li_div_<%= skill.id %>')">
+			              				<%= skill.notes %>
+			              			</td>
+			              			<td title="Coach Rating" align="center" onclick="show_id('todo_li_div_<%= skill.id %>');ajax_call('/users/coach_rating_history/<%= user.id %>/<%= skill.id %>', 'todo_li_div_<%= skill.id %>')">
+			              				<% userSkills.forEach(function(us) { %>
+											<% if(us.SkillId == skill.id) { %>
+												<%= us.rating != null ? us.rating : '-' %>/10
+											<% } %>
+										<% }); %>
+			              			</td>
+			              			<td title="Modules Completed" align="center">
+			              				<% userSkills.forEach(function(us) { %>
+											<% if(us.SkillId == skill.id) { %>
+												<%= us.completedModules %>/<%= us.totalModules %>
+											<% } %>
+										<% }); %>
+			              			</td>
+			              		</tr>
+			              	</table>
+			              </li>-->
+			              
+			            </ul>
+			        </div>
+			 	<% }); %>
+			 	<% if(pre_test != null) { %>	
+				 	<div class="todo">
+			    		<p style="text-align: center; color: #34495e; margin: 5px auto">PRE-TEST</p>
+			    	</div>
+			    	<div class="todo">
+			    		<ul>
+			    			<li class="first_child" onclick="ajax_call('/users/view_other_test_details/<%= pre_test.id %>','test_detail');">
+				                <div class="todo-icon" style="padding: 0px"><img src="/flat-ui/images/demo/browser-pic-1.jpg" /></div>
+				                <div class="todo-content" style="padding-left: 4px;">
+				                  <h4 class="todo-name">
+				                    <%= pre_test.name %>
+				                  </h4>
+				                  <%= pre_test.description != null ? pre_test.description : '-' %>
+				                </div>
+			            	</li>
+			    		</ul>
+			    	</div>
+			    <% } %>
+			    <% if(events.length > 0) { %>	
+				 	<div class="todo">
+			    		<p style="text-align: center; color: #34495e; margin: 5px auto">EVENT TESTS</p>
+			    	</div>
+			    	<% events.forEach(function(event, i) { %>
+				    	<div class="todo">
+				    		<ul>
+				    			<li class="first_child" onclick="ajax_call('/users/view_other_test_details/<%= event.id %>','test_detail');">
+					                <div class="todo-icon" style="padding: 0px"><img src="/flat-ui/images/demo/browser-pic-<%= (i%6)+1 %>.jpg" /></div>
+					                <div class="todo-content" style="padding-left: 4px;">
+					                  <h4 class="todo-name">
+					                    <%= event.name %>
+					                  </h4>
+					                  <%= event.description != null ? event.description : '-' %>
+					                </div>
+				            	</li>
+				    		</ul>
+				    	</div>
+				    <% }); %>
+			    <% } %>
+			 	<!-- end skill reports-->
+			</div>
+    	</div>
+    	
+    	<div class="col-md-4" id="skill_report_left_div" style="margin-left: 15px">
+    		<div style="padding: 10px">
+    			<div id="todo_li_div_notes" class="report_notes">
+    			</div>
+    			<div id="todo_li_div_rating" class="report_notes">
+    			</div>
+    			<div id="todo_li_div_modules" class="report_notes">
+    			</div>
+    		</div>
+    		<script>
+    			show_class('report_notes');
+    			ajax_call('/users/view_test_details/<%= user.skills[0].id %>','test_detail');
+    			ajax_call('/users/notes/<%= user.id %>/<%= user.skills[0].id %>/<%= user.skills[0].notes %>/0', 'todo_li_div_notes');
+    			ajax_call('/users/coach_rating_history/<%= user.id %>/<%= user.skills[0].id %>', 'todo_li_div_rating');
+    			ajax_call('/users/modules_completed/<%= user.skills[0].id %>', 'todo_li_div_modules');
+    		</script>
+    	</div>
+    	
+    	<div class="col-md-6">
+    		<!-- start table -->
+    		<div style="width: 100%; overflow: auto; white-space: nowrap;" class="playlist wide" id="test_detail">
+				<p>Click on a skill to view test details</p>
+			</div>
+    		<!-- end table -->
+    		
+    		<!-- start question detail -->
+    		<!--<div style="width: 100%; overflow: auto; white-space: nowrap; margin-top: 20px" class="playlist wide" id="question_detail">
+				<p>Click on a question to view details</p>
+			</div>-->
+    		<!-- end question detail -->
+    	</div>
+    </div>
+	
+</section>
+
+

@@ -1,0 +1,5 @@
+<select name="BatchId" id="BatchId" class="form-control" style="border: 1px solid #ccc">
+	<% batches.forEach(function(batch, i) { %>
+		<option value="<%= batch.id %>"><%= batch.name %></option>
+	<% }) %>
+</select>

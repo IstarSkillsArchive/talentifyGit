@@ -1,0 +1,212 @@
+<% if(report == null) { %>
+	<script>
+		$('#question_detail').html('<p>No test results available</p>');
+	</script>
+<% } %>
+<% if(report != null) { %>
+<!-- start overall -->
+<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel panel-primary">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      OVERALL
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top">
+			    
+				  <div class="padded">
+				    <div class="vpadded easy-pie-chart easy-pie-chart-normal" data-percent="<%= report.score/test.score*100 %>" data-color="<%= report.isPassed ? 'success' : 'danger' %>" data-size="90" data-line-width="8">
+				      <span style="height: 20px"><%= report.score %>/<%= test.score %></span>
+				    </div>
+				    <!--<div class="text-center">
+				    	<% if(report.isPassed){ %>
+							<b>
+								Pass
+							</b>
+						<% } %>
+				    	<% if(!report.isPassed){ %>
+							<b title="<%= report.reason %>">
+								Fail
+							</b>
+						<% } %>
+				    </div>-->
+				  </div>
+				  
+			  </div><!-- end panel body -->
+			</div><!-- end panel -->
+
+          </div>
+        </div>
+      </div>
+ </div>
+<!-- end overall -->
+<!-- start right -->
+<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel panel-success">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      RIGHT
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top">
+			    
+				  <div class="padded">
+				    <div class="vpadded easy-pie-chart easy-pie-chart-normal" data-percent="<%= correct_answer_count/reportDetails.length*100 %>" data-color="success" data-size="90" data-line-width="8">
+				      <span style="height: 20px"><%= Math.round(correct_answer_count/reportDetails.length*100) %>%</span>
+				    </div>
+				  </div>
+			
+			  </div><!-- end panel body -->
+			</div><!-- end panel -->
+
+          </div>
+        </div>
+      </div>
+ </div>
+<!-- end right -->
+<!-- start wrong -->
+<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel panel-danger">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      WRONG
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top">
+			    
+				  <div class="padded">
+				    <div class="vpadded easy-pie-chart easy-pie-chart-normal" data-percent="<%= (1 - (correct_answer_count/reportDetails.length))*100 %>" data-color="danger" data-size="90" data-line-width="8">
+				      <span style="height: 20px"><%= Math.round((1 - (correct_answer_count/reportDetails.length))*100) %>%</span>
+				    </div>
+				  </div>
+				  
+			  </div><!-- end panel body -->
+			</div><!-- end panel -->
+
+          </div>
+        </div>
+      </div>
+ </div>
+<!-- end wrong -->
+<!-- start time -->
+<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel panel-warning">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      TIME
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top">
+			    
+				  <div class="padded">
+				    <div class="vpadded text-center">
+				      <span style="font-size: 30px">
+				      	<%= total_minutes %>&nbsp;m
+				      	<br/>
+				      	<%= total_seconds %>&nbsp;s
+				      </span>
+				    </div>
+				  </div>
+				  
+			  </div><!-- end panel body -->
+			</div><!-- end panel -->
+
+          </div>
+        </div>
+      </div>
+ </div>
+<!-- end time -->
+<!-- start remaining content -->
+
+<div style="overflow: auto; width: 100%">
+	<table class="table table-bordered test-detail-table" style="background-color: #fff">
+		<!--<tr>
+			<td>
+				<b>Time to Answer</b>
+			</td>
+			<% reportDetails.forEach(function(rd, i) { %>
+				<td><%= rd.timeToAnswer %>&nbsp;m</td>
+			<% }); %>
+		</tr>-->
+		
+		<tr>
+			<td>
+				<b>Right/Wrong</b>
+			</td>
+			<% reportDetails.forEach(function(rd, i) { %>
+				<td class="rd-td rd-td-<%= i %> <%= i==0?'active':''%>">
+					<% if(rd.isAnswer) { %>
+						<btn class="btn btn-success btn-xs" onclick="mark_active_td('<%= i %>');ajax_call('/users/question_details/<%= rd.id %>', 'question_detail')">
+							<span class="glyphicon glyphicon-ok"></span>
+						</btn>
+					<% } %>
+					<% if(!rd.isAnswer) { %>
+						<btn class="btn btn-danger btn-xs" onclick="mark_active_td('<%= i %>');ajax_call('/users/question_details/<%= rd.id %>', 'question_detail')">
+							<span class="glyphicon glyphicon-remove"></span>
+						</btn>
+					<% } %>
+				</td>
+			<% }); %>
+		</tr>
+		
+		<tr>
+			<td>
+				<b>Question No.</b>
+			</td>
+			<% reportDetails.forEach(function(rd, i) { %>
+				<td class="rd-td rd-td-<%= i %> <%= i==0?'active':''%>"><%= (i+1) %>&nbsp;<b><%= rd.isMandatory ? 'M' : '' %></b></td>
+			<% }); %>
+		</tr>
+	</table>
+	<script>
+		mark_active_td('0');
+		<% if(reportDetails.length > 0) { %>
+			ajax_call('/users/question_details/<%= reportDetails[0].id %>', 'question_detail');
+		<% } %>
+	</script>
+	<script>
+		var falseOrDefault;
+	    falseOrDefault = function(el, def, value) {
+	      if (value === 'false') {
+	        return false;
+	      }
+	      return value || def;
+	    };
+		$(".easy-pie-chart-normal").each(function() {
+	      var $el, color, lineWidth, scaleColor, size, trackColor;
+	      $el = $(this);
+	      color = EmVars.colorFromName($el.data('color') || 'info');
+	      size = $el.data('size') || 150;
+	      lineWidth = $el.data('line-width') || 15;
+	      trackColor = falseOrDefault($el, '#f2f2f2', $el.data('track-color'));
+	      scaleColor = falseOrDefault($el, EmVars.colors.textColor, $el.data('scale-color'));
+	      return $el.easyPieChart({
+	        lineWidth: lineWidth,
+	        size: size,
+	        lineCap: "square",
+	        barColor: color,
+	        scaleColor: scaleColor,
+	        animate: 1000,
+	        trackColor: trackColor
+	      });
+	    });
+	</script>
+</div>
+
+<% } %>

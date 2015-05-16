@@ -1,0 +1,30 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+      	
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="coordinator_event_details('hide')">&times;</button>
+      	<h4 class="modal-title">Preview <%= content != null ? content.name : '' %></h4>
+      </div>
+      <div class="modal-body" class="text-center">
+      	<% if(content != null ) { %>
+	      	<iframe width="560" height="400" src="<%= content.path %>" frameborder="0" allowfullscreen id='preview-iframe'></iframe>
+		     <% if(display == 'true' ) { %> 	
+		      	<div class="text-center">
+					<input type="button" class="btn btn-success" value="Add to Playlist" onclick="build_module_content_playlist('<%= id %>','<%= val %>'); coordinator_event_details('hide')"/>
+				</div>
+			<% } %>
+			
+		<% } %>
+		<% if(content == null ) { %>
+			<p>No content to display. Please select appropriate content to display.</p>
+		<% } %>
+      </div>
+	</div>
+</div>
+
+<!--
+<iframe src="https://onedrive.live.com/embed?cid=47D13E9432956E33&resid=47D13E9432956E33%21106&authkey=ABL1ur4OMzljbDc&em=2" width="402" height="327" frameborder="0" scrolling="no"></iframe>
+<iframe src="https://onedrive.live.com/embed?cid=47D13E9432956E33&resid=47D13E9432956E33%21106&authkey=ABL1ur4OMzljbDc&Bpub=SDX.SkyDrive&em=2" width="402" height="327" frameborder="0" scrolling="no"></iframe>
+https://onedrive.live.com/embed?cid=8169837da709beab&resid=8169837DA709BEAB!11669&parId=8169837DA709BEAB!9735&authkey=!AhL4z6nPvLrfzkQ&Bpub=SDX.SkyDrive&em=2
+-->
+

@@ -1,0 +1,49 @@
+  <div class="modal-dialog">
+    <div class="modal-content">
+      	<% if(typeof successFlash != 'undefined') { %>
+	      	<div class="row" style="position: relative; top: 10px;margin:4px">
+				<p class="alert alert-success"><%= successFlash %></p>
+			</div>
+		<% } %>		
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h4 class="modal-title" id="myModalLabel">Add Test</h4>
+      </div>
+      
+      <div class="modal-body">
+		<form role="form">
+			 <label>Search Test by Name</label>
+			  <div class="form-group">
+				<input type="hidden" name="test_id" id="test_id" />
+				<input type="text" name="test_name" class="form-control" style="width:45%;display: inline-block" id="test_name" placeholder="Type and Click Add">
+				&nbsp;
+				<div class="btn-group btn-group-sm">
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="do_add_test('<%= content != null ? content.id : (skill != null ? skill.id : (module != null ? module.id : step.id))%>', '<%= val %>')">Add</button>
+				</div>
+			 </div>
+      	</form>
+      	
+      </div>
+      
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+  
+<script type="text/javascript">
+	$("#test_name").autocomplete({
+	      source: function( request, response ) {
+	      	$.ajax({
+	          url: "/content/get_tests_name/"+request.term,
+		      success: function(data) {
+		      	response(data);
+		      }
+	        });
+	      },
+	      minLength: 1,
+	      select: function( event, ui ) {
+	      	$('#test_name').val(ui.item.label);
+	      	$('#test_id').val(ui.item.value);
+	      	return false;
+	      }
+	});
+</script>
+

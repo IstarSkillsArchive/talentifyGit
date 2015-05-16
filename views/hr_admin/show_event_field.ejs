@@ -1,0 +1,15 @@
+<% if(val == 'name') { %>
+	<%= event.name %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/edit_event_field/name/<%= event.id %>', 'replace-event-name')"></i>
+<% } %>
+<% if(val == 'description') { %>
+	<%= event.description != null ? event.description : event.name %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/edit_event_field/description/<%= event.id %>', 'replace-event-desc')"></i>
+<% } %>
+<% if(val == 'date') { %>
+	<%= event.date != null ? event.date : '' %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/edit_event_field/date/<%= event.id %>', 'replace-event-date')"></i>
+<% } %>
+<% if(val == 'time') { %>
+	<%= event.time != null ? event.time : '' %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/edit_event_field/time/<%= event.id %>', 'replace-event-time')"></i>
+<% } %>
+<% if(val == 'location') { %>
+	<%= event.location != null ? event.location : '' %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/edit_event_field/location/<%= event.id %>', 'replace-event-location')"></i>
+<% } %>

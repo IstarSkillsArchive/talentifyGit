@@ -1,0 +1,245 @@
+<% layout('new-layout') %>
+
+<div class="navbar navbar-inverse" role="navigation" style="margin-bottom:10px">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<% if(currentUser.isProfileCompleted == true && currentUser.isTestTaken == true && currentUser.isMetCoach == true) { %>
+					<li id="gym_li"><a href="/users/gym/<%= currentUser.id %>" >Gym</a></li>
+					<li class="active"><a href="/users/calendar" >Placements</a></li>
+					<li><a href="/users/report_card/<%= currentUser.id %>">Report Card</a></li>
+					<li><a href="/users/profile/<%= currentUser.id %>">Profile</a></li>
+				<% } %>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<style>
+
+	.demo-browser {
+		background: #2c3e50;
+		background-size: 659px 42px;
+		color: #ffffff;
+		margin: 0 41px 140px 0;
+		padding-top: 42px;
+		border-radius: 6px;
+	}
+	
+	.demo-browser-content {
+		display: table;
+	}
+	
+	.demo-browser-content > a img {
+		border: 6px solid #ffffff;
+		float: left;
+		margin: 0 15px 20px 0;
+		width: 146px;
+		color: #fff;
+		/*height: 150px;
+		background-color: #58d68d;
+		display: table-cell;
+		vertical-align: middle;*/
+	}
+	
+</style>
+
+
+	
+	<section class="crew-4">
+	    <div class="container" style="text-align: center">
+	     	<div class="gym-matrix-column">
+				<h3 style="margin-top: 10px;font-size: 24px;">Appointments & Interviews</h3>
+				<% if(appointments.length == 0) { %>
+					<p>No appointments</p>
+				<% } %>
+				<% appointments.forEach(function(appointment, i) { %>
+					<div class="gym-matrix-member-wrapper calendar">
+		                <div class="gym-matrix-member calendar">
+		                    <div class="info">
+		                        <div class="name"><%= appointment.meetingName != null ? appointment.meetingName : 'Meeting' %></div>
+		                        <b>Date:&nbsp;</b> <%= appointment.date %>
+		                        <br/>
+								<b>Time:&nbsp;</b> <%= appointment.time %>
+		                        <div class="contacts">
+		                            <% if(appointment.meetingName == 'Interview') { %>
+		                            	<a href="#" class="btn btn-primary btn-block btn-large" onclick="ajax_call('/zoom/join_meeting/<%= appointment.CoachId %>/<%= appointment.UserId %>','opentok');show_id('opentok');show_class('DimBg')">Join</a>
+		                            <% } %>
+		                            <% if(appointment.meetingName != 'Interview') { %>
+		                            	<a href="#" class="btn btn-primary btn-block btn-large" onclick="ajax_call('/zoom/join_meeting/<%= user.CoachId %>/<%= user.id %>','opentok');show_id('opentok');show_class('DimBg')">Join</a>
+		                        	<% } %>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+				<% }); %>
+			</div>
+			
+			<div class="gym-matrix-column">
+				<h3 style="margin-top: 10px;font-size: 24px;">Workshops</h3>
+				<% if(events.length == 0) { %>
+					<p>No class or test</p>
+				<% } %>
+				<% events.forEach(function(event, i) { %>
+					<% if(event.type != 'Test') { %>
+						<div class="gym-matrix-member-wrapper calendar">
+			                <div class="gym-matrix-member calendar">
+			                    <div class="info">
+			                        <div class="name"><%= event.name %></div>
+			                        <%= event.description %>
+			                        <br/>
+			                        <b>Date:&nbsp;</b> <%= event.date %>
+			                        <br/>
+									<b>Time:&nbsp;</b> <%= event.time %>
+									<% if(event.type == 'Test') { %>
+				                        <div class="contacts">
+				                            <a onclick="ajax_call('/content/start_test/event/<%= event.id %>','opentok');show_class('DimBg');show_id('opentok')" class="btn btn-info btn-block btn-large">Take Test</a>
+				                        </div>
+				                 	<% } %>
+			                        <% if(event.type != 'Test' && event.rsvp != 'RSVP Yes') { %>
+				                        <div class="contacts">
+				                            <a href="/rsvp/<%= user.id %>/<%= event.id %>" target="_blank" class="btn btn-danger btn-block btn-large">RSVP</a>
+				                        </div>
+				                 	<% } %>
+				                 	<% if(event.rsvp == 'RSVP Yes') { %>
+				                        <div class="contacts">
+				                            <a href="#" class="btn btn-success btn-block btn-large">RSVP Yes</a>
+				                        </div>
+				                 	<% } %>
+			                    </div>
+			                </div>
+			            </div>
+			    	<% } %>
+				<% }); %>
+			</div>
+			
+			<div class="gym-matrix-column">
+				<h3 style="margin-top: 10px;font-size: 24px;">Tests</h3>
+				<% if(events.length == 0) { %>
+					<p>No class or test</p>
+				<% } %>
+				<% events.forEach(function(event, i) { %>
+					<% if(event.type == 'Test') { %>
+						<div class="gym-matrix-member-wrapper calendar">
+			                <div class="gym-matrix-member calendar">
+			                    <div class="info">
+			                        <div class="name"><%= event.name %></div>
+			                        <%= event.description %>
+			                        <br/>
+			                        <b>Date:&nbsp;</b> <%= event.date %>
+			                        <br/>
+									<b>Time:&nbsp;</b> <%= event.time %>
+									<% if(event.type == 'Test') { %>
+				                        <div class="contacts">
+				                            <a onclick="ajax_call('/content/start_test/event/<%= event.id %>','opentok');show_class('DimBg');show_id('opentok')" class="btn btn-info btn-block btn-large">Take Test</a>
+				                        </div>
+				                 	<% } %>
+			                        <% if(event.type != 'Test' && event.rsvp != 'RSVP Yes') { %>
+				                        <div class="contacts">
+				                            <a href="/rsvp/<%= user.id %>/<%= event.id %>" target="_blank" class="btn btn-danger btn-block btn-large">RSVP</a>
+				                        </div>
+				                 	<% } %>
+				                 	<% if(event.rsvp == 'RSVP Yes') { %>
+				                        <div class="contacts">
+				                            <a href="#" class="btn btn-success btn-block btn-large">RSVP Yes</a>
+				                        </div>
+				                 	<% } %>
+			                    </div>
+			                </div>
+			            </div>
+			    	<% } %>
+				<% }); %>
+			</div>
+			
+			<div class="gym-matrix-column">
+	            <h3 style="margin-top: 10px;font-size: 24px;">Jobs</h3>
+	            <% if(jobs.length == 0 && job_tests.length == 0 && job_interviews.length == 0 && job_selections == 0) { %>
+					<p style="margin-left: 2%; text-align: center">There are no relevant jobs for you.</p>
+				<% } %>
+				<% jobs.forEach(function(job, i) { %>
+					<div class="gym-matrix-member-wrapper calendar">
+		                <div class="gym-matrix-member calendar">
+		                    <div class="info">
+		                        <div class="name"><%= job.name %></div>
+		                        <%= job.description %>
+		                        <br/>
+		                        <b>Posted:&nbsp;</b> <%= job.createdDate %>
+		                        <br/>
+								<b>Salary:&nbsp;</b> <%= job.salary %>
+								<br/>
+								<b>Location:&nbsp;</b> <%= job.location %>
+								<div class="contacts">
+		                            <a href="/rsvp_job/<%= user.id %>/<%= job.id %>" target="_blank" class="btn btn-warning btn-block btn-large">Apply</a>
+		                        </div>
+			               </div>
+		                </div>
+		            </div>
+				<% }); %>
+				
+				<% job_tests.forEach(function(test, i) { %>
+					<div class="gym-matrix-member-wrapper calendar">
+		                <div class="gym-matrix-member calendar">
+		                    <div class="info">
+		                        <div class="name"><%= test.name %></div>
+		                        <%= test.description %>
+		                        <div class="contacts">
+		                            <a onclick="ajax_call('/content/start_test/job/<%= test.id %>','opentok');show_class('DimBg');show_id('opentok')" class="btn btn-warning btn-block btn-large">Take Test</a>
+		                        </div>
+			               </div>
+		                </div>
+		            </div>
+				<% }); %>
+				
+				<% job_interviews.forEach(function(job, i) { %>
+					<div class="gym-matrix-member-wrapper calendar">
+		                <div class="gym-matrix-member calendar">
+		                    <div class="info">
+		                        <div class="name"><%= job.name %></div>
+		                        <%= job.description %>
+		                        <br/>
+		                        <b>You have been selected for the interview. Please check your appointments calendar.</b>
+		                        <div class="contacts">
+		                            <a class="btn btn-warning btn-block btn-large">Interview</a>
+		                        </div>
+			               </div>
+		                </div>
+		            </div>
+				<% }); %>
+				
+				<% job_selections.forEach(function(job, i) { %>
+					<div class="gym-matrix-member-wrapper calendar">
+		                <div class="gym-matrix-member calendar">
+		                    <div class="info">
+		                        <div class="name"><%= job.name %></div>
+		                        <%= job.description %>
+		                        <br/>
+		                        <b>You have been selected for this job. Congratulations.</b>
+		                        <div class="contacts">
+		                            <a class="btn btn-warning btn-block btn-large">Selected</a>
+		                        </div>
+			               </div>
+		                </div>
+		            </div>
+				<% }); %>
+				
+	        </div>
+	        
+	    </div>
+	    <!--/.container-->
+	</section>
+
+<div class="DimBg"></div>
+<div class="modal" id="opentok" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">	
+</div>

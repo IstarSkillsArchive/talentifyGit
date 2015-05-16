@@ -1,0 +1,107 @@
+<div class="tab-content padded margin-bottom" style="overflow: hidden">
+	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+	<h2 class="thin no-margin-top text-center" style="color: #fff">Create New Schedule</h2>
+	
+	<div class="col-md-12">
+		<!-- start filter -->
+		<div class="panel panel-default">
+	          
+	          <div class="tab-content add-users-div">
+	            <div class="tab-pane fade active in padded" style="overflow: hidden">
+	            	<!-- start form -->
+	            	<form action="/coordinator/do_create_new_schedule" method="POST" id="create_new_schedule_form">
+		            	  <table>
+				      		<tr>
+				      			<td><label><b>College</b></label></td>
+				      			<td style="padding: 4px">
+				      				<select name="OrganizationId" id="OrganizationId" onchange="get_batches_for_organization()" class="form-control" style="border: 1px solid #ccc">
+							    		<% orgs.forEach(function(org, i) { %>
+							    			<option value="<%= org.id %>"><%= org.name %></option>
+							    		<% }) %>
+							    	</select>
+				      			</td>
+				      		</tr>
+				      		<tr>
+				      			<td><label><b>Role</b></label></td>
+				      			<td style="padding: 4px" id="batch_div">
+				      				<select name="RoleId" id="RoleId" class="form-control" onchange="get_learning_groups_for_organization()" style="border: 1px solid #ccc">
+										<% batches.forEach(function(batch, i) { %>
+											<option value="<%= batch.id %>"><%= batch.name %></option>
+										<% }) %>
+									</select>
+				      			</td>
+				      		</tr>
+				      		<tr>
+				      			<td><label><b>Batch</b></label></td>
+				      			<td style="padding: 4px" id="learning_group_div">
+				      				<select name="BatchId" id="BatchId" class="form-control" style="border: 1px solid #ccc">
+										<% lg.forEach(function(batch, i) { %>
+											<option value="<%= batch.id %>"><%= batch.name %></option>
+										<% }) %>
+									</select>
+				      			</td>
+				      		</tr>
+				      		<tr>
+				      			<td><label><b>Event Name</b></label></td>
+				      			<td style="padding: 4px">
+				      				<input type="text" name="name" id="name" class="form-control" style="border: 1px solid #ccc"/>
+				      			</td>
+				      		</tr>
+				      		<tr>
+				      			<td><label><b>Start Time</b></label></td>
+				      			<td style="padding: 4px">
+				      				<input type="text" name="startTime" id="startTime" readonly="readonly" class="form-control" style="border: 1px solid #ccc"/>
+				      			</td>
+				      		</tr>
+				      		<tr>
+				      			<td><label><b>End Time</b></label></td>
+				      			<td style="padding: 4px">
+				      				<input type="text" name="endTime" id="endTime" readonly="readonly" class="form-control" style="border: 1px solid #ccc"/>
+				      			</td>
+				      		</tr>
+				      		<tr>
+				      			<td><label><b>Start Date</b></label></td>
+				      			<td style="padding: 4px">
+				      				<input type="text" name="startDate" id="startDate" readonly="readonly" class="form-control" style="border: 1px solid #ccc"/>
+				      			</td>
+				      		</tr>
+				      		<tr>
+				      			<td><label><b>No. of Weeks</b></label></td>
+				      			<td style="padding: 4px">
+				      				<input type="text" name="weeks" id="weeks" class="form-control" style="border: 1px solid #ccc"/>
+				      			</td>
+				      		</tr>
+				      		<tr>
+				      			<td></td>
+				      			<td style="padding: 4px" class="text-center"><input type="button" value="Submit" class="btn btn-success" onclick="do_create_new_schedule()"/></td>
+				      		</tr>
+				      	  </table>
+		            	  
+					</form>  
+	            	<!-- end form -->
+	            </div>
+	          </div>
+	    </div>
+		<!-- end filter -->
+	</div>
+</div>
+
+<script>
+	var nowTemp = new Date();
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+	
+	$( "#startTime" ).timepicker().on('changeTime.timepicker', function(e) {
+	    //$('#endTime').timepicker('setTime', e.time.value);
+	    /*console.log('The hour is ' + e.time.hour);
+	    console.log('The minute is ' + e.time.minute);
+	    console.log('The meridian is ' + e.time.meridian);*/
+	});
+	$( "#endTime" ).timepicker();
+	$( "#startDate" ).datepicker({
+		beforeShowDay: function (date) {
+	        return date.valueOf() >= now.valueOf();
+	    },
+	    autoclose: true
+	});	
+</script>
+

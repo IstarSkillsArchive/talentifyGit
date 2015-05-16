@@ -1,0 +1,22 @@
+<% if(option == 'module' || option == 'skill') { %>
+	<option>Select a <%= option %></option>
+	<% items.forEach(function(playlist,i) { %>
+		<option value="<%= playlist.id %>"><%= playlist.name %></option>
+	<% }); %>
+<% } %>
+
+<% if(option == 'content') { %>
+	<% items.forEach(function(playlist,i) { %>
+		<div class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+			<a class="close" href="#" onclick="show_preview('search_span_<%= playlist.id %>','<%= val %>')" style="font-size: 12px">&nbsp;Preview</a>
+				
+				<a class="close" href="#" onclick="build_module_content_playlist('search_span_<%= playlist.id %>','<%= val %>')" style="font-size: 12px">Add to Playlist &nbsp;</a>
+			<span>
+				<span id="search_span_<%= playlist.id %>"><%= playlist.name %></span>
+				<br/>
+				<%= playlist.description != null ? playlist.description : '' %>
+			</span>
+		</div>
+		
+	<% }); %>
+<% } %>

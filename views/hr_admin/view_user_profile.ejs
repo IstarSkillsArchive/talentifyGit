@@ -1,0 +1,59 @@
+<div class="panel panel-default" id="jsrid5493609495" style="overflow: hidden; height: 509px">
+      <div class="panel-header panel-colorize">
+            <div class="panel-title panel-header-title">
+              <h4 class="text-center">User Profile</h4>
+            </div>
+		</div>
+
+      <div class="tab-content">
+        <div class="tab-pane fade active in" id="role-filter">
+        	<form class="form-horizontal">
+		      <div class="padded">
+		          <div class="col-md-6" style="width: 100px">
+	              	<img class="img-circle img-em-border" src="/wrap/images/faker/avatars/64/Faces_Users-01.png">
+	              </div>
+	              <div class="col-md-6" style="display: table; height: 80px">
+	                <div class="panel-tile-table-cell">
+	                	<% if(user.first_name != null) { %>
+				          	<%= user.first_name %>&nbsp;<%= user.last_name != null ? user.last_name : '' %>
+				          <% } %>
+				          <% if(user.first_name == null) { %>
+				          	<%= user.username %>
+				          <% } %>
+	                </div>
+	              </div>
+	            
+	         	<table class="table" style="float: left">
+	         		<tbody>
+		         		<tr>
+		         			<td style="padding-left: 0px">
+		         				<label><b>Role</b></label>
+		         			</td>
+		         			<td>
+		         				<span id="replace-role" style="margin-left: 8px"><%= user.role.name %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/replace_role/<%= user.id %>', 'replace-role')"></i></span>
+		         			</td>
+		         		</tr>
+		         		<% if(user.coach != null) { %>
+		         		<tr>
+		         			<td style="padding-left: 0px">
+		         				<label><b>Coach</b></label>
+		         			</td>
+		         			<td>
+		         				<span id="replace-coach" style="margin-left: 8px"><%= user.coach.first_name %>&nbsp;<%= user.coach.last_name %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/replace_coach/<%= user.id %>', 'replace-coach')"></i></span>
+		         			</td>
+		         		</tr>
+		         		<% } %>
+		         	</tbody>
+	         	</table>
+	         	
+	         	<div class="width: 100%; float: left">
+		            <h4 style="width: 100%; float: left">Skills</h4>
+		            <% user.skills.forEach(function(skill, i) { %>
+		            	<span class="label label-success" style="margin:2px auto; display: inline-block"><%= skill.name %></span>
+		            <% }); %>
+		       	</div>
+		       </div>
+		    </form>
+        </div>
+      </div>
+</div>

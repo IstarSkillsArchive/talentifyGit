@@ -1,0 +1,58 @@
+<% layout('../new-layout') %>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<ul class="nav navbar-nav">
+			<li class="li_tab"><a href="/hr_admin/list_events">Events</a></li>
+			<li class="li_tab active"><a href="/misc/take_attendance">Attendance</a></li>
+			<li class="li_tab"><a href="/misc/take_feedback">Feedback</a></li>
+			<li><a href="/trainer/profile/<%= currentUser.id %>">Profile</a></li>
+		</ul>
+		 <ul class="nav navbar-nav pull-right">
+		 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+		 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+		 </ul>
+	</div>
+  
+</div>
+
+<form action="/misc/view_attendance">
+	<input type="submit" class="btn btn-primary" value="View Attendance" style="margin-top: 2%">
+</form>
+
+<h4 style="text-align: center">Attendance</h4>
+
+<table class="table	table-bordered">
+		<thead>
+			<th>Present</th>
+			<th>Absent</th>
+		<thead>
+		<tbody>
+			<tr>
+				<td><b><%= att.present %></b> Present</td>
+				<td><b><%= att.absent %></b> Absent</td>
+			</tr>
+			<% att.attendance.forEach(function(user) { %>
+				<tr>
+					<td>
+					<% if(user.status == 'present') { %>
+						<%= user.name %>
+					<% } %>
+					</td>
+					
+					<td>
+					<% if(user.status == 'absent') { %>
+						<%= user.name %>
+					<% } %>
+					</td>
+				</tr>
+			<% }); %>
+		</tbody>
+	</table>

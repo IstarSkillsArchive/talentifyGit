@@ -1,0 +1,42 @@
+
+
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Attendance</h4>
+	      </div>
+	      <div class="modal-body" id="attendance">
+	      		<table class="table table-bordered">
+	      			<tbody>
+			      		<% users.forEach(function(user, i) { %>
+			      			<tr>
+			      				<td>
+			      					<% if(user.first_name == null || user.last_name == null) { %>
+			      						<%= user.username %>
+			      					<% } %>
+			      					<% if(user.first_name != null && user.last_name != null) { %>
+			      						<%= user.first_name %>&nbsp;<%= user.last_name %>
+			      					<% } %>
+			      				</td>
+			      				<td id="user-attendance-<%= user.id %>" class="text-center">
+			      					<% if(user.status == 'Present') { %>
+			      						<i class="icm icm-checkmark-circle present" onclick="ajax_call('/trainer/mark_attendance/<%= user.id %>/<%= event_id %>/Absent','user-attendance-<%= user.id %>')"></i>
+			      					<% } %>
+			      					<% if(user.status == 'Absent') { %>
+			      						<i class="icm icm-cancel-circle absent" onclick="ajax_call('/trainer/mark_attendance/<%= user.id %>/<%= event_id %>/Present','user-attendance-<%= user.id %>')"></i>
+			      					<% } %>
+			      				</td>
+			      			</tr>
+			      		<% }); %>
+			      	</tbody>
+	      		</table>
+	      	</div>
+			<% if(users.length > 0) { %>
+				<div class="modal-footer" style="text-align: center" id="attendance-modal-footer">
+					<a class="btn btn-success" onclick="attendance.submit_attendance('<%= event_id %>')">Submit</a>
+				</div>
+			<% } %>
+		</div>
+	</div>

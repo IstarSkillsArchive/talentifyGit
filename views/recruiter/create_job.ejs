@@ -1,0 +1,76 @@
+<% layout('../new-layout') %>
+<% include ../util/errors %>
+
+<link rel="stylesheet" href="../stylesheets/style.css">
+<script src="/jquery/jquery.min.js"></script>
+<script src="/javascripts/script.js"></script>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<li class="li_tab active"><a href="/hr_admin/dashboard">Jobs</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/track">Appointments</a></li>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<form action="/recruiter/list_jobs/<%= currentUser.id %>">
+	<input type="submit" class="btn btn-primary" value="List Jobs" style="margin-top: 2%">
+</form>
+
+<h4 style="text-align: center">Create Job</h4>
+
+<style>
+	.form-control { width: 50%; }
+</style>
+
+<form role="form" method="POST" action="/recruiter/do_create_job" enctype="multipart/form-data">
+	  <div class="form-group">
+	  	<label>Name</label>
+	  	<input type="text" name="name" id="name" placeholder="Name" class="form-control"/>
+	  </div>
+	  
+	  <div class="form-group">
+	  	<label>Description</label>
+	  	<input type="text" name="description" id="description" placeholder="Description" class="form-control"/>
+	  </div>
+	  
+	  <div class="form-group">
+	  	<label>Salary</label>
+	  	<input type="text" name="salary" id="salary" class="form-control"/>
+	  </div>
+	  
+	  <div class="form-group">
+	  	<label>Location</label>
+	  	<input type="text" name="location" id="location" class="form-control"/>
+	  </div>
+	  
+	  <div class="form-group">
+	  	<label>Created Date</label>
+	  	<input type="text" name="createdDate" id="createdDate" class="form-control"/>
+	  </div>
+	  
+	  <div class="form-group">
+	  	<label>Expiry Date</label>
+	  	<input type="text" name="expiryDate" id="expiryDate" class="form-control"/>
+	  </div>
+	  
+	  <input type="submit" value="Submit" class="btn btn-success" />
+</form>
+
+<div class="DimBg"></div>
+<div class="modal" id="modal_preview"></div>

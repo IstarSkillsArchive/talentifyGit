@@ -1,0 +1,42 @@
+
+<div class="animated fadeIn padded bg-info">
+  	<button type="button" class="close pull-right" onclick="non_ajax_call('/hr_admin/dashboard')">&times;</button>
+  	<a class="btn btn-success pull-right" onclick="ajax_call('/hr_admin/create_new_notification/<%= currentUser.id %>','turbo-content-open-id')" style="margin-right: 10px">Create new</a>
+  	<h2 class="thin no-margin-top">Notifications</h2>
+	<!-- start -->
+	<% notifications.forEach(function(notification, i) { %>
+		<div class="col-md-3 panels">
+				
+	      <div class="captionable  horizontal">
+	        <div class="captionable-flip">
+	          <div class="captionable-front">
+	            
+				<div class="panel panel-primary">
+				  <div class="panel-heading" style="width: 100%; overflow: hidden">
+				    <div class="pull-right">
+				    	<a class="btn btn-info btn-xs" title="Edit" onclick="ajax_call('/hr_admin/edit_notification/<%= notification.id %>','turbo-content-open-id')"><i class="icm icm-pencil5"></i></a>
+				    	<a class="btn btn-danger btn-xs" title="Delete" onclick="if(confirm('Are your sure?')) {ajax_call('/hr_admin/delete_notification/<%= notification.id %>','turbo-content-open-id')}"><i class="icm icm-remove4"></i></a>
+				    </div>
+				  </div>
+				  <div class="panel-body no-padding-top">
+				    
+					  <div class="padded" style="color: #43494d; height: 182px; overflow: auto">
+					    <h4 class="base-header"><%= notification.text %></h4>
+						<h5 class="base-header major"><%= notification.description %></h5>
+					  </div>
+					  
+				  </div>
+				</div>
+	
+	          </div>
+	          
+	        </div>
+	      </div>
+	
+	    </div>
+	<% }); %>
+	<!-- end -->
+</div>
+
+
+

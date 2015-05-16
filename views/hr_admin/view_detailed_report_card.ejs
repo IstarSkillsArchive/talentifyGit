@@ -1,0 +1,17 @@
+<div style="width: 100%; overflow: hidden" class="margin-bottom">
+	<% if(role_id != null) { %>
+		<a class="pull-right btn btn-primary btn-xs" onclick="ajax_call('/hr_admin/view_role_test_result_details_score/<%= role_id %>','report_details_inner');">Back</a>
+	<% } %>
+	<% if(event_id != null) { %>
+		<a class="pull-right btn btn-primary btn-xs" onclick="ajax_call('/hr_admin/test_report_card/<%= test_id %>/<%= event_id %>','report_details');">Back</a>
+	<% } %>
+</div>
+
+<div style="width: 100%;" id="detailed_report">
+</div>
+<div style="width: 100%; overflow: hidden; white-space: nowrap;" class="playlist wide" id="question_detail">
+	
+</div>
+<script>
+	ajax_call('/users/view_report_details/<%= test_id %>/<%= user_id %>','detailed_report');
+</script>

@@ -1,0 +1,57 @@
+<% layout('../new-layout') %>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<li class="li_tab"><a href="/recruiter/dashboard/<%= currentUser.id %>">Jobs</a></li>
+			  	<li class="li_tab active"><a href="/recruiter/appointments">Appointments</a></li>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+	
+<section class="crew-4">
+    <div class="container" style="text-align: center">
+        <h3 style="margin-top: 10px;font-size: 24px;">Appointments</h3>
+
+        <div class="gym-matrix-member-scroll">
+            <% if(appointments.length == 0) { %>
+				<p style="margin-left: 2%; text-align: center">There are no appointments.</p>
+			<% } %>
+			<% appointments.forEach(function(appointment, i) { %>
+				<div class="gym-matrix-member-wrapper calendar">
+	                <div class="gym-matrix-member calendar">
+	                    <div class="info">
+	                        <div class="name">Interview with <%= users[i].first_name  %></div>
+	                        <b>Date:&nbsp;</b> <%= appointment.date %>
+	                        <br/>
+							<b>Time:&nbsp;</b> <%= appointment.time %>
+	                        <div class="contacts">
+	                            <a href="/zoom/recruiter_start_meeting/<%= currentUser.id %>/<%= users[i].id %>" target="_blank" class="btn btn-primary btn-block btn-large">Start Meeting</a>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+			<% }); %>
+			
+        </div>
+    </div>
+   
+</section>
+	
+<div class="DimBg"></div>
+<div class="modal" id="opentok" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">	
+</div>

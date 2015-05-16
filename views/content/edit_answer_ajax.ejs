@@ -1,0 +1,43 @@
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      		
+      <div class="modal-header">
+        <a class="close" onclick="coordinator_event_details('hide')">&times;</a>
+        <h4 class="modal-title" id="myModalLabel">Edit Answer</h4>
+      </div>
+      
+      <div class="modal-body">
+		<form role="form" method="POST" action="/content/do_edit_answer_ajax" target="target-frame">
+				<div class="form-group">
+				  	<label>Text</label>
+				  	<textarea class="form-control" rows="3" name="text" id="text"><%= answer.text %></textarea>
+				</div>
+			  
+			  <div class="form-group">
+			  	<label>What answer indicates</label>
+			  	<textarea class="form-control" rows="3" name="whatAnswerIndicates" id="whatAnswerIndicates"><%= answer.whatAnswerIndicates != null ? answer.whatAnswerIndicates : '' %></textarea>
+			  </div>
+			  
+			  <div class="form-group">
+			  	<% if(answer.isAnswer == true) { %>  
+			    	<input type="checkbox" name="isAnswer" checked="checked" />&nbsp;&nbsp;<label>Correct Answer</label>
+			    <% } %>
+			    <% if(answer.isAnswer != true) { %>  
+			    	<input type="checkbox" name="isAnswer" />&nbsp;&nbsp;<label>Correct Answer</label>
+			    <% } %>
+			  </div>
+			  
+			  <input type="hidden" value="<%= answer.ProblemId %>" name="ProblemId" />
+			  <input type="hidden" value="<%= test_id %>" name="TestId" />
+			  <input type="hidden" value="<%= answer.id %>" name="id" />
+			  
+			  <button type="submit" class="btn btn-success">Submit</button>
+			  <button type="button" class="btn btn-danger" onclick="ajax_call('/content/delete_answer/<%= answer.id %>', 'content-admin-display');coordinator_event_details('hide')">Delete</button>
+		</form>
+		<iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+      </div>
+      
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+

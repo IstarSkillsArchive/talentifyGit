@@ -1,0 +1,24 @@
+<!--<style>
+	.modal-dialog {
+		width: auto;
+		position: absolute;
+		top: 8%;
+		bottom: 8%;
+		left: 5%;
+		right: 5%;
+		width: auto;
+		margin: auto;
+	}
+</style>-->
+<div class="animated fadeIn padded bg-info">
+	<button type="button" class="close turbo-toggle" onclick="remove_attr('opentok_iframe', 'src')">&times;</button>
+    <h2 class="modal-title" id="myModalLabel">Meeting</h2>
+    <div class="video" id="video_1" style="text-align: center">
+		<% if(link != null && link != 'null' && link != '') { %>
+			<iframe src="<%= link %>" style="border: 0px;" height="500" width="98%" border="0" id="opentok_iframe"></iframe>
+		<% } %>
+		<% if(link == null || link == 'null' || link == '') { %>
+			<p>Invalid url</p>
+		<% } %>
+	</div>
+</div>

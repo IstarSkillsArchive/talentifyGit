@@ -1,0 +1,71 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+      		
+      <div class="modal-header">
+        <a class="close" onclick="coordinator_event_details('hide')">&times;</a>
+        <h4 class="modal-title" id="myModalLabel">Edit Answers</h4>
+      </div>
+      
+      <% if(successFlash != null && successFlash != '' && successFlash != 'null') { %>
+	      <div class="modal-body" style="text-align:center">
+	      	<p class="alert alert-success"><%= successFlash %></p>
+	      </div>
+      <% } %>
+      
+      <div class="modal-body" style="background: #fff">
+      
+      	<table class="table	table-bordered">
+			<thead>
+				<th style="vertical-align: middle">Id</th>
+				<th style="vertical-align: middle">Text</th>
+				<th>What Answer Indicates</th>
+				<th style="vertical-align: middle">Correct Answer</th>
+				<th colspan="2" style="vertical-align: middle">Action</th>
+			<thead>
+			<tbody>
+				<% answers.forEach(function(answer, i) { %>
+				<tr>
+					<td><%= i+1 %></td>
+					<td style="width: 400px"><%= answer.text %></td>
+					<td><%= answer.whatanswerIndicates != null ? answer.whatAnswerIndicates : '-' %></td>
+					<td>
+						<% if(answer.isAnswer) { %>
+							<span class="glyphicon glyphicon-ok"></span>
+						<% } %>
+						<% if(!answer.isAnswer) { %>
+							<span class="glyphicon glyphicon-remove"></span>
+						<% } %>
+					</td>
+					<td class="text-center" title="Edit"><a onclick="modal_ajax_call('/content/edit_answer_ajax/<%= answer.id %>/<%= test_id %>','uide4b3dde6bb5097375d99eb18a83d7146')"><i class="icm icm-pencil5"><i></a></td>
+					<td><a title="Delete" onclick="ajax_call('/content/delete_answer_ajax/<%= answer.id %>/<%= test_id %>/uide4b3dde6bb5097375d99eb18a83d7146','uide4b3dde6bb5097375d99eb18a83d7146')"><i class="icm icm-remove"></i></a></td>
+				</tr>
+				<% }); %>
+			</tbody>
+		</table>
+		
+		<a class="btn btn-success" onclick="modal_ajax_call('/content/add_answer_ajax/<%= problem_id %>/<%= test_id %>','uide4b3dde6bb5097375d99eb18a83d7146');">Add Answers</a>
+      
+      </div>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+$("#tag_name").autocomplete({
+      source: function( request, response ) {
+      	$.ajax({
+          url: "/content/get_tags/"+request.term,
+	      success: function(data) {
+	      	response(data);
+	      }
+        });
+      },
+      minLength: 1
+});
+		var height = $('#uide4b3dde6bb5097375d99eb18a83d7146 .modal-dialog').outerHeight(); 
+		height = height > 0 ? -(height/2+25) : -260;
+		$('#uide4b3dde6bb5097375d99eb18a83d7146').css('margin-top',height+'px');
+		$('#uide4b3dde6bb5097375d99eb18a83d7146').css('top', 50+'%');
+</script>
+

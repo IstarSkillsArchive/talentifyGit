@@ -1,0 +1,23 @@
+
+<h6 style="display: inline-block; float: left; margin: 10px"><%= role.name %></h6>
+<select style="float: right; margin: 10px" onchange="show_role_skill_report(this, '<%= oid %>')">
+	<option>Select Role</option>
+	<% roles.forEach(function(role, i) { %>
+		<option><%= role.name %></option>
+	<% }); %>
+</select>
+<div id="chart2" style="text-align: center">
+</div>
+<script>
+	var t = [];
+	<% all_skills.forEach(function(x, j) { %>
+		t[<%= j %>] = {};
+		t[<%= j %>].name = '<%= x.name %>';
+		t[<%= j %>].rating = {};
+		t[<%= j %>].rating.Wizard = <%= x.wizard %>;
+		t[<%= j %>].rating.Master = <%= x.master %>;
+		t[<%= j %>].rating.Apprentice = <%= x.apprentice %>;
+		t[<%= j %>].rating.Rookie = <%= x.rookie %>;
+	<% }); %>
+	d3_display(t, 2, 'No. of Users');
+</script>

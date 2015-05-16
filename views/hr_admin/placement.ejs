@@ -1,0 +1,167 @@
+<div class="animated fadeIn padded bg-info" id="hr-placement">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<h2 class="thin no-margin-top">Placement Center</h2>
+  	
+  	<!-- start placement -->
+  	<div class="row" rel="panels" style="color: #43494d">
+  			<!-- outreach -->
+  			<div class="col-md-3 panels col-md-3-panel">
+	
+		    	<div class="panel panel-danger">
+				      <div class="panel-header panel-colorize">
+				            <div class="panel-title panel-header-title" style="padding-left: 9px">
+				              Outreach
+				            </div>
+						</div>
+				      <div class="tab-content">
+				        <div class="tab-pane fade active in" id="invite-filter" style="height: 472px; overflow-y: auto; overflow-x: hidden">
+				        	<table class="table">
+							  <tbody>
+							  	<% if(invites.length == 0) { %>
+							  		<tr>
+							  			<td>
+							  				No outreach
+							  			</td>
+							  		</tr>
+							  	<% } %>
+							  	<% if(invites.length > 0) { %>
+							  		<% invites.forEach(function(playlist,i) { %>
+								  		<tr>
+								  			<td><%= i+1 %></td>
+								  			<td onclick="ajax_call('/hr_admin/get_placement_user_data/<%= playlist.id %>','invite-filter')">
+								  				<%= playlist.name %>
+								  			</td>
+								  		</tr>
+								  	<% }); %>
+							  	<% } %>
+							  </tbody>
+							</table>
+				        </div>
+				      </div>
+				</div>
+		    	
+		    </div>
+  			<!-- end outreach -->
+  			
+  			<!-- tests -->
+  			<div class="col-md-3 panels col-md-3-panel">
+	
+		    	<div class="panel panel-success">
+				      <div class="panel-header panel-colorize">
+				            <div class="panel-title panel-header-title" style="padding-left: 9px">
+				              Test
+				            </div>
+						</div>
+				      <div class="tab-content">
+				        <div class="tab-pane fade active in" id="test-filter" style="height: 472px; overflow-y: auto; overflow-x: hidden">
+				        	<table class="table">
+							  <tbody>
+							  	<% if(tests.length == 0) { %>
+							  		<tr>
+							  			<td>
+							  				No tests
+							  			</td>
+							  		</tr>
+							  	<% } %>
+							  	<% if(tests.length > 0) { %>
+							  		<% tests.forEach(function(playlist,i) { %>
+								  		<tr>
+								  			<td><%= i+1 %></td>
+								  			<td onclick="ajax_call('/hr_admin/get_placement_user_data/<%= playlist.id %>','test-filter')">
+								  				<%= playlist.name %>
+								  			</td>
+								  		</tr>
+								  	<% }); %>
+							  	<% } %>
+							  </tbody>
+							</table>
+				        </div>
+				      </div>
+				</div>
+		    	
+		    </div>
+  			<!-- end tests -->
+  			
+  			<!-- interviews -->
+  			<div class="col-md-3 panels col-md-3-panel">
+	
+		    	<div class="panel panel-warning">
+				      <div class="panel-header panel-colorize">
+				            <div class="panel-title panel-header-title" style="padding-left: 9px">
+				              Interview
+				            </div>
+						</div>
+				      <div class="tab-content">
+				        <div class="tab-pane fade active in" id="interview-filter" style="height: 472px; overflow-y: auto; overflow-x: hidden">
+				        	<table class="table">
+							  <tbody>
+							  	<% if(interviews.length == 0) { %>
+							  		<tr>
+							  			<td>
+							  				No interviews
+							  			</td>
+							  		</tr>
+							  	<% } %>
+							  	<% if(interviews.length > 0) { %>
+							  		<% interviews.forEach(function(playlist,i) { %>
+								  		<tr>
+								  			<td><%= i+1 %></td>
+								  			<td onclick="ajax_call('/hr_admin/get_placement_user_data/<%= playlist.id %>','interview-filter')">
+								  				<%= playlist.name %>
+								  			</td>
+								  		</tr>
+								  	<% }); %>
+							  	<% } %>
+							  </tbody>
+							</table>
+				        </div>
+				      </div>
+				</div>
+		    	
+		    </div>
+  			<!-- end interviews -->
+  			
+  			<!-- offers -->
+  			<div class="col-md-3 panels col-md-3-panel">
+	
+		    	<div class="panel panel-primary">
+				      <div class="panel-header panel-colorize">
+				            <div class="panel-title panel-header-title" style="padding-left: 9px">
+				              Offer
+				            </div>
+						</div>
+				      <div class="tab-content">
+				        <div class="tab-pane fade active in" id="offer-filter" style="height: 472px; overflow-y: auto; overflow-x: hidden">
+				        	<table class="table">
+							  <tbody>
+							  	<% if(offers.length == 0) { %>
+							  		<tr>
+							  			<td>
+							  				No offers
+							  			</td>
+							  		</tr>
+							  	<% } %>
+							  	<% if(offers.length > 0) { %>
+							  		<% offers.forEach(function(playlist,i) { %>
+								  		<tr>
+								  			<td><%= i+1 %></td>
+								  			<td onclick="ajax_call('/hr_admin/get_placement_user_data/<%= playlist.id %>','offer-filter')">
+								  				<%= playlist.name %>
+								  			</td>
+								  		</tr>
+								  	<% }); %>
+							  	<% } %>
+							  </tbody>
+							</table>
+				        </div>
+				      </div>
+				</div>
+		    	
+		    </div>
+  			<!-- end offers -->
+  			
+  		</div>
+	
+    <!-- end placement -->
+  	
+</div>

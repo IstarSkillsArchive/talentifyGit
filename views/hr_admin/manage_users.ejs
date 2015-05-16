@@ -1,0 +1,76 @@
+<div class="animated fadeIn padded bg-info" id="report-ajax" style="overflow: hidden">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	
+  	<div class="row pull-left manage-users-div" style="width: 100%; margin-left: 0px; margin-right: 0px">
+	  	<div class="col-md-3">
+	  		<div class="captionable">
+				<div class="panel panel-warning">
+					  <div class="panel-heading panel-tile">
+					    <div class="panel-title text-center panel-tile-table-cell" onclick="ajax_call('/hr_admin/view_users','manage-users');">
+					      <i class="icm icm-users icm-4x"></i>
+					      Edit Users
+					    </div>
+					  </div>
+				</div><!-- end panel -->
+				
+				<div class="panel panel-primary">
+					  <div class="panel-heading panel-tile">
+					    <div class="panel-title text-center panel-tile-table-cell" onclick="ajax_call('/hr_admin/add_users','manage-users');">
+					      <i class="icm icm-user-plus icm-4x"></i>
+					      Add User
+					    </div>
+					  </div>
+				</div><!-- end panel -->
+				
+				<div class="panel panel-danger">
+					  <div class="panel-heading panel-tile">
+					    <div class="panel-title text-center panel-tile-table-cell">
+					      <i class="icm icm-stack-user icm-4x"></i>
+					      Import Users
+					    </div>
+					  </div>
+				</div><!-- end panel -->
+				
+				<div class="panel panel-success">
+					  <div class="panel-heading panel-tile">
+					    <div class="panel-title text-center panel-tile-table-cell">
+					      <i class="icm icm-certificate icm-4x"></i>
+					      Buy Licenses 
+					    </div>
+					  </div>
+				</div><!-- end panel -->
+				
+				<div class="col-md-6" style="padding-left: 0px">
+					<div class="panel panel-default">
+					  <div class="panel-heading panel-tile">
+					    	<div class="panel-title text-center panel-tile-table-cell">
+						      <span style="font-size: 36px">50</span>
+						      Total 
+						    </div>
+					  </div>
+					</div><!-- end panel -->
+				</div>
+				
+				<div class="col-md-6" style="padding-right: 0px">
+					<div class="panel panel-default">
+					  <div class="panel-heading panel-tile">
+					    	<div class="panel-title text-center panel-tile-table-cell">
+						      <span style="font-size: 36px">25</span>
+						      Active 
+						    </div>
+					  </div>
+					</div><!-- end panel -->
+				</div>
+				
+				
+			</div><!-- end captionable -->
+	  	</div>
+	  	
+	  	<div class="col-md-9" id="manage-users">
+	  	</div>	
+	</div>
+</div>
+
+<script>
+	ajax_call('/hr_admin/view_users','manage-users');
+</script>

@@ -1,0 +1,59 @@
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      	<% if(typeof successFlash != 'undefined') { %>
+	      	<div class="row" style="position: relative; top: 10px;margin:4px">
+				<p class="alert alert-success"><%= successFlash %></p>
+			</div>
+		<% } %>		
+      <div class="modal-header">
+        <a class="close" onclick="coordinator_event_details('hide')">&times;</a>
+        <h4 class="modal-title" id="myModalLabel">Add Question</h4>
+      </div>
+      
+      <div class="modal-body">
+		<div class="col-md-12">
+			<label>Search Questions by Tags</label>
+			  <div class="form-group">
+			  
+			  	<div class="input-group">
+					<input type="hidden" name="tag_name_id" id="tag_name_id" />
+					<input type="text" name="tag_name" class="form-control" id="tag_name" placeholder="Type and Click Add">
+				  	<span class="input-group-addon" onclick="do_add_question_to_test('<%= test.id %>');coordinator_event_details('hide')" style="border: 1px solid #e1e1e1; cursor: pointer">Add</span>
+				</div>
+				
+			 </div>
+	    </div>
+		
+		<div class="col-md-12">
+			<div class="form-group"><b>OR</b></div>
+		</div>
+		
+		<div class="col-md-12">
+			<button type="button" class="btn btn-success" onclick="modal_ajax_call('/content/create_new_question_to_test/<%= test.id %>','uide4b3dde6bb5097375d99eb18a83d7146')">Create New Question</button>
+		</div>
+		
+      </div>
+      
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+  
+<script type="text/javascript">
+	$("#tag_name").autocomplete({
+	      source: function( request, response ) {
+	      	$.ajax({
+	          url: "/content/get_problem_tags/"+request.term,
+		      success: function(data) {
+		      	response(data);
+		      }
+	        });
+	      },
+	      minLength: 1,
+	      select: function( event, ui ) {
+	      	$('#tag_name').val(ui.item.label);
+	      	$('#tag_name_id').val(ui.item.value);
+	      	return false;
+	      }
+	});
+</script>
+

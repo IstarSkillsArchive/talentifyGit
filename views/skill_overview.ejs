@@ -1,0 +1,138 @@
+
+<div class="animated fadeIn padded">
+  	<button type="button" class="close pull-right turbo-toggle" onclick="start_slideshow()">&times;</button>
+  	<h2 class="thin no-margin-top" style="color: #fff">Skill Overview</h2>
+  	<!-- start overall -->
+	<div class="col-md-3">
+		<div class="captionable  captionable-effect-flip horizontal">
+	        <div class="captionable-flip">
+	          <div class="captionable-front">
+	            
+				<div class="panel panel-primary">
+				  <div class="panel-heading">
+				    <div class="panel-title text-center">
+				      Modules Completed
+				    </div>
+				  </div>
+				  <div class="panel-body no-padding-top">
+				    
+					  <div class="padded">
+					    <div class="vpadded easy-pie-chart easy-pie-chart-normal" data-percent="<%= totalModules != 0 ? completedModules/totalModules*100 : '' %>" data-color="danger">
+					      <span style="height: 20px"><%= totalModules != 0 ? completedModules/totalModules*100 : '' %>%</span>
+					    </div>
+					    <div class="text-center">
+					    	<b>Modules Completed (<%= completedModules %>/<%= totalModules %>)</b>
+					    </div>
+					  </div>
+					  
+				  </div><!-- end panel body -->
+				</div><!-- end panel -->
+	
+	          </div><!-- end caption front -->
+	          <div class="captionable-caption captionable-back panel-body-info padded bg-white">
+	            <p> 
+	            	Explanatory text goes here
+	            </p>
+	          </div>
+	        </div>
+	      </div>
+	 </div>
+	<!-- end overall -->
+	
+	<!-- start overall -->
+	<div class="col-md-3">
+		<div class="captionable  captionable-effect-flip horizontal">
+	        <div class="captionable-flip">
+	          <div class="captionable-front">
+	            
+				<div class="panel panel-primary">
+				  <div class="panel-heading">
+				    <div class="panel-title text-center">
+				      Coach Rating
+				    </div>
+				  </div>
+				  <div class="panel-body no-padding-top">
+				    
+					  <div class="padded">
+					    <div class="vpadded">
+					      <img src="/wrap/images/wiz3.png" style="width: 156px; height: 156px"/>
+					    </div>
+					    <div class="text-center"><b>Coach Rating</b></div>
+					  </div>
+					  
+				  </div><!-- end panel body -->
+				</div><!-- end panel -->
+	
+	          </div>
+	          <div class="captionable-caption captionable-back panel-body-info padded bg-white">
+	            <p> 
+	            	Explanatory text goes here
+	            </p>
+	          </div>
+	        </div>
+	      </div>
+	 </div>
+	<!-- end overall -->
+	
+	<!-- start overall -->
+	<div class="col-md-3">
+		<div class="captionable  captionable-effect-flip horizontal">
+	        <div class="captionable-flip">
+	          <div class="captionable-front">
+	            
+				<div class="panel panel-primary">
+				  <div class="panel-heading">
+				    <div class="panel-title text-center">
+				      Achievements
+				    </div>
+				  </div>
+				  <div class="panel-body no-padding-top">
+				    
+					  <div class="padded">
+					    <div class="vpadded easy-pie-chart easy-pie-chart-normal" data-percent="25" data-color="danger">
+					      <span style="height: 20px">100 points</span>
+					    </div>
+					    <div class="text-center"><b>Achievements</b></div>
+					  </div>
+					  
+				  </div><!-- end panel body -->
+				</div><!-- end panel -->
+	
+	          </div>
+	          <div class="captionable-caption captionable-back panel-body-info padded bg-white">
+	            <p> 
+	            	Explanatory text goes here
+	            </p>
+	          </div>
+	        </div>
+	      </div>
+	 </div>
+	<!-- end overall -->
+</div>
+<script>
+	var falseOrDefault;
+    falseOrDefault = function(el, def, value) {
+      if (value === 'false') {
+        return false;
+      }
+      return value || def;
+    };
+	$(".easy-pie-chart-normal").each(function() {
+      var $el, color, lineWidth, scaleColor, size, trackColor;
+      $el = $(this);
+      color = EmVars.colorFromName($el.data('color') || 'info');
+      size = $el.data('size') || 150;
+      lineWidth = $el.data('line-width') || 15;
+      trackColor = falseOrDefault($el, '#f2f2f2', $el.data('track-color'));
+      scaleColor = falseOrDefault($el, EmVars.colors.textColor, $el.data('scale-color'));
+      return $el.easyPieChart({
+        lineWidth: lineWidth,
+        size: size,
+        lineCap: "square",
+        barColor: color,
+        scaleColor: scaleColor,
+        animate: 1000,
+        trackColor: trackColor
+      });
+    });
+</script>

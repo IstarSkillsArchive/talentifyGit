@@ -1,0 +1,27 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+      	
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="coordinator_event_details('hide')">&times;</button>
+      	<h4 class="modal-title">Preview - <%= module != null ? module.name : '' %></h4>
+      </div>
+      <div class="modal-body" style="text-align: center; height: 400px; overflow: auto">
+      	<% playlists.forEach(function(playlist,i) { %>
+      		<div style="border: 1px solid #ccc; display: inline-block; width: auto; padding: 4px; margin: 4px">
+	      		<% if(playlist != null ) { %>
+			      	<iframe width="200" height="150" src="<%= playlist.path %>" frameborder="0" allowfullscreen></iframe>
+			    <% } %>
+				<% if(playlist == null ) { %>
+					No content to display.
+				<% } %>
+			</div>
+      	<% }); %>
+      	<% if(display == 'true' ) { %>
+	      	<div style="text-align: center">
+				<input type="button" class="btn btn-success" value="Add to Playlist" onclick="build_skill_playlist('<%= id %>','<%= val %>');coordinator_event_details('hide')"/>
+			</div>
+		<% } %>
+      </div>
+	</div>
+</div>
+

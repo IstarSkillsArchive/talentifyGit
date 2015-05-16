@@ -1,0 +1,17 @@
+<button type="button" class="close pull-right" onclick="hide_div('role-skills-div')">&times;</button>
+<button type="button" class="btn btn-dark btn-xs pull-left" onclick="ajax_call('/hr_admin/get_skills_for_role/<%= role_id %>','role-skills-div')">Back</button>
+<div class="row pull-left" style="width: 100%; margin-top: 20px; margin-left: 0px; margin-right: 0px; overflow-x: auto; white-space: nowrap">
+  	<label style="color: #43494d"><b>Select Skill Group</b></label>
+  	<select style="color: #43494d" onchange="get_skills_from_skill_group(this, '<%= role_id %>')">
+  	<% skillGroups.forEach(function(skill,i) { %>
+  		<option value="<%= skill.id %>"><%= skill.name %></option>
+  	<% }); %>
+  	</select>
+</div>
+<div id="skill-group-div" class="row pull-left" style="width: 100%; margin-top: 20px; margin-left: 0px; margin-right: 0px; overflow-x: auto; white-space: nowrap">
+</div>
+<script>
+	<% if(skillGroups.length > 0) { %>
+		ajax_call('/hr_admin/get_skills_from_skill_group/<%= skillGroups[0].id %>/<%= role_id %>','skill-group-div');
+	<% } %>
+</script>

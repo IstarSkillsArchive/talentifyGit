@@ -1,0 +1,55 @@
+<% layout('../new-layout') %>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<ul class="nav navbar-nav">
+			<li class="li_tab"><a href="/hr_admin/list_events">Events</a></li>
+			<li class="li_tab active"><a href="/misc/take_attendance">Attendance</a></li>
+			<li class="li_tab"><a href="/misc/take_feedback">Feedback</a></li>
+			<li><a href="/trainer/profile/<%= currentUser.id %>">Profile</a></li>
+		</ul>
+		 <ul class="nav navbar-nav pull-right">
+		 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+		 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+		 </ul>
+	</div>
+  
+</div>
+
+<form action="/misc/view_attendance">
+	<input type="submit" class="btn btn-primary" value="View Attendance" style="margin-top: 2%">
+</form>
+
+<div class="tab-content">
+  
+	<div class="tab-pane fade in active">
+		<div style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 1em; margin-top: 2%;">
+			<h6 style="text-align: center">Attendance</h6>
+			<% users.forEach(function(user) { %>
+				<div class="todo attendance">
+			     	<ul>
+			     		<li>
+			     			<span><%= user.first_name %>&nbsp;<%= user.last_name %></span>
+			     			<span><input type="checkbox" checked="checked" onclick="mark_attendance(this, '<%= user.id %>')"/></span>
+			     		</li>
+			     	</ul>
+			     </div>
+			<% }); %>
+			<div>
+				<a href='/misc/take_attendance' class="btn btn-success" value="Submit">Submit<a/>
+			</div>
+		</div>
+	</div>
+  
+</div>
+
+
+
+

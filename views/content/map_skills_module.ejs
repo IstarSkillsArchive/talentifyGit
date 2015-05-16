@@ -1,0 +1,84 @@
+<% layout('../layout') %>
+<script src="/jquery/jquery.min.js"></script>
+<link href="/stylesheets/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/javascripts/jquery-ui-1.10.0.custom.min.js"></script>
+
+<style>
+	span.label-primary {
+		margin: 4px;
+		padding: 4px;
+		display: inline-block;
+	}
+</style>
+
+<ul class="nav nav-tabs">
+	<li class="li_tab"><a href="/content/list_skill_groups">Skill Groups</a></li>
+ 	<li class="li_tab"><a href="/content/list_skills">Skills</a></li>
+  	<li class="li_tab active"><a href="/content/list_modules">Modules</a></li>
+  	<li class="li_tab"><a href="/content/list_content">Content</a></li>
+</ul>
+
+<% include ../util/errors %>
+
+<a href="/content/list_modules" class="btn btn-default" style="margin-top: 2%">Back</a>
+
+<h2 style="text-align: center">Map Skills</h2>
+
+<hr>
+
+<div class="information col-md-8" style="width: 60%;">
+	  <style>.row { margin-left: 0px } </style>
+	  <div class="row">
+	  	<h5 class="navbar-left"><b>Id:</b>&nbsp;&nbsp;<%= module.id %></h5>
+	  </div>
+	  <div class="row">
+	  	<h5 class="navbar-left"><b>Name:</b>&nbsp;&nbsp;<%= module.name %></h5>
+	  </div>
+	  <div class="row">
+	  	<h5 class="navbar-left"><b>Description:</b>&nbsp;&nbsp;<%= module.description %></h5>
+	  </div>
+	  <div class="row">
+	  	<h5 class="navbar-left"><b>Is Public:</b>&nbsp;&nbsp;<%= module.isPublic %></h5>
+	  </div>
+	  <div class="row">
+	  	<h5 class="navbar-left"><b>Organization:</b>&nbsp;&nbsp;<%= module.organization.name %></h5>
+	  </div>
+	  <div class="row" id="tags" style="margin: 2% auto">
+	  		<% if(module.skills.length > 0) { %>
+				<% module.skills.forEach(function(skill) { %>
+					<span class='label label-primary'><%= skill.name %><a style='color: #fff; margin-left: 10px; cursor: default' href='/skill/delete_module_skill/<%= user_id %>/<%= module.id %>/<%= skill.id %>'>X</a></span>
+				<% }); %>
+			<% } %>
+	  </div>
+</div>
+
+
+<form role="form" method="POST" action="/skill/do_map_skill_to_module">
+	<input type="hidden" name="user_id" value="<%= user_id %>"/>
+	<input type="hidden" name="module_id" value="<%= module.id %>"/>
+	
+	<div class="form-group">
+		<input type="text" name="name" class="form-control" id="name" placeholder="Type and Press Enter">
+	</div>
+	
+	<button type="submit" class="display_none btn btn-primary">Add</button>
+</form>
+
+<script type="text/javascript">
+$("#name").autocomplete({
+      source: function( request, response ) {
+      	//alert('Request term: '+request.term);
+        $.ajax({
+          url: "/hr_admin/get_skills/"+request.term,
+	      success: function(data) {
+	      	//alert('Data from get_skills: '+data);
+	      	response(data);
+	      }/*,
+          data: {
+            q: request.term
+          }*/
+        });
+      },
+      minLength: 1
+});
+</script>

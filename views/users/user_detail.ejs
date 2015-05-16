@@ -1,0 +1,188 @@
+	<% layout('../new-layout') %>
+	
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="/jquery/jquery.min.js"></script>
+	<script src="/javascripts/d3/d3.min.js"></script>
+	<script src="/javascripts/d3_script.js"></script>
+	<script src="/javascripts/script.js"></script>
+	
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<li class="li_tab"><a href="/hr_admin/dashboard"><%= hr.organization.type == 'College' ? 'College' : 'Company'%> L&D Stats</a></li>
+			  	<li class="li_tab active"><a href="/hr_admin/track"><%= hr.organization.type == 'College' ? 'Student' : 'Employee'%> Stats</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>"><%= hr.organization.type == 'College' ? 'Batches' : 'Roles'%></a></li>
+			 	<li class="li_tab"><a href="/users/list">Manage Users</a></li>
+			 	<li class="li_tab"><a href="/hr_admin/list_events">Events</a></li>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+	
+	<% include ../util/errors %>
+	
+	<div style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%; text-align: center">
+		<p style="font-size: 24px;">Track an Employee's Competency Development</p>
+		<div style="margin-top: 2%">
+			<form class="navbar-form" action="/users/search" method="POST">
+				<div class="form-group">
+					<input name="search" id="search" type="text" placeholder="Search" class="form-control" value="<%= keyword %>">
+				</div>
+				<button type="submit" id="search_button" class="btn btn-success">
+				  <span class="glyphicon glyphicon-search"></span>
+				</button>
+			</form>
+		</div>
+	</div>
+	
+	<div style="margin-top: 2%" id="search_results">
+		<div class="tab-pane fade in active" id="user_detail">
+			<div style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%; text-align: center;">
+				<p style="font-size: 24px;text-align: left">USER INFORMATION</p>
+				<hr>
+				<div class="row">
+					<div class="information col-md-8" style="width: 60%;">
+						  <style>.row { margin-left: 0px } </style>
+						  <div class="row">
+						  	<label class="navbar-left"><b>Id:</b>&nbsp;&nbsp;<%= user.id %></label>
+						  </div>
+						  <div class="row">
+						  	<label class="navbar-left"><b>Username:</b>&nbsp;&nbsp;<%= user.username %></label>
+						  </div>
+						  <div class="row">
+						  	<label class="navbar-left"><b>Name:</b>&nbsp;&nbsp;<%= user.first_name %>&nbsp;<%= user.last_name != null ? user.last_name : '' %></label>
+						  </div>
+						  <div class="row">
+						  	<label class="navbar-left"><b>Role:</b>&nbsp;&nbsp;
+						  		<%= user.role != null ? user.role.name : '-'%>
+						  	</label>
+						  </div>
+						  <div class="row">
+						  	<label class="navbar-left"><b>Organization:</b>&nbsp;&nbsp;
+						  		<%= user.organization != null ? user.organization.name : '-' %>
+						  	</label>
+						  </div>
+						  <div class="row">
+						  	<label class="navbar-left"><b>Email:</b>&nbsp;&nbsp;<%= user.email %></label>
+						  </div>
+					</div>
+					<div class="profile_picture col-md-4">
+						<img src="/images/profile.png" alt="" class="img-thumbnail">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="display: none; position: relative; top: -5px;">
+		<p class="alert alert-danger" id="search_results_error"></p>
+	</div>
+	
+	<div style="margin-top: 2%" id="search_results">
+		<div class="tab-pane fade in active" id="user_detail">
+			<div style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%; text-align: center;">
+				<p style="font-size: 24px;text-align: left">SKILL REPORTS</p>
+				<hr>
+				<div class="row">
+					<!-- START -->
+					<section class="skill_report">
+    					<div class="container">
+							<div class="col-md-4" id="skill_report_left_div">
+					    		<div style="height:550px;overflow:auto">
+							    	<!-- start skill reports-->
+							    	<% user.skills.forEach(function(skill, i) { %>
+								        <div class="todo">
+								            <ul>
+								              <li class="first_child">
+								                <div class="todo-icon" style="padding: 0px"><img src="/flat-ui/images/demo/browser-pic-<%= (i+1)%6 %>.jpg" /></div>
+								                <div class="todo-content" style="padding-left: 4px;">
+								                  <h4 class="todo-name" onclick="ajax_call('/hr_admin/view_user_test_details/<%= skill.id %>/<%= user.id %>','test_detail')">
+								                    <%= skill.name %>
+								                  </h4>
+								                  <%= skill.description != null ? skill.description : '-' %>
+								                </div>
+								              </li>
+								              
+								              <li id="todo_li_div_<%= skill.id %>" class="report_notes">
+								              </li>
+								              
+								              <li>
+								              	<table style="width: 100%; color: #fff">
+								              		<tr>
+								              			<td title="Notes" align="center" onclick="show_id('todo_li_div_<%= skill.id %>');ajax_call('/users/notes/<%= user.id %>/<%= skill.id %>/<%= skill.notes %>/0', 'todo_li_div_<%= skill.id %>')">
+								              				<span class="glyphicon glyphicon-list-alt"></span>
+								              			</td>
+								              			<td title="Coach Rating" align="center" onclick="show_id('todo_li_div_<%= skill.id %>');ajax_call('/users/coach_rating_history/<%= user.id %>/<%= skill.id %>', 'todo_li_div_<%= skill.id %>')">
+								              				<span class="glyphicon glyphicon-eye-open"></span>
+								              			</td>
+								              			<td title="Modules Completed" align="center">
+								              				<span class="glyphicon glyphicon-dashboard"></span>
+								              			</td>
+								              		</tr>
+								              		<tr>
+								              			<td title="Notes" align="center" onclick="show_id('todo_li_div_<%= skill.id %>');show_id('todo_li_div_<%= skill.id %>');ajax_call('/users/notes/<%= user.id %>/<%= skill.id %>/<%= skill.notes %>/0', 'todo_li_div_<%= skill.id %>')">
+								              				<%= skill.notes %>
+								              			</td>
+								              			<td title="Coach Rating" align="center" onclick="show_id('todo_li_div_<%= skill.id %>');ajax_call('/users/coach_rating_history/<%= user.id %>/<%= skill.id %>', 'todo_li_div_<%= skill.id %>')">
+								              				<% userSkills.forEach(function(us) { %>
+																<% if(us.SkillId == skill.id) { %>
+																	<%= us.rating != null ? us.rating : '-' %>/10
+																<% } %>
+															<% }); %>
+								              			</td>
+								              			<td title="Modules Completed" align="center">
+								              				<% userSkills.forEach(function(us) { %>
+																<% if(us.SkillId == skill.id) { %>
+																	<%= us.completedModules %>/<%= us.totalModules %>
+																<% } %>
+															<% }); %>
+								              			</td>
+								              		</tr>
+								              	</table>
+								              </li>
+								              
+								            </ul>
+								        </div>
+								 	<% }); %>	
+								 	<!-- end skill reports-->
+								</div>
+					    	</div>
+					    	<div class="col-md-8">
+					    		<!-- start table -->
+					    		<div style="width: 100%; overflow: auto; white-space: nowrap;" class="playlist wide" id="test_detail">
+									<p>Click on a skill to view test details</p>
+								</div>
+					    		<!-- end table -->
+					    		
+					    		<!-- start question detail -->
+					    		<!--<div style="width: 100%; overflow: auto; white-space: nowrap; margin-top: 20px" class="playlist wide" id="question_detail">
+									<p>Click on a question to view details</p>
+								</div>-->
+					    		<!-- end question detail -->
+					    	</div>
+					    </div>
+					</section>
+					
+					<!-- END -->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+
+
+
+

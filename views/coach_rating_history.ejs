@@ -1,0 +1,20 @@
+<div class="padded">
+    <div class="vpadded" style="overflow: auto">
+      <table class="table table-bordered" style="color:#000">
+			<tr>
+				<% crh.forEach(function(crh) { %>
+					<td><%= crh.rating %>/10</td>
+				<% }); %>
+			</tr>
+			<tr>
+				<% crh.forEach(function(crh) { %>
+					<td>
+						<%= crh.month %>
+						<br/>
+						<%= crh.year %>
+					</td>
+				<% }); %>
+			</tr>
+		</table>
+    </div>
+</div>

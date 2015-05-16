@@ -1,0 +1,92 @@
+<div class="animated fadeIn padded bg-info" id="report-ajax" style="overflow: hidden">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<div class="wizard-steps">
+        <div class="wizard-step" id="wizard-step-1">
+          <div class="badge badge-primary" title="Select a test">Step 1</div>
+          <!-- start tooltip -->
+          <div class="tooltip fade top in" role="tooltip" id="tooltip424660" style="top: -24px; left: 154px; display: block;">
+          	<div class="tooltip-arrow"></div>
+          	<div class="tooltip-inner">Select a test</div>
+          </div>
+          <!-- end tooltip -->
+        </div>
+        <div class="wizard-step" id="wizard-step-2">
+          <div class="badge badge-default" title="Assign users">Step 2</div>
+          <!-- start tooltip -->
+          <div class="tooltip fade top in visibility-hidden" role="tooltip" id="tooltip424660" style="top: -24px; left: 154px; display: block;">
+          	<div class="tooltip-arrow"></div>
+          	<div class="tooltip-inner">Assign Users</div>
+          </div>
+          <!-- end tooltip -->
+        </div>
+        <div class="wizard-step" id="wizard-step-3">
+          <div class="badge badge-default" title="Finish">Step 3</div>
+          <!-- start tooltip -->
+          <div class="tooltip fade top in visibility-hidden" role="tooltip" id="tooltip424660" style="top: -24px; left: 154px; display: block;">
+          	<div class="tooltip-arrow"></div>
+          	<div class="tooltip-inner">Finish</div>
+          </div>
+          <!-- end tooltip -->
+        </div>
+    </div>
+  	<div class="row pull-left manage-users-div" style="width: 100%; margin-left: 0px; margin-right: 0px">
+	  	<div class="tab-content bg-white padded margin-bottom" style="background-color: #f2f4f8; overflow: hidden">
+			<input type="hidden" value="" name="event-id" id="event-id" />
+			<div class="col-md-4"> <!-- start tests -->
+				<div class="panel panel-danger">
+			          <div class="panel-header panel-colorize">
+				            <div class="panel-title panel-header-title" style="padding-left: 9px">
+				              Select Test
+				            </div>
+						</div>
+			          <div class="tab-content">
+			            <div class="tab-pane fade active in" id="tests-filter" style="height: 472px; overflow-y: auto; overflow-x: hidden">
+			            	<table class="table">
+							  <thead>
+								  <tr class="row-mid">
+								        <th colspan="2">Test</th>
+								    	<th>Preview</th>
+								  </tr>
+							  </thead>
+							  <tbody>
+							      <% tests.forEach(function(test, i) { %>
+								      <tr class="row-mid role-filter-users role-filter-users-<%= i %>">
+								      	<td style="width: 30px">
+								              <label>
+								                <div><input type="radio" name="radio-test" value="<%= test.id %>" onclick="create_test_event(this,'<%= i %>','<%= test.name %>','<%= currentUser.id %>','<%= currentUser.OrganizationId %>', 'Test')" /></div>
+								              </label>
+								        </td>
+								        <td>
+								          <%= test.name %>
+								        </td>
+								        <td>
+								        	<i class="icm icm-eye2"></i>
+								        	<!--<i class="icm icm-arrow-right3"></i>-->
+								        </td>
+								      </tr>
+									<% }); %>
+								</tbody>
+							</table>
+			            </div>
+			          </div>
+			    </div>
+			</div> <!-- end tests -->
+			<!-- start assign users -->
+			<div class="col-md-4" id="assign-users">
+				
+			</div>
+			<!-- end assign users -->
+			
+			<!-- start event name desc -->
+			<div class="col-md-4" id="event-name-desc">
+				
+			</div>
+			<!-- end event name desc -->
+			<div class="col-md-12 text-center">
+				<a class="btn btn-success" onclick="non_ajax_call('/hr_admin/dashboard')" style="display: none" id="event-done-btn">Done</a>
+				<a class="btn btn-danger" onclick="if(confirm('Are you sure?')) { delete_new_event() }">Cancel</a>
+			</div>
+		</div>
+	</div>
+	
+</div>

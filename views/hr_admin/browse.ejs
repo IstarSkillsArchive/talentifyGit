@@ -1,0 +1,62 @@
+ <script src="/jquery/jquery.min.js"></script>
+<link href="/stylesheets/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/javascripts/jquery-ui-1.10.0.custom.min.js"></script>
+<script type="text/javascript" src="/javascripts/script.js"></script>
+ 
+ <div class="form-group">
+  	<label>Browse Content</label>
+  </div>
+  
+  <div class="playlist wide">
+  	<label>Filter Results</label>
+  	
+  	<form role="form" method="POST" action="/content/do_edit_module" style="display: inline-block">
+	  	<select name="skill_group">
+	  		<option>Select a skill group</option>	
+	  		<option>Communication</option>
+	  		<option>Sales</option>
+	  	</select>
+	  	
+	  	<select name="skill" onchange="ajax_load(this, 'module', '<%= val %>')" id="skill">
+	  		<option>Select a skill</option>
+	  		<% skills.forEach(function(playlist,i) { %>
+	  			<option value="<%= playlist.id %>"><%= playlist.name %></option>
+	  		<% }); %>
+	  	</select>
+	  	
+	  	<select name="module" onchange="ajax_load(this, 'content', '<%= val %>')" id="module">
+	  		<option>Select a module</option>
+	  		<% modules.forEach(function(playlist,i) { %>
+	  			<option value="<%= playlist.id %>"><%= playlist.name %></option>
+	  		<% }); %>
+	  	</select>
+	  	
+	  	<!--
+	  	<div class="btn-group btn-group-xs">
+	  		<input type="submit" value="Go" class="btn btn-default"/>
+	  	</div>
+	  	-->
+	  	
+	</form>
+  	
+  </div>
+  
+  <br/>
+  
+  <div class="form-group">
+  	<div class="playlist wide" id="content">
+  		<% contents.forEach(function(playlist,i) { %>
+  			<div class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+				<a class="close" href="#" onclick="show_preview('search_span_<%= playlist.id %>','<%= val %>')" style="font-size: 12px">&nbsp;Preview</a>
+				
+				<a class="close" href="#" onclick="build_module_content_playlist('search_span_<%= playlist.id %>','<%= val %>')" style="font-size: 12px">Add to Playlist &nbsp;</a>
+				<span>
+  					<span id="search_span_<%= playlist.id %>"><%= playlist.name %></span>
+  					<br/>
+  					<%= playlist.description != null ? playlist.description : '' %>
+  				</span>
+			</div>
+  			
+		<% }); %>
+  	</div>
+  </div>

@@ -1,0 +1,42 @@
+<br/>
+<h4> Add Question <%= q %></h4>
+	
+	<div class="form-group">
+		<input type="text" name="question_<%= q %>" class="form-control" id="name" placeholder="Question Text">
+	</div>
+	
+	<div class="form-group">
+		<input type="text" name="option_<%= q %>_1" class="form-control" id="option_1" placeholder="Answer: Option a">
+	</div>
+	
+	<div class="form-group">
+		<input type="text" name="option_<%= q %>_2" class="form-control" id="option_2" placeholder="Answer: Option b">
+	</div>
+	
+	<div class="form-group">
+		<input type="text" name="option_<%= q %>_3" class="form-control" id="option_3" placeholder="Answer: Option c">
+	</div>
+	
+	<div class="form-group">
+		<input type="text" name="option_<%= q %>_4" class="form-control" id="option_4" placeholder="Answer: Option d">
+	</div>
+	
+	<div class="form-group">
+		
+	</div>
+	
+	<div class="form-group">
+		<label>Correct Answer:&nbsp;&nbsp;&nbsp;</label>
+		<input type="radio" name="answer_<%= q %>" value="a">
+		<label>a</label>
+		<input type="radio" name="answer_<%= q %>" value="b">
+		<label>b</label>
+		<input type="radio" name="answer_<%= q %>" value="c">
+		<label>c</label>
+		<input type="radio" name="answer_<%= q %>" value="d">
+		<label>d</label>
+		&nbsp;&nbsp;&nbsp;
+		<input type="button" class="btn btn-default" value="Add Question <%= q+1 %>" onclick="ajax_call('/content/add_question/<%= q+1 %>','question_<%= q+1 %>');hide_div('button_question_<%= q %>')" id="button_question_<%= q %>"/>
+	</div>
+	
+	<div id="question_<%= q+1 %>"></div>

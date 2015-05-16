@@ -1,0 +1,122 @@
+<style>
+	#report-ajax .panel-body {
+		height: 150px;
+	}
+</style>
+<div class="animated fadeIn padded bg-info" id="report-ajax" style="overflow: hidden; <%= hide != null && hide != '' && hide != 'null' ? 'padding:0px' : ''  %>">
+  	<% if(hide == null || hide == '' || hide == 'null') { %>
+  		<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<% } %>
+  	<h2 class="thin no-margin-top">Skill Reports : <%= skill.name %></h2>
+  	
+  	<div class="col-md-3" style="<%= hide != null && hide != '' && hide != 'null' ? 'padding:0px' : ''  %>">
+  		<ul class="nav nav-tabs" >
+		  	<li class="active"><a>Coach Stats</a></li>
+		</ul>
+		<div class="tab-content bg-white padded margin-bottom" style="background-color: #f2f4f8">
+		  <div class="tab-pane fade in active" id="main_0">
+		  		<div class="row">
+		  			<!-- start notes -->
+		  			<div class="captionable  horizontal">
+				        <div class="captionable-flip">
+				          <div class="captionable-front">
+				            
+							<div class="panel panel-primary">
+							  <div class="panel-heading">
+							    <div class="panel-title text-center">
+							      NOTES
+							    </div>
+							  </div>
+							  <div class="panel-body no-padding-top" id="notes-panel-body" style="overflow: auto">
+							      <div class="padded">
+								    <div class="vpadded">
+								      <% if(notes_length == 0) { %>
+								      	<span style="color: #43494d">No notes to display</span>
+							     	  <% } %>
+								      
+								    </div>
+								  </div>
+							  </div><!-- end panel body -->
+							</div><!-- end panel -->
+				
+				          </div>
+				        </div>
+				      </div>
+		  			<!-- end notes -->
+		  		</div>
+		  		
+		  		<div class="row">
+		  			<table class="table table-bordered" style="background-color: #fff">
+						<tr>
+							<td>
+								<b>Current Coach Rating</b>
+							</td>
+						</tr>
+						<tr>
+							<td><b><%= current_coach_rating != null ? current_coach_rating.rating : '' %>/10</b></td>
+						</tr>
+					</table>
+		  		</div>
+		  		
+		  		<div class="row">
+		  			<!-- start coach rating history -->
+		  			<div class="captionable  horizontal">
+				        <div class="captionable-flip">
+				          <div class="captionable-front">
+				            
+							<div class="panel panel-primary">
+							  <div class="panel-heading">
+							    <div class="panel-title text-center">
+							      COACH RATING HISTORY
+							    </div>
+							  </div>
+							  <div class="panel-body no-padding-top" id="rating-panel-body">
+							    
+								  <div class="padded">
+								    <div class="vpadded">
+								      <% if(rating_length == 0) { %>
+								      	<span style="color: #43494d">No rating to display</span>
+							     	  <% } %>
+								    </div>
+								  </div>
+								  
+							  </div><!-- end panel body -->
+							</div><!-- end panel -->
+				
+				          </div>
+				        </div>
+				      </div>
+		  			<!-- end coach rating history -->
+		  		</div>
+		  	</div>
+		</div>
+  	</div>
+  	
+  	<div class="col-md-9" id="test-detail">
+  		<!--<ul class="nav nav-tabs" >
+		  	<li class="active"><a>Test 1</a></li>
+		  	<li><a>Test 2</a></li><li><a>Test 3</a></li><li><a>Test 4</a></li><li><a>Test 5</a></li>
+		</ul>
+		<div class="tab-content bg-white padded margin-bottom" style="background-color: #f2f4f8">
+		  <div class="tab-pane fade in active" id="main_0">
+		  		
+	  			<div class="row">
+	  				
+	  			</div>
+		  </div>
+		</div>-->
+  	</div>
+  	
+	
+</div>
+<script>
+	<% if(notes_length > 0) { %>
+		ajax_call('/users/notes/<%= user_id %>/<%= skill_id %>/<%= notes_length %>/0', 'notes-panel-body');
+	<% } %>
+	<% if(rating_length > 0) { %>
+		ajax_call('/users/coach_rating_history/<%= user_id %>/<%= skill_id %>', 'rating-panel-body');
+	<% } %>
+	ajax_call('/users/view_test_details/<%= user_id %>/<%= skill_id %>','test-detail');
+</script>
+
+

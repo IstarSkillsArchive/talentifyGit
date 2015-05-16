@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en" class="high">
+<head>
+  
+<meta charset="utf-8">
+
+<!-- Always force latest IE rendering engine or request Chrome Frame -->
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+
+<meta name="viewport" content="width=device-width, minimal-ui, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+
+<!-- Apple Touch -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../images/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../images/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../images/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../images/apple-touch-icon-57-precomposed.png">
+
+<!-- Favicon -->
+<link rel="shortcut icon" href="../images/favicon.png">
+
+<!-- Use title if it's in the page YAML frontmatter -->
+<title>Emerald</title>
+
+<script type="text/javascript">
+    var polyfilter_scriptpath = "/themes/emerald/polyfills/filters/";
+    window.polyfilter_skip_stylesheets = true
+</script>
+
+  <link href="../stylesheets/application.css" rel="stylesheet" type="text/css" />
+<!--[if lte IE 9]>
+<link href="../stylesheets/application_split2.css" rel="stylesheet" type="text/css" /><link href="../stylesheets/application_split3.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+  <script src="../javascripts/application.js" type="text/javascript"></script>
+  <script src="../javascripts/demo.js" type="text/javascript"></script>
+  <script src="../javascripts/init.js" type="text/javascript"></script>
+
+
+</head>
+
+<body class="high emerald-default doc doc_modals">
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <ul class="list-group">
+            <li class="list-group-item">
+              <a href="carousel.html">Carousel</a>
+            </li>
+            <li class="list-group-item">
+              <a href="modals.html">Modals</a>
+            </li>
+            <li class="list-group-item">
+              <a href="utilities.html">Utilities</a>
+            </li>
+            <li class="list-group-item">
+              <a href="theme_structure/stylesheets.html">Stylesheets</a>
+            </li>
+            <li class="list-group-item">
+              <a href="theme_structure/fonts_and_icons.html">Fonts and icons</a>
+            </li>
+            <li class="list-group-item">
+              <a href="theme_structure/javascripts.html">Javascripts</a>
+            </li>
+            <li class="list-group-item">
+              <a href="theme_structure/bower.html">Bower</a>
+            </li>
+            <li class="list-group-item">
+              <a href="theme_structure/htmls.html">Htmls</a>
+            </li>
+            <li class="list-group-item">
+              <a href="panels.html">Panels</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/labels.html">Labels</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/lists.html">Lists</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/background_box.html">Background box</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/box_table.html">Box table</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/typography.html">Typography</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/forms.html">Forms</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/progress_bar.html">Progress bar</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/badges.html">Badges</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/buttons.html">Buttons</a>
+            </li>
+            <li class="list-group-item">
+              <a href="offcanvas.html">Offcanvas</a>
+            </li>
+            <li class="list-group-item">
+              <a href="upgrade.html">Upgrade</a>
+            </li>
+            <li class="list-group-item">
+              <a href="intro.html">Intro</a>
+            </li>
+            <li class="list-group-item">
+              <a href="captionable.html">Captionable</a>
+            </li>
+            <li class="list-group-item">
+              <a href="forms.html">Forms</a>
+            </li>
+            <li class="list-group-item">
+              <a href="trees.html">Trees</a>
+            </li>
+            <li class="list-group-item">
+              <a href="turbocards.html">Turbocards</a>
+            </li>
+            <li class="list-group-item">
+              <a href="actionable.html">Actionable</a>
+            </li>
+      </ul>
+    </div>
+
+    <div class="col-md-9">
+      <h3 id="layout">Layout</h3>
+
+<p>The modal component offers several sizes (normal, large and small, all responsive) 
+as well as several color configurations and effects. There are custom modal effects
+that can be added on the .modal class as well as more general effects from animate.css
+that can be added on the .modal-dialog class.</p>
+
+<p>Markup with common configuration:</p>
+
+<pre><code>&lt;div class="modal MODAL-EFFECT MODAL-STYLE"&gt;
+  &lt;div class="modal-dialog ANIMETE-CSS-MODAL-EFFECT MODAL-SIZE"&gt;
+    &lt;div class="modal-content"&gt;
+      &lt;div class="modal-header"&gt;
+        &lt;button type="button" class="close" data-dismiss="modal" aria-hidden="true"&gt;&amp;times;&lt;/button&gt;
+        &lt;h4 class="modal-title"&gt;Modal title&lt;/h4&gt;
+      &lt;/div&gt;
+      &lt;div class="modal-body"&gt;
+        ...
+      &lt;/div&gt;
+      &lt;div class="modal-footer"&gt;
+        ... 
+      &lt;/div&gt;
+    &lt;/div&gt;&lt;!-- /.modal-content --&gt;
+  &lt;/div&gt;&lt;!-- /.modal-dialog --&gt;
+&lt;/div&gt;&lt;!-- /.modal --&gt;
+</code></pre>
+
+<p>MODAL-EFFECT and ANIMETE-CSS-MODAL-EFFECT are mutually exclusive.
+You should nott use both simultaneously.</p>
+
+<p>MODAL-STYLEs</p>
+
+<pre><code>.modal-dark
+.modal-light
+.modal-primary
+.modal-success
+.modal-info
+.modal-warning
+.modal-danger
+</code></pre>
+
+<p>MODAL-SIZEs</p>
+
+<pre><code>(default)
+.modal-lg
+.modal-sm
+</code></pre>
+
+<p>MODAL-EFFECTs</p>
+
+<pre><code>.fade-in-scale
+.slide-in-right
+.slide-in-bottom
+.newspaper
+.slide-to-top
+.super-scaled
+.just-modal
+.blur
+.fall
+.side-fall
+.flip-horizontal-3d
+.flip-vertical-3d
+.slit-3d
+.rotate-bottom-3d
+.rotate-left-3d
+</code></pre>
+
+<p>For the blur effect the modal markup should be added just above the main content element
+that holds the .modal-blur-content class.
+Also as a general good practice the modal markup should be added above the main content markup.</p>
+
+<p>ANIMETE-CSS-MODAL-EFFECTs</p>
+
+<pre><code>see http://daneden.github.io/animate.css/
+</code></pre>
+
+<p>This component is custom made.</p>
+
+<h3 id="jump-to">Jump to</h3>
+
+<p>Jump to menu is a special kind of modal, featuring a full page grid of links.</p>
+
+<p>Sample markup:</p>
+
+<pre><code>&lt;div class="modal blur jump-to-modal" id="jump-to-menu"&gt;
+  &lt;div class="modal-dialog modal-lg"&gt;
+    &lt;div class="clearfix"&gt;
+      &lt;button type="button" class="close pull-right text-white-dk" data-dismiss="modal" aria-hidden="true"&gt;×&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="container-fluid"&gt;
+
+      &lt;div class="row text-center vpadded-row"&gt;
+        &lt;div class="col-sm-4"&gt;
+          &lt;a href="/htmls/dashboard.html"&gt;
+            &lt;div class="jump-to-element padded text-gradient-white text-component-shadow"&gt;
+              &lt;i class="icm icm-screen4 icm-4x"&gt;&lt;/i&gt;
+              &lt;h5&gt;Dashboard&lt;/h5&gt;
+            &lt;/div&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+
+        &lt;div class="col-sm-4"&gt;
+
+          &lt;a href="/htmls/widgets.html"&gt;
+            &lt;div class="jump-to-element padded text-gradient-white text-component-shadow"&gt;
+              &lt;i class="icm icm-grid icm-4x"&gt;&lt;/i&gt;
+              &lt;h5&gt;Widgets&lt;/h5&gt;
+            &lt;/div&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+
+        ANOTHER CELL ...
+
+      &lt;/div&gt;
+
+      &lt;div class="row text-center vpadded-row"&gt;
+        ANOTHER ROW ....
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+</code></pre>
+
+<p>To trigger it:</p>
+
+<pre><code>&lt;a data-toggle="modal" href="#jump-to-menu"&gt;
+  Toggle jump-to menu
+&lt;/a&gt;
+</code></pre>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div id="mq"></div>
+<div id="emvars"></div>
+
+</body>
+</html>

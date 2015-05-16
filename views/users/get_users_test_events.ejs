@@ -1,0 +1,21 @@
+<div class="animated fadeIn padded bg-info">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<h2 class="thin no-margin-top">Tests</h2>
+  	
+  	<table class="table table-striped bg-white">
+		<% events.forEach(function(event, i) { %>
+		  	<tr class="row-mid">
+				<td>
+		          <%= event.name %>
+		        </td>
+				<!--
+				<td><b>Date:&nbsp;</b> <%= event.date %>&nbsp;&nbsp;<b>Time:&nbsp;</b> <%= event.time %></td>
+				-->
+				<td>
+		     		<a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="ajax_call('/content/start_test/event/<%= event.id %>','uide4b3dde6bb5097375d99eb18a83d7146')">Take Test</a>
+		     	</td>
+		     </tr>
+		<% }); %>
+	</table>
+  	
+</div>

@@ -1,0 +1,45 @@
+<!--<div class="pull-right" style="padding-right: 9px">
+	<%= role.name %>
+</div>-->
+<table class="table">
+  <thead>
+	  <tr class="row-mid">
+	        <th>
+	          <label>
+	            <div class="icheckbox table-checkable" style="position: relative;"><input type="checkbox" rel="icheck" class="table-checkable" style="position: absolute; opacity: 0;"></div>
+	          </label>
+	        </th>
+	    	<th>User</th>
+	    	<th>Action</th>
+	  </tr>
+  </thead>
+  <tbody>
+      <% users.forEach(function(user, i) { %>
+	      <tr class="row-mid role-filter-users role-filter-users-<%= i %>">
+	      	<td style="width: 30px" class="<%= i == 0 ? 'active-td-role-filter-users' : '' %>">
+	              <label>
+	                <div class="icheckbox table-checkable-row" style="position: relative;"><input type="checkbox" rel="icheck" class="table-checkable-row" style="position: absolute; opacity: 0;"></div>
+	              </label>
+	        </td>
+	        <td class="<%= i == 0 ? 'active-td-role-filter-users' : '' %>" style="cursor: pointer" onclick="mark_active_td_role_filter_user('<%= i %>');ajax_call('/hr_admin/view_user_profile/<%= user.id %>','user-profile')">
+	          <% if(user.first_name != null) { %>
+	          	<%= user.first_name %>&nbsp;<%= user.last_name != null ? user.last_name : '' %>
+	          <% } %>
+	          <% if(user.first_name == null) { %>
+	          	<%= user.username %>
+	          <% } %>
+	          </td>
+	        <td class="active-td-role-filter-users-last <%= i == 0 ? 'active-td-role-filter-users' : '' %>">
+	        	<i class="icm icm-remove5"></i>
+	        	<!--<i class="icm icm-arrow-right3"></i>-->
+	        </td>
+	      </tr>
+		<% }); %>
+	</tbody>
+</table>
+
+<script>
+	<% if(users.length > 0) { %>
+		ajax_call('/hr_admin/view_user_profile/<%= users[0].id %>','user-profile')
+	<% } %>
+</script>

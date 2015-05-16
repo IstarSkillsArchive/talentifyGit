@@ -1,0 +1,13 @@
+
+<form action="/coach/do_edit_notes" method="POST" id="edit_notes_form">
+	<textarea name="notes" style="width:98%; font-size: 12px">
+		<%= notes.notes != null ? notes.notes : '' %>
+	</textarea>
+	
+	<input type="hidden" name="notes_id" value="<%= notes.id %>" />
+	
+	<div style="text-align: center">
+		<a class="glyphicon glyphicon-save" title="Save" onclick="submit_form('edit_notes_form')" href="#"><a/>
+		<a class="glyphicon glyphicon-ban-circle" title="Cancel" href="/coach/gym/<%= notes.CoachId %>/<%= notes.UserId %>"></a>
+	</div>
+</form>

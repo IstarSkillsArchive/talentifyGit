@@ -1,0 +1,58 @@
+<script>
+	$('#uide4b3dde6bb5097375d99eb18a83d7146').removeClass('modal-lg');
+</script>
+
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <% if(skill_id == null || skill_id == 'null' || skill_id == '') { %>
+	        	<% if(currentUser.isTestCompleted == true) { %>
+	        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="non_ajax_call('/users/gym/<%= currentUser.id %>')">&times;</button>
+	        	<% } %>
+	        	<% if(currentUser.isTestCompleted != true) { %>
+	        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="non_ajax_call('/users/updateIsTestTaken/<%= currentUser.id %>')">&times;</button>
+	        	<% } %>
+	        <% } %>
+	        <% if(skill_id != null && skill_id != 'null' && skill_id != '') { %>
+	        	<button type="button" class="close" aria-hidden="true" onclick="ajax_call('/content/advance_next/<%= currentUser.id %>/<%= skill_id %>/<%= test_id %>','uide4b3dde6bb5097375d99eb18a83d7146')">&times;</button>
+	        <% } %>
+	        <h4 class="modal-title" id="myModalLabel">Report</h4>
+	      </div>
+	      <div class="modal-body" style="font-size: 14px; text-align: center">
+	      		<div style="font-weight: bold; font-size: 20px">
+	      			Score: <%= report.score %>/<%= total_test_score %>
+	      		</div>
+	      		Thank you for taking the test. We will notify you shortly about your test results.
+	      		<!--
+	      		<% if(report.isPassed) { %>
+	      			Congratulations! You have cleared this test
+	      		<% } %>
+	      		<% if(!report.isPassed) { %>
+	      			Oops! You failed to clear this test
+	      			<br/>
+	      			<div>
+	      				Reason: <%= report.reason %>
+	      			</div>
+	      		<% } %>
+	      		-->
+	      		<% if(skill_id == null || skill_id == 'null' || skill_id == '') { %>
+	      			<% if(currentUser.isTestCompleted == true) { %>
+		      			<div style="text-align: center; margin-top: 10px">
+			      			<a class="btn btn-success" onclick="non_ajax_call('/users/gym/<%= currentUser.id %>')">Close</a>
+			      		</div>
+			      	<% } %>
+			      	<% if(currentUser.isTestCompleted != true) { %>
+		      			<div style="text-align: center; margin-top: 10px">
+			      			<a class="btn btn-success" onclick="non_ajax_call('/users/updateIsTestTaken/<%= currentUser.id %>')">Close</a>
+			      		</div>
+			      	<% } %>
+	      		<% } %>
+	      		<% if(skill_id != null && skill_id != 'null' && skill_id != '') { %>
+		      		<div style="text-align: center; margin-top: 10px">
+		      			<a class="btn btn-primary" onclick="modal_ajax_call('/content/advance_next/<%= currentUser.id %>/<%= skill_id %>/<%= test_id %>','uide4b3dde6bb5097375d99eb18a83d7146')">Next</a>
+		      		</div>
+	      		<% } %>
+	      </div>
+	   </div>
+	</div>

@@ -1,0 +1,9 @@
+<% users.forEach(function(playlist,i) { %>
+	<div class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+		<a class="close" href="/recruiter/add_user_to_job/<%= playlist.id %>/<%= job_id %>" style="font-size: 12px">Invite User</a>
+		<span>
+			<span id="search_span_<%= playlist.id %>"><%= playlist.first_name %>&nbsp;<%= playlist.last_name %></span>
+		</span>
+	</div>
+	
+<% }); %>

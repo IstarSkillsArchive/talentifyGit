@@ -1,0 +1,36 @@
+<div class="tab-content bg-white padded margin-bottom" style="background-color: #f2f4f8; overflow: hidden">
+	<h2 class="thin no-margin-top text-center" style="color: #43494d">Edit Users</h2>
+	
+	<div class="col-md-6">
+		<!-- start filter -->
+		<div class="panel panel-default" id="jsrid5493609495">
+	          <div class="panel-header panel-colorize">
+		            <div class="panel-title panel-header-title" style="padding-left: 9px">
+		              <span style="margin-right: 8px">Role Filter</span>
+		              	<select onchange="role_filter_users(this)">
+							<% roles.forEach(function(role, i) { %>
+								<option value="<%= role.id %>"><%= role.name %></option>
+							<% }); %>
+						</select>
+		            </div>
+				</div>
+	
+	          <div class="tab-content">
+	            <div class="tab-pane fade active in" id="role-filter" style="height: 472px; overflow-y: auto; overflow-x: hidden">
+	            </div>
+	          </div>
+	    </div>
+		<!-- end filter -->
+	</div>
+	
+	<div class="col-md-6" id="user-profile">
+		<!-- start user profile -->
+		<!-- end user profile -->
+	</div>
+</div>
+
+<script>
+	<% if(roles.length > 0) { %>
+		ajax_call('/hr_admin/role_filter_users/<%= roles[0].id %>','role-filter');
+	<% } %>
+</script>

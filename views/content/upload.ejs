@@ -1,0 +1,98 @@
+<input type="button" class="first-btn btn btn-primary" value="List Content" onclick="ajax_call('/content/list_content','content-admin-display')">
+
+<h2 class="text-gradient-info-dk text-center">Upload File</h2>
+<hr>
+
+<div class="col-md-6">
+	<form role="form" method="POST" action="/content/do_upload" enctype="multipart/form-data" target="target-frame">
+	  <div class="form-group">
+	    <label>Name</label>
+	    <input type="text" name="name" class="form-control" id="name" placeholder="Name">
+	  </div>
+	  <div class="form-group">
+	    <label>Description</label>
+	    <textarea class="form-control" rel="autosize" placeholder="Text here" name="description" id="description"></textarea>
+	  </div>
+	  <div class="form-group">
+	  	<input type="radio" name="upload" value="file" onclick="show_class('content');hide_class('path')" checked="checked"/>
+	    &nbsp;<label>Upload file</label>&nbsp;
+	    
+	    <input type="radio" name="upload" value="path" onclick="show_class('path');hide_class('content')"/>
+	    &nbsp;<label>Upload Link</label>&nbsp;
+	  </div>
+	  
+	  <div class="form-group path display-none">
+	  	<label>Path</label>
+	  	<div class="input-group">
+		  <input type="text" name="path" class="form-control" id="path" placeholder="Path" />
+		  <span class="input-group-addon" onclick="show_content_preview()" style="border: 1px solid #e1e1e1; cursor: pointer">Preview</span>
+		</div>
+	  </div>
+	  
+	  <div class="form-group fileinput-new content" data-provides="fileinput">
+	      <label>Choose file</label>
+	      <div class="input-group">
+	        <div class="form-control" data-trigger="fileinput">
+	          <i class="fa fa-file fileinput-exists"></i>
+	          <span class="fileinput-filename"></span>
+	        </div>
+	        <span class="input-group-addon btn btn-file" style="border: 1px solid #e1e1e1">
+	          <span class="fileinput-new">Select file</span>
+	          <span class="fileinput-exists">Change</span>
+	          <input type="file" name="content" id="content">
+	        </span>
+	        <a style="border: 1px solid #e1e1e1" href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+	      </div>
+	  </div>
+	  
+	  <div class="form-group">
+	    <label>Type</label>
+	    <select name="type" id="type" class="form-control">
+	    	<option value="elt">E-Learning</option>
+	    	<option value="ilt">Instructor Led</option>
+	    </select>
+	  </div>
+	  
+	  <div class="form-group">
+	    <label>No. of Work Hours</label>
+	    <input type="text" name="hours" class="form-control" id="hours" placeholder="Hours">
+	  </div>
+	  
+	  <div class="form-group">
+		  <h4> Tag Content</h4>
+		  <div class="form-group">
+			<div class="row" id="tags" style="margin: auto"></div>
+			
+			<div class="input-group">
+				<input type="hidden" name="tag_id" id="tag_id"/>
+			  <input type="text" name="tag_name" class="form-control" id="tag_name" placeholder="Type and Click Add">
+			  <span class="input-group-addon" onclick="add_tag('tag_name')" style="border: 1px solid #e1e1e1; cursor: pointer">Add</span>
+			</div>
+		
+		 </div>
+	</div>
+	  
+	  
+		<button type="submit" class="btn btn-success">Submit</button>
+	</form>
+	<iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+</div>
+
+<script type="text/javascript">
+$("#tag_name").autocomplete({
+      source: function( request, response ) {
+      	$.ajax({
+          url: "/content/get_tags/"+request.term,
+	      success: function(data) {
+	      	response(data);
+	      }
+        });
+      },
+      minLength: 1,
+      select: function( event, ui ) {
+      	$('#tag_name').val(ui.item.label);
+      	$('#tag_id').val(ui.item.value);
+      	return false;
+      }
+});
+</script>

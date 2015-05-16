@@ -1,0 +1,89 @@
+<div class="tab-content bg-white padded margin-bottom" style="background-color: #f2f4f8; overflow: hidden">
+	<h2 class="thin no-margin-top text-center" style="color: #43494d">Add User</h2>
+	
+	<div class="col-md-12">
+		<!-- start filter -->
+		<div class="panel panel-default" id="jsrid5493609495">
+	          <!--<div class="panel-header panel-colorize">
+		            <div class="panel-title panel-header-title" style="padding-left: 9px">
+		              	
+		            </div>
+			  </div>-->
+	
+	          <div class="tab-content add-users-div">
+	            <div class="tab-pane fade active in padded" id="role-filter" style="height: 509px; overflow-y: auto; overflow-x: hidden">
+	            	<!-- start form -->
+	            	  <div class="col-md-12 padded">
+					    <div class="col-md-12">
+					    	<label><b>Username</b></label>
+					    </div>
+					    <div class="col-md-6">
+					    	<input type="text" name="username" id="username" class="form-control" id="username" placeholder="foo@xyz.com" onfocusout="username_check(this)">
+					  	</div>
+					  	<div class="col-md-6">
+					  		<div class="form-message-div success display-none" id="form-message-div-success">
+					  			<span class="btn btn-success btn-xs"><i class="icm icm-checkmark"></i></span>
+					  			<span id="form-message-span-success" class="form-message-span"></span>
+					  		</div>
+					  		<div class="form-message-div danger display-none" id="form-message-div-danger">
+					  			<span class="btn btn-danger btn-xs"><i class="icm icm-close"></i></span>
+					  			<span id="form-message-span-danger" class="form-message-span"></span>
+					  		</div>
+					  	</div>
+					  </div>
+					  
+					  <div class="col-md-12 padded" style="margin-bottom: -11px">
+						    <div class="col-md-12">
+						    	<label><b>Type</b></label>
+						    </div>
+						    <div class="col-md-6">
+							    <input type="radio" name="type" value="user" checked="checked" />&nbsp;<label><b>User</b></label>
+							    <% if(hr.organization.type == 'College') { %>
+							    	&nbsp;&nbsp;&nbsp;
+							    	<input type="radio" name="type" value="trainer" />&nbsp;<label><b>Trainer</b></label>
+							    <% } %>
+							    <% if(hr.organization.type != 'College') { %>
+							    	&nbsp;&nbsp;&nbsp;
+							    	<input type="radio" name="type" value="recruiter" />&nbsp;<label><b>Recruiter</b></label>
+							    <% } %>
+							</div>
+					  </div>
+					  
+					  <div class="col-md-12 padded">
+						    <div class="col-md-12">
+						    	<label><b><%= hr.organization.type == 'College' ? 'Class' : 'Role'%></b></label>
+						    </div>
+						    <div class="col-md-6">
+							    <select name="roleId" id="roleId" class="form-control">
+									<% roles.forEach(function(role) { %>
+										<option value = "<%= role.id %>"><%= role.name %></option>
+									<% }); %>
+								</select>
+							</div>
+					  </div>
+					  <div class="col-md-12 padded">
+					  	<input type="hidden" id="organizationId" value="<%= currentUser.OrganizationId %>" />
+					  	<div class="col-md-6">
+					  		<input type="button" class="btn btn-success" value="Submit" onclick="create_user()"/>
+					  	</div>
+					  </div>
+					  <div class="col-md-12 padded">
+					  	<div class="col-md-6">
+					  		<div class="form-message-div success display-none" id="form-message-div-success-main">
+					  			<span class="btn btn-success btn-xs"><i class="icm icm-checkmark"></i></span>
+					  			<span id="form-message-span-success-main" class="form-message-span"></span>
+					  		</div>
+					  		<div class="form-message-div danger display-none" id="form-message-div-danger-main">
+					  			<span class="btn btn-danger btn-xs"><i class="icm icm-close"></i></span>
+					  			<span id="form-message-span-danger-main" class="form-message-span"></span>
+					  		</div>
+					  	</div>
+					  </div>
+	            	<!-- end form -->
+	            </div>
+	          </div>
+	    </div>
+		<!-- end filter -->
+	</div>
+</div>
+

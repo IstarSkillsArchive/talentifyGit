@@ -1,0 +1,22 @@
+<div class="animated fadeIn padded bg-info" id="report-ajax" style="overflow: hidden;">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<ul class="nav nav-tabs">
+		<% roles.forEach(function(role, i) { %>
+			<li class="test_details_test_tab <%= role_id == role.id ? 'active' : '' %>" onclick="change_test_tab(this, 'test_details_test_tab')"><a onclick="ajax_call('/hr_admin/view_role_test_result_details/<%= role.id %>','report_details')"><%= role.name %></a></li>
+		<% }); %>
+	</ul>
+  	<div class="tab-content padded margin-bottom">
+		  <div class="tab-pane fade in active" id="report_details">
+		  		<% if(roles.length == 0) { %>
+		  			<p>No roles created for this organization</p>
+		  		<% } %>
+		  </div>
+	</div>
+</div>
+
+<script>
+	<% if(roles.length > 0) { %>
+		ajax_call('/hr_admin/view_role_test_result_details/<%= role_id %>','report_details');
+	<% } %>
+</script>
+

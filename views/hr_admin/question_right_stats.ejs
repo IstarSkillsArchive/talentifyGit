@@ -1,0 +1,10 @@
+<script>
+	var data = [];
+	<% tp.forEach(function(x, j) { %>
+		data[<%= j %>] = {};
+		data[<%= j %>].day = '<%= j+1 %>';
+		data[<%= j %>].count = <%= x.count %>;
+		data[<%= j %>].color = '<%= x.problem.difficultyLevel %>';
+	<% }); %>
+	d3_login_display(data, 'No. of Users', 'question-stats-div', 'false', 'Question');
+</script>

@@ -1,0 +1,173 @@
+<script>
+	$(document).ready(function() {									
+		$( ".slider" ).each(function() {
+	      var id = $(this).attr('id');
+	      $( this ).slider({
+	          range: "min",
+		      value: 5,
+		      min: 0,
+		      max: 10,
+		      slide: function( event, ui ) {
+		      	//alert($(this));
+		        coach_rating('<%= coach_id %>', '<%= user.id %>', id,ui.value,'coach_rating_'+id);
+		      }
+	      });
+	    });
+	});
+</script>
+<% if(user.role == null || user.skills == null) { %>
+								<p style="margin-left: 2%; text-align: center">There are no skills in this user's skill matrix.</p>
+							<% } %>
+							<% if(user.skills != null) { %>
+								<% user.skills.forEach(function(skill,i) { %>
+									<div class="well" style="overflow: hidden">
+										<div class="width_100" style="float: left">
+							                <div class="todo-icon" style="padding: 0px"><img src="/flat-ui/images/demo/browser-pic-<%= (i%6)+1 %>.jpg"></div>
+							                <div class="todo-content" style="padding-left: 4px;">
+							                  <a href="#" onclick="ajax_call('/users/next_module/<%= user.id %>/<%= skill.id %>', 'opentok');show_id('opentok');show_class('DimBg')" style="color: #2a6496"><b><%= skill.name %></b></a>
+							                  <button type="button" class="close" onclick="delete_user_skill('<%= user.id %>','<%= skill.id %>','user_skills')">&times;</button>
+							                  <br/>
+							                  <%= skill.description != null ? skill.description : '' %>
+							                </div>
+							            </div>
+										<div class="width_100">
+											<div class="flat-rating-table-div">
+												<div class="flat-rating-table">
+													<div class="manager">
+														<label>Manager</label>
+														<div class="display_inline_block green"><span>7/10</span></div>
+													</div>
+													<div class="coach">
+														<label>Coach</label>
+														
+														<% userSkills.forEach(function(us) { %>
+															<% if(us.SkillId == skill.id) { %>
+																<span id="coach_rating_<%= skill.id %>">
+																	<div class="display_inline_block <%= us.rating > 6 ? 'green' : (us.rating > 4 ? 'yellow' : 'red') %>">
+																		<span><%= us.rating != null ? us.rating : '-' %>/10</span>
+																	</div>
+																</span>
+															<% } %>
+														<% }); %>
+														
+													</div>
+													<div class="modules">
+														<label>Modules</label>
+														
+														<% userSkills.forEach(function(us, x) { %>
+															<% if(us.SkillId == skill.id) { %>
+																<div class="display_inline_block blue">
+																	<%= completedModules[x] %>/<%= totalModules[x] %>
+																</div>	
+															<% } %>
+														<% }); %>
+														
+													</div>
+												</div>
+												
+											</div>
+											<div id="notes_<%= skill.id %>">
+												<div style="" class="notes_div_skill">
+													<div class="width_100" style="text-align: center">
+														<table>
+															<tr>
+																<td style="width:10%">
+																	<% for(var x = 0; x < notes.length; x++) { %>
+																		<% if(notes[x].id == skill.id && notes[x].notes.length > 0) { %>
+																			<span id="glyph_prev_<%= skill.id %>" class="glyphicon glyphicon-backward" title="Prev" onclick="ajax_call('/coach/notes_prev/<%= coach_id %>/<%= user.id %>/<%= skill.id %>/<%= notes[x].notes.length > 0 ? notes[x].notes[0].id : 0 %>/<%= notes[x].notes.length %>/1', 'notes_<%= skill.id %>')"></span>
+																		<% } %>
+																	<% } %>
+																</td>
+																<td style="width: 90%">
+																	<b>Notes</b>
+																	<a href="#" onclick="non_ajax_call('/coach/do_add_notes/<%= coach_id %>/<%= user.id %>/<%= skill.id %>');">
+																		<span class="glyphicon glyphicon-plus-sign"></span>
+																	</a>
+																</td>
+																<td style="width:10%">
+																	<% for(var x = 0; x < notes.length; x++) { %>
+																		<% if(notes[x].id == skill.id && notes[x].notes.length > 0) { %>
+																			<span id="glyph_next_<%= skill.id %>" class="glyphicon glyphicon-forward" title="Next" onclick="ajax_call('/coach/notes_next/<%= coach_id %>/<%= user.id %>/<%= skill.id %>/<%= notes[x].notes.length > 0 ? notes[x].notes[0].id : 0 %>/<%= notes[x].notes.length %>/1', 'notes_<%= skill.id %>')"></span>
+																		<% } %>
+																	<% } %>
+																</td>
+															</tr>
+															<tr>
+																<td colspan="3">
+																	<% for(var x = 0; x < notes.length; x++) { %>
+																		<% if(notes[x].id == skill.id) { %>
+																			<%= notes[x].notes.length == 0 ? '0' : notes[x].notes.length %>/<%= notes[x].notes.length %>
+																		<% } %>
+																	<% } %>
+																</td>
+															</tr>
+														</table>
+														<div class="width_100" style="margin-top: 4px; display: table; height: 75px">
+															<% for(var x = 0; x < notes.length; x++) { %>
+																<% if(notes[x].id == skill.id) { %>
+																	<% if(notes[x].notes.length == 0) { %>
+																		<div style="display: table-cell; vertical-align: middle">No notes!</div>
+																	<% } %>
+																	<% if(notes[x].notes.length > 0) { %>
+																		<% notes[x].notes.forEach(function(n, i) { %>
+																			<div id="div_notes_<%= skill.id %>_<%= i %>" style="vertical-align: middle" class="<%= i == (notes[x].notes.length-1) ? 'display_table_cell' : 'display_none'%> div_notes_skills">
+																				<%= n.notes != null ? n.notes : '' %>
+																				<div style="text-align: center">
+																					<a class="glyphicon glyphicon-edit" title="Edit" onclick="ajax_call('/coach/edit_notes/<%= n.id %>', 'div_notes_<%= skill.id %>_<%= i %>')"></a>
+																					<a class="glyphicon glyphicon-remove-circle" title="Delete" href="/coach/delete_notes/<%= n.id %>"></a>
+																				</div>
+																			</div>
+																		<% }); %>
+																	<% } %>
+																<% } %>
+															<% } %>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!--<div class="width_100" style="float: left; height: 14px; border: 1px solid; font-size: 10px">
+											<div class="display_inline_block" style="background:#bf1c1d; color: #fff; height: 100%; width: 33%">Lacking</div>
+											<div class="display_inline_block" style="background:#eb9316; color: #fff; height: 100%; width: 30%">Capable</div>
+											<div class="display_inline_block" style="background:#419641; color: #fff; height: 100%; width: 30%">Proficient</div>
+										</div>-->
+										<div class="width_100" style="float: left">
+											<span><b>Enter your score:</b></span>
+											<br/>
+											<div id="<%= skill.id %>" class="ui-slider slider"></div>
+											
+											<!--
+											<span class="score red" onclick="coach_rating('<%= coach_id %>', '<%= user.id %>', '<%= skill.id %>','0','coach_rating_<%= skill.id %>')">0</span>
+											<span class="score red" onclick="coach_rating('<%= coach_id %>', '<%= user.id %>', '<%= skill.id %>','1','coach_rating_<%= skill.id %>')">1</span>
+											<span class="score red" onclick="coach_rating('<%= coach_id %>', '<%= user.id %>', '<%= skill.id %>','2','coach_rating_<%= skill.id %>')">2</span>
+											<span class="score red" onclick="coach_rating('<%= coach_id %>', '<%= user.id %>', '<%= skill.id %>','3','coach_rating_<%= skill.id %>')">3</span>
+											<span class="score red" onclick="coach_rating('<%= coach_id %>', '<%= user.id %>', '<%= skill.id %>','4','coach_rating_<%= skill.id %>')">4</span>
+											<span class="score yellow" onclick="coach_rating('<%= coach_id %>', '<%= user.id %>', '<%= skill.id %>','5','coach_rating_<%= skill.id %>')">5</span>
+											<span class="score yellow" onclick="coach_rating('<%= coach_id %>', '<%= user.id %>', '<%= skill.id %>','6','coach_rating_<%= skill.id %>')">6</span>
+											<span class="score green" onclick="coach_rating('<%= coach_id %>', '<%= user.id %>', '<%= skill.id %>','7','coach_rating_<%= skill.id %>')">7</span>
+											<span class="score green" onclick="coach_rating('<%= coach_id %>', '<%= user.id %>', '<%= skill.id %>','8','coach_rating_<%= skill.id %>')">8</span>
+											<span class="score green" onclick="coach_rating('<%= coach_id %>', '<%= user.id %>', '<%= skill.id %>','9','coach_rating_<%= skill.id %>')">9</span>
+											<span class="score green" onclick="coach_rating('<%= coach_id %>', '<%= user.id %>', '<%= skill.id %>','10','coach_rating_<%= skill.id %>')">10</span>
+											-->
+										</div>
+										<div class="width_100" style="float: left; font-size: 12px; margin-bottom: 12px">
+											<span style="font-size: 14px"><b>Enter your rating:</b></span>
+											<br/>
+											<% userSkills.forEach(function(us) { %>
+												<% if(us.SkillId == skill.id) { %>
+													<input type="radio" name="level_<%= skill.id %>" value="wizard" <%= us.level == 'wizard' ? 'checked="checked"' : ''%> onclick="ajax_call('/coach/coach_level/<%= user.id %>/<%= skill.id %>/wizard','')"/>&nbsp;Wizard
+													&nbsp;&nbsp;&nbsp;
+													<input type="radio" name="level_<%= skill.id %>" value="master" <%= us.level == 'master' ? 'checked="checked"' : ''%> onclick="ajax_call('/coach/coach_level/<%= user.id %>/<%= skill.id %>/master','')"/>&nbsp;Master
+													&nbsp;&nbsp;&nbsp;
+													<input type="radio" name="level_<%= skill.id %>" value="apprentice" <%= us.level == 'apprentice' ? 'checked="checked"' : ''%> onclick="ajax_call('/coach/coach_level/<%= user.id %>/<%= skill.id %>/apprentice','')"/>&nbsp;Apprentice
+													&nbsp;&nbsp;&nbsp;
+													<input type="radio" name="level_<%= skill.id %>" value="rookie" <%= us.level == 'rookie' ? 'checked="checked"' : ''%> onclick="ajax_call('/coach/coach_level/<%= user.id %>/<%= skill.id %>/rookie','')"/>&nbsp;Rookie
+												<% } %>
+											<% }); %>
+										</div>
+										<div class="width_100" style="float: left">
+											<a href="#" onclick="ajax_call('/coach/reset_module/<%= user.id %>/<%= skill.id %>','opentok');show_class('DimBg');show_id('opentok')" style="color:#2a6496">Reset Module</a>
+										</div>
+									</div>
+								<% }); %>
+							<% } %>

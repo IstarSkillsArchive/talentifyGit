@@ -1,0 +1,3 @@
+<input type="text" name="score" id="score" value="<%= test.passScore %>" />
+<a title="Save" onclick="do_edit_test_pass_score('<%= test.id %>')"><i class="icm icm-checkmark-circle"></i></a>
+<a title="Cancel" onclick="ajax_call('/content/show_test_pass_score/<%= test.id %>','test_pass_score')"><i class="icm icm-cancel-circle"></i></a>

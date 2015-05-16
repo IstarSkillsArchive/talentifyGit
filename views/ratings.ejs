@@ -1,0 +1,44 @@
+<% layout('layout') %>
+
+<script type="text/javascript">
+	window.onload = function() {
+		var opts = {
+	      orientation: "vertical",
+	      range: "min",
+	      min: 0,
+	      max: 100,
+	      value: 60
+		};
+		$( "#slider-vertical, #slider-vertical1, #slider-vertical2" ).slider(opts);
+	}
+</script>
+
+<ul class="nav nav-tabs">
+  <li id="home_li"><a href="/dashboard">Home</a></li>
+  <li id="gym_li"><a href="/users/gym/<%= currentUser.id %>" >Gym</a></li>
+  <li><a href="/users/report_card/<%= currentUser.id %>">Report Card</a></li>
+  <li class="active"><a href="/users/ratings/<%= currentUser.id %>">Ratings</a></li>
+  <li><a href="/users/skill_map/<%= currentUser.id %>">Skill Map</a></li>
+  <li><a href="/users/profile/<%= currentUser.id %>">Profile</a></li>
+</ul>
+
+<div class="tab-pane fade in active" id="profile">
+	<div style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%; text-align: center;">
+
+		<div class="row">
+			<% if(user.skills == null) { %>
+				<p style="margin-left: 2%; text-align: center">There are no skills in your skill matrix.</p>
+			<% } %>
+			<% if(user.skills != null) { %>
+				<% user.skills.forEach(function(skill) { %>
+					<div class="col-md-2 well" style="margin-left: 2%; text-align: center; height: 150px; line-height: 100px; vertical-align: middle;">
+						<a href="#" class="start_rating" data-toggle="modal" data-target="#start-rating"><%= skill.name %></a>
+					</div>
+				<% }); %>
+			<% } %>
+		</div>
+		
+		
+		<% include start_rating.ejs %>
+	</div>
+</div>

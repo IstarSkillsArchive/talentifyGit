@@ -1,0 +1,38 @@
+  <table class="table table-bordered"> 
+  		<% modules.forEach(function(playlist,i) { %>
+  			<tr class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+  				<td style="width: 400px">
+  					<input type="hidden" id="search_span_<%= playlist.id %>" value="<%= playlist.id %>"/>
+  					<span id=""><%= playlist.name %></span>
+  					<br/>
+  					<%= playlist.description != null ? playlist.description : '' %>
+  				</td>
+  				<td class="text-center">
+  					<span onclick="build_skill_playlist('search_span_<%= playlist.id %>', '1')" style="font-size: 12px; cursor: pointer" title="Add to Playlist"><i class="icm icm-plus-circle"></i></span>
+  				</td>
+  				<td class="text-center">
+  					<a class="close" onclick="show_preview_module('search_span_<%= playlist.id %>', '1', 'true')" style="font-size: 12px" title="Preview"><i class="icm icm-search3"></i></a>
+  				</td>
+  			</tr>
+  		<% }); %>
+  </table>
+  
+  <% if(pages > 1) { %>
+		<ul class="pagination">
+		  <% if(prev == true) { %>
+		  	<li><a onclick='ajax_call("/module/browse_modules/<%= page-1 %>","uid234031a40beddbc7053641c8178e89ae")'>«</a></li>
+		  <% } %>
+		  <% if(prev == false) { %>
+		  	<li class="disabled"><a>«</a></li>
+		  <% } %>
+		  <% for(i = 0; i < pages ; i++) { %>
+		  <li class="<%= i+1 == page ? 'active' : ''%>"><a onclick='ajax_call("/module/browse_modules/<%= i+1 %>","uid234031a40beddbc7053641c8178e89ae")'><%= i+1 %></a></li>
+		  <% } %>
+		  <% if(next == true) { %>
+		  	<li><a onclick='ajax_call("/module/browse_modules/<%= page+1 %>","uid234031a40beddbc7053641c8178e89ae")'>»</a></li>
+		  <% } %>
+		  <% if(next == false) { %>
+		  	<li class="disabled"><a>»</a></li>
+		  <% } %>
+		</ul>
+	<% } %>

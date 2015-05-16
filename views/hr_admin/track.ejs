@@ -1,0 +1,53 @@
+<% layout('../new-layout') %>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<li class="li_tab"><a href="/hr_admin/dashboard"><%= hr.organization.type == 'College' ? 'College' : 'Company'%> L&D Stats</a></li>
+			  	<li class="li_tab active"><a href="/hr_admin/track"><%= hr.organization.type == 'College' ? 'Student' : 'Employee'%> Stats</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>"><%= hr.organization.type == 'College' ? 'Batches' : 'Roles'%></a></li>
+			 	<li class="li_tab"><a href="/users/list">Manage Users</a></li>
+			 	<li class="li_tab"><a href="/hr_admin/list_events">Events</a></li>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<% include ../util/errors %>
+
+<div style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%; text-align: center">
+	<p style="font-size: 24px;">Track an Employee's Competency Development</p>
+	<div style="margin-top: 2%">
+		<form class="navbar-form" action="/users/search" method="POST">
+			<div class="form-group">
+				<input name="search" id="search" type="text" placeholder="Search" class="form-control">
+			</div>
+			<button type="submit" id="search_button" class="btn btn-success">
+			  <span class="glyphicon glyphicon-search"></span>
+			</button>
+		</form>
+	</div>
+	<div style="margin-top: 2%" id="search_results">
+		<div class="tab-pane fade in active" id="user_list">
+		</div>
+		<div class="tab-pane fade" id="user_detail">
+		</div>
+	</div>
+	<div class="row" style="display: none; position: relative; top: -5px;">
+		<p class="alert alert-danger" id="search_results_error"></p>
+	</div>
+</div>
+

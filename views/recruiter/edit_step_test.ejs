@@ -1,0 +1,58 @@
+<style>
+	.modal-dialog {
+		width: auto;
+		position: absolute;
+		top: 15%;
+		bottom: 15%;
+		left: 25%;
+		right: 25%;
+		width: auto;
+		margin: auto;
+	}
+	@media (max-width: 767px) {
+		.modal-dialog {
+			top: 15%;
+			bottom: 15%;
+			left: 1%;
+			right: 1%;	
+		  }
+		  .modal-header h4 {
+		  	font-size: 1.5em;
+		  }
+	}
+</style>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+      		
+      <div class="modal-header">
+        <a class="close" href="#" onclick="hide_class('DimBg');hide_div('modal_preview')">&times;</a>
+        <h4 class="modal-title" id="myModalLabel">Edit Interview Test</h4>
+      </div>
+      
+      <div class="modal-body">
+      
+      	<% if(test != null) { %>
+	      	<table class="table	table-bordered">
+				<thead>
+					<th>Id</th>
+					<th>Test</th>
+					<th>Action</th>
+				<thead>
+				<tbody>
+					
+					<tr>
+						<td>1</td>
+						<td><%= test.name %></td>
+						<td><a onclick="non_ajax_call('/recruiter/delete_step_test/<%= step.id %>/<%= test.id %>')">Delete</a></td>
+					</tr>
+					
+				</tbody>
+			</table>
+		<% } %>
+		
+		<a class="btn btn-primary" onclick="ajax_call('/content/add_test/step/<%= step.id %>','modal_preview');show_class('DimBg');show_id('modal_preview')">Add Test</a>
+      
+      </div>
+	</div>
+</div>

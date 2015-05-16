@@ -1,0 +1,55 @@
+<% layout('../new-layout') %>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<li class="li_tab"><a href="/hr_admin/dashboard">Company L&D Stats</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/track">Employee Stats</a></li>
+			  	<li class="li_tab active"><a href="/hr_admin/list_roles/<%= currentUser.id %>">Roles</a></li>
+			 	<li class="li_tab"><a href="/users/list">Manage Users</a></li>
+			 	<li class="li_tab"><a href="/hr_admin/list_events">Events</a></li>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<% include ../util/errors %>
+
+<form action="/hr_admin/list_roles/<%= user_id %>">
+	<input type="submit" class="btn btn-primary" value="List Roles" style="margin-top: 2%">
+</form>
+
+
+<h4 style="text-align: center">Create Role</h4>
+
+<form role="form" method="POST" action="/hr_admin/do_create_role">
+  
+   <input type="hidden" name="user_id" id="user_id" value="<%= user_id %>">
+  
+  <div class="form-group">
+    <input type="text" name="name" class="form-control" id="name" placeholder="Name">
+  </div>
+  
+  <div class="form-group">
+  	<select name="OrganizationId" id="OrganizationId" class="form-control">
+  		
+		<option value = "<%= user.organization.id %>"><%= user.organization.name %></option>
+		
+  	</select>
+  </div>
+  
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>

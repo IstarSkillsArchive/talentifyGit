@@ -1,0 +1,24 @@
+<% if(events.length == 0) { %>
+    	<li>No events</li>
+    <% } %>
+<% events.forEach(function(event, j) { %>
+	<li class="chat-contact unread">
+	  <a class="media">
+	    <img class="media-object pull-left img-circle" src="/wrap/images/faker/avatars/48/Faces_Users-12.png">
+	    <div class="media-body">
+	      <div class="media-heading" style="color: #43494d;">
+	        <%= event.name %>&nbsp;<%= event.date.getHours() %>:<%= event.date.getMinutes() %> to <%= event.endDate != null ? event.endDate.getHours() : '' %>:<%= event.endDate != null ? event.endDate.getMinutes() : '' %>,&nbsp;<%= event.org %>&nbsp;<%= event.trainer %>&nbsp;,<b><%=event.status %></b>
+	      </div>
+	      <small class="last-message">
+	        <% if(event.status != 'Trainer Accepted Invite') { %>
+	        	<btn class="btn btn-primary btn-sm turbo-card turbo-toggle" data-back-class="bg-info" data-turbo-url="/coordinator/get_trainer_location/<%= event.id %>" title="Map"><i class="icm icm-location3"></i></btn>
+	        <% } %>
+	        <% if(event.status == 'Done Event' || event.status == 'checkout') { %>
+	        	<btn data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="ajax_call('/coordinator/view_attendance/<%= event.id %>','uide4b3dde6bb5097375d99eb18a83d7146')" class="btn btn-warning btn-sm" title="Attendance">Attendance</btn>
+	        	<btn data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="ajax_call('/coordinator/view_trainer_feedback/<%= event.id %>','uide4b3dde6bb5097375d99eb18a83d7146')" class="btn btn-warning btn-sm" title="Feedback">Feedback</btn>
+	        <% } %>
+	      </small>
+	    </div>
+	  </a>
+	</li>
+<% }); %>

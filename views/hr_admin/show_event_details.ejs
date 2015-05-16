@@ -1,0 +1,57 @@
+<!-- start -->
+<div class="panel panel-danger">
+      <div class="panel-header panel-colorize">
+            <div class="panel-title panel-header-title" style="padding-left: 9px">
+              Edit details
+            </div>
+		</div>
+      <div class="tab-content">
+        <div class="tab-pane fade active in" id="tests-filter" style="height: 472px; overflow-y: auto; overflow-x: hidden">
+        	<table class="table">
+			  <tbody>
+			  	<tr>
+			  		<td><b>Name</b></td>
+			  	</tr>    
+			  	<tr>
+			  		<td>
+			  			<span id="replace-event-name"><%= event.name %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/edit_event_field/name/<%= event.id %>', 'replace-event-name')"></i></span>
+			  		</td>
+			  	</tr>
+			  	<tr>
+			  		<td><b>Description</b></td>
+			  	</tr>    
+			  	<tr>
+			  		<td>
+			  			<span id="replace-event-desc"><%= event.description != null ? event.description : event.name %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/edit_event_field/description/<%= event.id %>', 'replace-event-desc')"></i></span>
+			  		</td>
+			  	</tr>
+			  	<tr>
+			  		<td><b>Date</b></td>
+			  	</tr>    
+			  	<tr>
+			  		<td>
+			  			<span id="replace-event-date"><%= event.date != null ? event.date : '' %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/edit_event_field/date/<%= event.id %>', 'replace-event-date')"></i></span>
+			  		</td>
+			  	</tr>
+			  	<tr>
+			  		<td><b>Time</b></td>
+			  	</tr>    
+			  	<tr>
+			  		<td>
+			  			<span id="replace-event-time"><%= event.time != null ? event.time : '' %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/edit_event_field/time/<%= event.id %>', 'replace-event-time')"></i></span>
+			  		</td>
+			  	</tr>
+			  	<tr>
+			  		<td><b>Location</b></td>
+			  	</tr>    
+			  	<tr>
+			  		<td>
+			  			<span id="replace-event-location"><%= event.location != null ? event.location : '' %><i title="Edit" class="icm icm-pencil5 pull-right" onclick="ajax_call('/hr_admin/edit_event_field/location/<%= event.id %>', 'replace-event-location')"></i></span>
+			  		</td>
+			  	</tr>
+			  </tbody>
+			</table>
+        </div>
+      </div>
+</div>
+<!-- end -->

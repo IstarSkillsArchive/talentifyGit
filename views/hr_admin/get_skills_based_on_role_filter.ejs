@@ -1,0 +1,5 @@
+<% skills.forEach(function(skill,i) { %>
+	<li>
+		<input type="checkbox" value="<%= skill.id %>" class="skill-filter-checkbox" onclick="get_skill_filter_checkbox_values('<%= val %>')"/> <%= skill.name %>
+	</li>
+<% }); %>

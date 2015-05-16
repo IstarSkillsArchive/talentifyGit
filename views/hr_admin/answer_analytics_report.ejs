@@ -1,0 +1,45 @@
+<!-- start diagnostics -->
+<!--<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel panel-info">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      Diagnostics
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top" style="overflow: auto">
+			    
+				  <div class="padded">
+				    <div class="vpadded" style="white-space: normal">
+				      <span><%= answer.whatAnswerIndicates %></span>
+				    </div>
+				  </div>
+				  
+			  </div>
+			</div>
+
+          </div>
+        </div>
+      </div>
+ </div>-->
+<!-- end diagnostics -->
+
+<% users.forEach(function(user, i) { %>
+    <li class="chat-contact unread">
+	  <a href="#oc-wrapper-chat-2" class="media" data-toggle="offcanvas" data-control="right" data-states="open,hidden">
+	    <img class="media-object pull-left img-circle" src="/wrap/images/faker/avatars/48/Faces_Users-22.png">
+	    <div class="media-body">
+	      <div class="media-heading" style="color: #43494d;">
+	        <%= user.first_name %>
+	        <small class="last-message-date"><%= user.last_name != null ? user.last_name : '' %></small>
+	      </div>
+	      <small class="last-message">
+	        <%= user.role.name %> 
+	      </small>
+	    </div>
+	  </a>
+	</li>
+<% }); %>

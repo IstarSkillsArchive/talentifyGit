@@ -1,0 +1,115 @@
+<!-- start question text -->
+<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel panel-info">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      Question Text
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top" style="overflow: auto">
+			    
+				  <div class="padded">
+				    <div class="vpadded" style="white-space: normal">
+				      <span><%= problem.text %></span>
+				    </div>
+				  </div>
+				  
+			  </div><!-- end panel body -->
+			</div><!-- end panel -->
+
+          </div>
+        </div>
+      </div>
+ </div>
+<!-- end question text -->
+
+<!-- start correct answer -->
+<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel panel-info">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      Correct Answer
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top" style="overflow: auto">
+			    
+				  <div class="padded">
+				    <div class="vpadded" style="white-space: normal">
+				      <span><%= correct_answer.text %></span>
+				    </div>
+				  </div>
+				  
+			  </div><!-- end panel body -->
+			</div><!-- end panel -->
+
+          </div>
+        </div>
+      </div>
+ </div>
+<!-- end correct answer -->
+
+<!-- start your answer -->
+<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel <%= reportDetail.isAnswer ? 'panel-success' : 'panel-danger' %>">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      Your Answer
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top" style="overflow: auto">
+			    
+				  <div class="padded">
+				    <div class="vpadded" style="white-space: normal">
+				      <span><%= your_answer != null ? your_answer.text : '' %></span>
+				    </div>
+				  </div>
+				  
+			  </div><!-- end panel body -->
+			</div><!-- end panel -->
+
+          </div>
+        </div>
+      </div>
+ </div>
+<!-- end your answer -->
+
+<!-- start diagnostics -->
+<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel panel-info">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      Diagnostics
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top" style="overflow: auto">
+			    
+				  <div class="padded">
+				    <div class="vpadded" style="white-space: normal">
+				      <span><%= your_answer != null ? your_answer.whatAnswerIndicates : '' %></span>
+				    </div>
+				  </div>
+				  
+			  </div><!-- end panel body -->
+			</div><!-- end panel -->
+
+          </div>
+        </div>
+      </div>
+ </div>
+<!-- end diagnostics -->

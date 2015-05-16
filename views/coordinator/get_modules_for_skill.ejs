@@ -1,0 +1,5 @@
+<select name="ModuleId" id="ModuleId" class="form-control" style="border: 1px solid #ccc">
+	<% modules.forEach(function(module, i) { %>
+		<option value="<%= module.id %>"><%= module.name %></option>
+	<% }); %>
+</select>

@@ -1,0 +1,65 @@
+<div class="animated fadeIn padded bg-info" id="event-steps" style="overflow: hidden;">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<h2 class="thin no-margin-top">Steps</h2>
+  	
+  	<div class="tab-content">
+		<div class="tab-pane fade in active" id="main_0">
+			<% if(events.length > 0) { %>
+			<p style="color: #fff">
+				You cannot proceed until you check out from below <%= events.length %> event(s). Please do the same.
+			</p>
+			<ul class="nav nav-stacked nano-content">
+		        <% events.forEach(function(event,i) { %>
+			        <li class="chat-contact unread" onclick='ajax_call("/trainer/event_steps/<%= event.id %>","turbo-content-open-id")' style="border: 1px solid #22ba93">
+					  <a class="media" style="background: #eee; padding: 15px; border: 0px">
+					    <img class="media-object pull-left img-circle" src="/wrap/images/faker/avatars/48/Faces_Users-22.png">
+					    <div class="media-body">
+					      <div class="media-heading" style="color: #43494d;">
+					        <%= event.name %>, <%= event.date.toDateString() %>, <%= event.date.getHours() %>:<%= event.date.getMinutes() %> to <%= event.endDate.getHours() %>:<%= event.endDate.getMinutes() %>
+					      </div>
+					      <small class="last-message">
+					        <%= event.description != null ? event.description : '' %>
+					      </small>
+					    </div>
+					  </a>
+					</li>
+				<% }); %>
+		    </ul>
+			<% } %>
+			<% if(events.length == 0) { %>
+			<table class="table">
+	    		<tbody>
+	    			<tr>
+	    				<td><span class="badge badge-default <%= el == null ? '' : 'disabled'%> checkin-btn-<%= event_id %>">1</span></td>
+	    				<td onclick="geolocation.get_geolocation('<%= event_id %>','<%= currentUser.id %>')"><span class="badge badge-default <%= el == null ? '' : 'disabled'%> checkin-btn-<%= event_id %>">Check In</span></td>
+	    			</tr>
+	    			<tr>
+	    				<td><span class="badge badge-success <%= el == 'checkin' ? '' : 'disabled'%> reached-btn-<%= event_id %>">2</span></td>
+	    				<td><span class="badge badge-success <%= el == 'checkin' ? '' : 'disabled'%> reached-btn-<%= event_id %>" onclick="geolocation.clear_interval()">Reached</span></td>
+	    			</tr>
+	    			<tr>
+	    				<td><span class="badge badge-primary <%= el == 'reached' ? '' : 'disabled'%> start-btn-<%= event_id %>">3</span></td>
+	    				<td><span class="badge badge-primary <%= el == 'reached' ? '' : 'disabled'%> start-btn-<%= event_id %>" onclick="attendance.start_class('<%= event_id %>')">Start Class</span></td>
+	    			</tr>
+	    			<tr>
+	    				<td><span class="badge badge-warning <%= el == 'start' ? '' : 'disabled'%> attendance-btn-<%= event_id %>">4</span></td>
+	    				<td><span class="badge badge-warning <%= el == 'start' ? '' : 'disabled'%> attendance-btn-<%= event_id %>" data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="ajax_call('/trainer/take_attendance/<%= event_id %>','uide4b3dde6bb5097375d99eb18a83d7146')">Attendance</span></td>
+	    			</tr>
+	    			<tr>
+	    				<td><span class="badge badge-danger <%= el == 'attendance' ? '' : 'disabled'%> feedback-btn-<%= event_id %>">5</span></td>
+	    				<td><span class="badge badge-danger <%= el == 'attendance' ? '' : 'disabled'%> feedback-btn-<%= event_id %>" data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="ajax_call('/trainer/take_feedback/<%= event_id %>','uide4b3dde6bb5097375d99eb18a83d7146')">Feedback</span></td>
+	    			</tr>
+	    			<tr>
+	    				<td><span class="badge badge-default <%= el == 'feedback' ? '' : 'disabled'%> checkout-btn-<%= event_id %>">6</span></td>
+	    				<td onclick="check_out('<%= event_id %>','<%= currentUser.id %>')"><span class="badge badge-default <%= el == 'feedback' ? '' : 'disabled'%> checkout-btn-<%= event_id %>">Check Out</span></td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+	    	<% } %>
+		</div>
+	</div>
+		
+</div>
+
+
+

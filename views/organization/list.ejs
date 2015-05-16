@@ -1,0 +1,32 @@
+<% layout('../layout') %>
+<h3>Company List</h3>
+<hr>
+<table class="table	table-bordered">
+	<thead>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Description</th>
+		<th>Country</th>
+		<th>State</th>
+		<th>City</th>
+		<th>Address</th>
+		<th>Type</th>
+		<th>Action</th>
+	<thead>
+	<tbody>
+		<% organizations.forEach(function(company) { %>
+		<tr>
+			<td><%= company.id %></td>
+			<td><%= company.name %></td>
+			<td><%= company.description != null ? company.description : '' %></td>
+			<td><%= company.country != null ? company.country : '' %></td>
+			<td><%= company.state != null ? company.state : '' %></td>
+			<td><%= company.city != null ? company.city : '' %></td>
+			<td><%= company.address != null ? company.address : '' %></td>
+			<td><%= company.type != null ? company.type : 'Corporate' %></td>
+			<td><a>Delete</a></td>
+		</tr>
+		<% }); %>
+	</tbody>
+</table>
+

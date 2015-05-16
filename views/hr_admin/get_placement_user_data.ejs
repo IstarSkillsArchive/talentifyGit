@@ -1,0 +1,26 @@
+<table class="table">
+  <tbody>
+  	<tr>
+  		<td colspan="2" style="width: 100%">
+  			<input type="button" onclick="ajax_call('/hr_admin/placement','turbo-content-open-id')" value="Back" class="btn btn-primary btn-xs"/>
+  		</td>
+  	</tr>
+  	<% if(users.length == 0) { %>
+  		<tr>
+  			<td>
+  				No users
+  			</td>
+  		</tr>
+  	<% } %>
+  	<% if(users.length > 0) { %>
+  		<% users.forEach(function(user,i) { %>
+	  		<tr>
+	  			<td><%= i+1 %></td>
+	  			<td>
+	  				<%= user.first_name %><%= user.last_name != null ? user.last_name : '' %>
+	  			</td>
+	  		</tr>
+	  	<% }); %>
+  	<% } %>
+  </tbody>
+</table>

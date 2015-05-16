@@ -1,0 +1,57 @@
+
+<ul class="nav nav-tabs">
+ 	<li class="li_tab active"><a href="/hr_admin/dashboard">Company L&D Stats</a></li>
+  	<li class="li_tab"><a href="/hr_admin/track">Employee Stats</a></li>
+  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>">Roles</a></li>
+ 	<li class="li_tab"><a href="/users/list">Manage Users</a></li>
+</ul>
+
+<div class="tab-content">
+  
+	<div class="tab-pane fade in active">
+		<div id="dashboard_display" style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%;">
+			<div id="chart1" style="text-align: center">
+				<img src="/images/charts/stats.png"/>
+			</div>
+			
+			<table class="table	table-bordered margin_top_2" style="border-collapse: inherit">
+				<thead>
+					<th>Function</th>
+					<th>Average Training Hours</th>
+					<th>Improvement Perceived (%)</th>
+				<thead>
+				<tbody>
+					<tr>
+						<td>HR</td>
+						<td>25</td>
+						<td>10</td>
+					</tr>
+					<!--
+					<tr>
+						<td>Accounting</td>
+						<td>35</td>
+						<td>25</td>
+					</tr>
+					<tr>
+						<td>Sales</td>
+						<td>50</td>
+						<td>100</td>
+					</tr>
+					<tr>
+						<td>Engineering</td>
+						<td>55</td>
+						<td>30</td>
+					</tr>
+					<tr>
+						<td>Production</td>
+						<td>25</td>
+						<td>50</td>
+					</tr>
+					-->
+				</tbody>
+			</table>
+			
+		</div>
+	</div>
+  
+</div>

@@ -1,0 +1,278 @@
+	<% layout('../layout') %>
+	
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="/jquery/jquery.min.js"></script>
+	<ul class="nav nav-tabs">
+	 	<li class="li_tab"><a href="/hr_admin/dashboard">Company L&D Stats</a></li>
+	  	<li class="li_tab active"><a href="/hr_admin/track">Employee Stats</a></li>
+	  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>">Roles</a></li>
+	 	<li class="li_tab"><a href="/users/list">Manage Users</a></li>
+	</ul>
+	
+	<% include ../util/errors %>
+	
+	<div style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%; text-align: center">
+		<p style="font-size: 24px;">Track an Employee's Competency Development</p>
+		<div style="margin-top: 2%">
+			<form class="navbar-form" action="/users/search" method="POST">
+				<div class="form-group">
+					<input name="search" id="search" type="text" placeholder="Search" class="form-control" value="<%= keyword %>">
+				</div>
+				<button type="submit" id="search_button" class="btn btn-success">
+				  <span class="glyphicon glyphicon-search"></span>
+				</button>
+			</form>
+		</div>
+		<div style="margin-top: 2%" id="search_results">
+			<div class="tab-pane fade in active" id="user_detail">
+			
+				<div style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%; text-align: center;">
+					<h4 style="text-align: left;"><small>USER INFORMATION</small></h4>
+					<hr>
+					<div class="row">
+						<div class="information col-md-8" style="width: 60%;">
+							  <style>.row { margin-left: 0px } </style>
+							  <div class="row">
+							  	<h5 class="navbar-left"><b>Id:</b>&nbsp;&nbsp;<%= user.id %></h5>
+							  </div>
+							  <div class="row">
+							  	<h5 class="navbar-left"><b>Username:</b>&nbsp;&nbsp;<%= user.username %></h5>
+							  </div>
+							  <div class="row">
+							  	<h5 class="navbar-left"><b>Name:</b>&nbsp;&nbsp;<%= user.first_name %>&nbsp;<%= user.last_name != null ? user.last_name : '' %></h5>
+							  </div>
+							  <div class="row">
+							  	<h5 class="navbar-left"><b>Role:</b>&nbsp;&nbsp;
+							  		<%= user.role != null ? user.role.name : '-'%>
+							  	</h5>
+							  </div>
+							  <div class="row">
+							  	<h5 class="navbar-left"><b>Organization:</b>&nbsp;&nbsp;
+							  		<%= user.organization != null ? user.organization.name : '-' %>
+							  	</h5>
+							  </div>
+							  <div class="row">
+							  	<h5 class="navbar-left"><b>Email:</b>&nbsp;&nbsp;<%= user.email %></h5>
+							  </div>
+						</div>
+						<div class="profile_picture col-md-4">
+							<img src="/images/profile.png" alt="" class="img-thumbnail">
+						</div>
+					</div>
+					
+					<div id="vertical_tab_menu">
+						<ul class="display_inline_block">
+							<li class="li_class active" onclick="changeTab(this, 1, 'li_class', 'main')">Sales Skills</li>
+							<li class="li_class" onclick="changeTab(this, 2, 'li_class', 'main')">Communications</li>
+							<li class="li_class" onclick="changeTab(this, 3, 'li_class', 'main')">Product Knowledge</li>
+							<li class="li_class" onclick="changeTab(this, 4, 'li_class', 'main')">People Management</li>
+							<li class="li_class" onclick="changeTab(this, 5, 'li_class', 'main')">Soft Skills</li>
+						</ul>
+						
+						<div class="main" id="main_1">
+							<div id="chart1">
+								<img src="/images/charts/sales_ravi.png"/>
+							</div>
+							<table class="table	table-bordered margin_top_2" style="border-collapse: inherit">
+								<thead>
+									<th>Dimension</th>
+									<th>Coach Assessment</th>
+									<th>Manager Rating</th>
+								<thead>
+								<tbody>
+									<tr>
+										<td>Language</td>
+										<td>55</td>
+										<td>45</td>
+									</tr>
+									<tr>
+										<td>Negotiation</td>
+										<td>75</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Demonstration</td>
+										<td>45</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Persuasion</td>
+										<td>85</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Proposal Development</td>
+										<td>40</td>
+										<td>50</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<div class="main" id="main_2">
+							<div id="chart2">
+								<img src="/images/charts/communication_ravi.png"/>
+							</div>
+							<table class="table	table-bordered margin_top_2" style="border-collapse: inherit">
+								<thead>
+									<th>Dimension</th>
+									<th>Performance Percentile</th>
+									<th>Manager Assessment</th>
+								<thead>
+								<tbody>
+									<tr>
+										<td>Spoken English</td>
+										<td>55</td>
+										<td>45</td>
+									</tr>
+									<tr>
+										<td>Writing Skills</td>
+										<td>75</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Presentation Skills</td>
+										<td>45</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Body Language</td>
+										<td>80</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Telephone Etiquette</td>
+										<td>40</td>
+										<td>50</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<div class="main" id="main_3">
+							<div id="chart3">
+								<img src="/images/charts/product_ravi.png"/>
+							</div>
+							<table class="table	table-bordered margin_top_2" style="border-collapse: inherit">
+								<thead>
+									<th>Dimension</th>
+									<th>Coach Assessment</th>
+									<th>Manager Rating</th>
+								<thead>
+								<tbody>
+									<tr>
+										<td>Feature Awareness</td>
+										<td>55</td>
+										<td>45</td>
+									</tr>
+									<tr>
+										<td>Competitive Knowledge</td>
+										<td>75</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Doubt Addressal</td>
+										<td>45</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Solution Positioning</td>
+										<td>80</td>
+										<td>60</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<div class="main" id="main_4">
+							<div id="chart4">
+								<img src="/images/charts/people_ravi.png"/>
+							</div>
+							<table class="table	table-bordered margin_top_2" style="border-collapse: inherit">
+								<thead>
+									<th>Dimension</th>
+									<th>Coach Assessment</th>
+									<th>Manager Rating</th>
+								<thead>
+								<tbody>
+									<tr>
+										<td>Feedback</td>
+										<td>55</td>
+										<td>45</td>
+									</tr>
+									<tr>
+										<td>Coaching</td>
+										<td>75</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Planning</td>
+										<td>45</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Tradeoff Management</td>
+										<td>80</td>
+										<td>60</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<div class="main" id="main_5">
+							<div id="chart5">
+								<img src="/images/charts/soft_ravi.png"/>
+							</div>
+							<table class="table	table-bordered margin_top_2" style="border-collapse: inherit">
+								<thead>
+									<th>Dimension</th>
+									<th>Performance Percentile</th>
+									<th>Manager Assessment</th>
+								<thead>
+								<tbody>
+									<tr>
+										<td>Grooming</td>
+										<td>55</td>
+										<td>34</td>
+									</tr>
+									<tr>
+										<td>Gender Sensitivity</td>
+										<td>80</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Assertiveness</td>
+										<td>45</td>
+										<td>60</td>
+									</tr>
+									<tr>
+										<td>Etiquette</td>
+										<td>50</td>
+										<td>60</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+					</div>
+					
+				</div>
+				
+				
+				<script>
+					$('.main').addClass('display_none');
+					$('#main_1').removeClass('display_none').addClass('display_inline_block');
+				</script>
+			
+			</div>
+		</div>
+		<div class="row" style="display: none; position: relative; top: -5px;">
+			<p class="alert alert-danger" id="search_results_error"></p>
+		</div>
+	</div>
+	
+	
+
+
+
+

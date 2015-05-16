@@ -1,0 +1,67 @@
+
+
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="coordinator_event_details('hide')">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Feedback</h4>
+	      </div>
+	      <div class="modal-body" id="trainer-feedback" style="background: #fff">
+	      		<% if(tf == null) { %>
+	      			Feedback not submitted
+	      		<% } %>
+	      		<% if(tf != null) { %>
+		      		<table class="table table-bordered">
+		      			<tr>
+		      				<td>Module completed?</td>
+		      				<td><%= tf.isModuleCompleted == true ? 'Yes' : 'No' %></td>
+		      			</tr>
+		      			
+		      			<% if(tf.isModuleCompleted == false) { %>
+		      				<tr>
+		      					<td>Slide stopped at:</td>
+		      					<td><%= tf.moduleComment %></td>
+		      				</tr>
+		      			<% } %>
+		      			
+		      			<tr>
+		      				<td>Class Rating</td>
+		      				<td><%= tf.classRating %></td>
+		      			</tr>
+		      			
+		      			<% if(crd != null) { %>
+		      				<tr>
+		      					<td>Content allocatted fits in time</td>
+		      					<td><%= crd.isContentAllocatedFitsInTime == true ? 'Yes' : 'No' %></td>
+		      				</tr>
+		      				<tr>
+		      					<td>Student participation quality</td>
+		      					<td><%= crd.isStudentParticipationQuality == true ? 'Yes' : 'No' %></td>
+		      				</tr>
+		      				<tr>
+		      					<td>Class discipline</td>
+		      					<td><%= crd.isClassDiscipline == true ? 'Yes' : 'No' %></td>
+		      				</tr>
+		      				<tr>
+		      					<td>Student enjoyed the content</td>
+		      					<td><%= crd.isStudentEnjoyedTheContent == true ? 'Yes' : 'No' %></td>
+		      				</tr>
+		      				<tr>
+		      					<td>Learning experience</td>
+		      					<td><%= crd.isLearningExperience == true ? 'Yes' : 'No' %></td>
+		      				</tr>
+		      			<% } %>
+		      			
+		      			<tr>
+		      				<td>Additional comments</td>
+		      				<td><%= tf.anyProblem %></td>
+		      			</tr>
+		      			
+		      		</table>
+		      		
+		      	<% } %>
+	      	</div>
+	      	
+		</div>
+	</div>

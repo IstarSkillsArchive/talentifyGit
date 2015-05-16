@@ -1,0 +1,42 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="coordinator_event_details('hide')">&times;</button>
+		    <h4 class="modal-title" id="myModalLabel">Attendance</h4>
+		  </div>
+		  
+		  <div class="modal-body" style="background: #fff" id="attendance">
+		  		<div class="col-md-6">
+		  			<table class="table table-bordered">
+		  				<tr>
+		  					<td class="text-center"><b>Present: <%= present %>/<%= users.length %></b></td>
+		  				</tr>
+		  				<% users.forEach(function(user, j) { %>
+		  					<% if(user.status == 'Present') { %>
+		  						<tr>
+		  							<td><%= user.first_name %></td>
+		  						</tr>
+		  					<% } %>
+		  				<% }); %>
+		  			</table>
+		  		</div>
+		  		
+		  		<div class="col-md-6">
+		  			<table class="table table-bordered">
+		  				<tr>
+		  					<td class="text-center"><b>Absent: <%= absent %>/<%= users.length %></b></td>
+		  				</tr>
+		  				<% users.forEach(function(user, j) { %>
+		  					<% if(user.status == 'Absent') { %>
+		  						<tr>
+		  							<td><%= user.first_name %></td>
+		  						</tr>
+		  					<% } %>
+		  				<% }); %>
+		  			</table>
+		  		</div>
+		  </div>
+	</div>
+</div>
+
+

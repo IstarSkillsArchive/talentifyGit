@@ -1,0 +1,3 @@
+<% tags.forEach(function(tag) { %>
+	<span class='label label-primary'><%= tag %><span style='margin-left: 10px; cursor: default' onclick="ajax_call('/content/remove_tag/<%= tag %>','tags')">X</span></span>
+<% }); %>

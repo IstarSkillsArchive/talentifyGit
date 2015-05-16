@@ -1,0 +1,213 @@
+<% layout('../new-layout') %>
+<% include ../util/errors %>
+
+<link rel="stylesheet" href="stylesheets/style.css">
+<script src="/jquery/jquery.min.js"></script>
+<script src="/javascripts/script.js"></script>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<li class="li_tab active"><a href="/recruiter/dashboard/<%= currentUser.id %>">Jobs</a></li>
+			  	<li class="li_tab"><a href="/recruiter/appointments">Appointments</a></li>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<form action="/recruiter/list_jobs/<%= currentUser.id %>">
+	<input type="submit" class="btn btn-primary" value="List Jobs" style="margin-top: 2%">
+</form>
+
+<style>
+	label { font-weight: bold; }
+	.form-control { width: 50%; }
+</style>
+
+<h4 style="text-align: center">Edit Job</h4>
+
+<form role="form" method="POST" action="/recruiter/do_edit_job">
+	  <div class="form-group">
+	  	<label>Name</label>
+	  	<input type="text" name="name" id="name" value="<%= job.name %>" class="form-control"/>
+	  </div>
+	  
+	  <div class="form-group">
+	  	<label>Description</label>
+	  	<input type="text" name="description" id="description" value="<%= job.description %>" class="form-control"/>
+	  </div>
+	  
+	  <div class="form-group">
+	  	<label>Salary</label>
+	  	<input type="text" name="salary" id="salary" class="form-control" value="<%= job.salary %>"/>
+	  </div>
+	  
+	  <div class="form-group">
+	  	<label>Location</label>
+	  	<input type="text" name="location" id="location" class="form-control" value="<%= job.location %>"/>
+	  </div>
+	  
+	  <div class="form-group">
+	  	<label>Created Date</label>
+	  	<input type="text" name="createdDate" id="createdDate" class="form-control" value="<%= job.createdDate %>"/>
+	  </div>
+	  
+	  <div class="form-group">
+	  	<label>Expiry Date</label>
+	  	<input type="text" name="expiryDate" id="expiryDate" class="form-control" value="<%= job.expiryDate %>"/>
+	  </div>
+	  
+	  <input type="hidden" name="job_id" value="<%= job.id %>" />
+	  
+	  <input type="submit" value="Submit" class="btn btn-success" />
+</form>
+
+<hr>
+<!-- START -->
+	  <div class="playlist wide">
+		  <div class="form-group">
+				<b>User List</b>
+		  </div>
+		  
+		  <% if(playlists != null && playlists.length > 0) { %>
+			  <div class="form-group">
+			  		<div class="playlist" id="div_playlist">
+				  		<% playlists.forEach(function(playlist,i) { %>
+				  			<div class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+			  					<% if(playlist.status == 'Invited') { %>
+			  						<a class="close" href="/recruiter/delete_user_from_job/<%= playlist.id %>/<%= job.id %>" style="font-size: 12px">&nbsp;[x]</a>
+			  					<% } %>
+			  					<% if(playlist.status == 'Passed Test') { %>
+			  						&nbsp;<a style="float:right; color: green; font-weight: bold; cursor: pointer" onclick="ajax_call('/recruiter/set_appointment/<%= job.id %>/<%= playlist.id %>','modal_preview');show_class('DimBg');show_id('modal_preview')">Invite for Interview</a>
+			  					<% } %>
+			  					<span style="float:right;color: <%= playlist.status == 'Selected' ? 'green' : (playlist.status == 'Rejected' ? 'red' : 'blue')%>; font-weight: bold"><%= playlist.status != null ? playlist.status : '' %></span>
+			  					<% if(playlist.status == 'Interview') { %>
+			  						<span style="display: inline-block; float: right">
+			  							&nbsp;(<a style="color: green; font-weight: bold; cursor: pointer" href="/recruiter/select_user/<%= job.id %>/<%= playlist.id %>">Select</a>
+			  							&nbsp;<a style="color: red; font-weight: bold; cursor: pointer" href="/recruiter/reject_user/<%= job.id %>/<%= playlist.id %>">Reject</a>)
+			  						</span>
+			  					<% } %>
+			  					<span>
+				  					<span id="search_span_<%= playlist.id %>"><%= playlist.first_name %>&nbsp;<%= playlist.last_name %></span>
+				  				</span>
+			  				</div>
+				  			
+						<% }); %>
+					</div>
+			  </div>
+		  <% } %>	
+		  
+		  <br/>
+		  
+		  <!-- START BROWSE -->
+		  
+		  <div class="form-group">
+			  	<b>Add Users</b>
+			  </div>
+			  
+			  <div class="playlist wide" id="filter_results">
+			  	<b>Filter Results</b>
+			  	
+			  	<form role="form" method="POST" action="/content/do_edit_module" style="display: inline-block">
+				  	<select name="skill" onchange="ajax_filter_job_users_skill(this, '1', '<%= job.id %>')" id="skill">
+				  		<option>Select a skill</option>
+				  		<% if(skills != null) { %>
+					  		<% skills.forEach(function(playlist,i) { %>
+					  			<option value="<%= playlist.id %>"><%= playlist.name %></option>
+					  		<% }); %>
+					  	<% } %>
+				  	</select>
+				  	
+				  	<select name="role" onchange="ajax_filter_job_users_role(this, '1', '<%= job.id %>')" id="role">
+				  		<option>Select a role</option>
+				  		<% if(roles != null) { %>
+					  		<% roles.forEach(function(playlist,i) { %>
+					  			<option value="<%= playlist.id %>"><%= playlist.name %></option>
+					  		<% }); %>
+					  	<% } %>
+				  	</select>
+				  	
+				  	<!--
+				  	<div class="btn-group btn-group-xs">
+				  		<input type="submit" value="Go" class="btn btn-default"/>
+				  	</div>
+				  	-->
+				  	
+				</form>
+			  	
+			  </div>
+			  
+			  <br/>
+			  
+			  <div class="form-group">
+			  	<div class="playlist wide" id="content">
+			  		<% if(users != null) { %>
+				  		<% users.forEach(function(playlist,i) { %>
+				  			<div class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+								<a class="close" href="/recruiter/add_user_to_job/<%= playlist.id %>/<%= job.id %>" style="font-size: 12px">Invite User</a>
+								<span>
+				  					<span id="search_span_<%= playlist.id %>"><%= playlist.first_name %>&nbsp;<%= playlist.last_name %></span>
+				  				</span>
+							</div>
+				  			
+						<% }); %>
+					<% } %>
+			  	</div>
+			  </div>
+		  
+		  <!-- END BROWSE -->
+	  </div>	
+  <!-- END -->
+  
+
+<hr>
+<h5 style="text-align: center">
+	<a class="btn btn-default navbar-left" onclick="ajax_call('/recruiter/add_step_to_job/<%= job.id %>','modal_preview');show_class('DimBg');show_id('modal_preview')">Add Interview Round</a>
+	Interview Rounds
+</h5>
+
+<table class="table	table-bordered">
+	<thead>
+		<th>Id</th>
+		<th>Name</th>
+		<th>Description</th>
+		<th>Type</th>
+		<th colspan="2">Action</th>
+	<thead>
+	<tbody>
+		<% steps.forEach(function(step, i) { %>
+		<tr>
+			<td><%= i+1 %></td>
+			<td><%= step.name %></td>
+			<td><%= step.description %></td>
+			<td><%= step.type %></td>
+			<td>
+				<% if(step.type == 'Test') { %>
+					<a onclick="ajax_call('/recruiter/edit_step/<%= step.id %>','modal_preview');show_class('DimBg');show_id('modal_preview')">Add/Edit Test</a>
+				<% } %>
+				<% if(step.type == 'Interview') { %>
+					<a>Add/Edit Interview</a>
+				<% } %>
+			</td>
+			<td><a href="#">Delete</a></td>
+		</tr>
+		<% }); %>
+	</tbody>
+</table>
+
+
+<div class="DimBg"></div>
+<div class="modal" id="modal_preview"></div>

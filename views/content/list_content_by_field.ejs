@@ -1,0 +1,74 @@
+<div class="row">
+	<div class="col-md-4" id="content-search-group">
+	</div>
+	<div class="col-md-4">
+		<h2 class="text-gradient-info-dk text-center">Content List</h2>
+	</div>
+	<div class="col-md-4">
+		<input type="button" class="first-btn btn btn-primary" value="Create New Content" onclick="ajax_call('/content/upload','content-admin-display')">
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<%= total %> Search results for matching <%= val %><%= field.length > 1 ? 's' : '' %>:
+		<b>
+		<% field.forEach(function(f, i) { %>
+			&nbsp;<%= f.name %>
+			<% if(i < field.length-1) { %>
+				,
+			<% } %>
+		<% }); %>
+		</b>
+	</div>
+</div>
+
+<hr>
+<table class="table	table-bordered">
+	<thead>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Description</th>
+		<th colspan="2" class="text-center">Action</th>
+	<thead>
+	<tbody>
+		<% content.forEach(function(c, i) { %>
+		<tr>
+			<td><%= page > 1 ? ((page-1)*10)+(i+1) : i+1 %></td>
+			<td><%= c.name %></td>
+			<td style="width: 400px"><%= c.description %></td>
+			<td class="text-center" title="Edit">
+				<a onclick="ajax_call('/content/edit_content/<%= c.id %>/<%= url_string %>/<%= url_param %>/<%= pages > 1 ? page : 0 %>','content-admin-display')">
+					<i class="icm icm-pencil5"></i>
+				</a>
+			</td>
+			<td class="text-center" title="Delete"><a href="#"><i class="icm icm-remove"></i></a></td>
+		</tr>
+		<% }); %>
+	</tbody>
+</table>
+
+<% if(pages > 1) { %>
+	<ul class="pagination">
+	 	 <% if(prev == true) { %>
+		  	<li><a onclick='ajax_call("/content/<%= url_string %>/<%= url_param %>/<%= page-1 %>","content-admin-display")'>«</a></li>
+		  <% } %>
+		  <% if(prev == false) { %>
+		  	<li class="disabled"><a>«</a></li>
+		  <% } %>
+		  <% for(i = 0; i < pages ; i++) { %>
+		  <li class="<%= i+1 == page ? 'active' : ''%>"><a onclick='ajax_call("/content/<%= url_string %>/<%= url_param %>/<%= i+1 %>","content-admin-display")'><%= i+1 %></a></li>
+		  <% } %>
+		  <% if(next == true) { %>
+		  	<li><a onclick='ajax_call("/content/<%= url_string %>/<%= url_param %>/<%= page+1 %>","content-admin-display")'>»</a></li>
+		  <% } %>
+		  <% if(next == false) { %>
+		  	<li class="disabled"><a>»</a></li>
+		  <% } %>
+	</ul>
+<% } %>
+
+<script type="text/javascript">
+	ajax_call('/content/searchByField/<%= val %>','content-search-group')
+</script>
+

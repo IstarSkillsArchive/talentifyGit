@@ -1,0 +1,45 @@
+<input type="submit" class="first-btn btn btn-primary" value="Create New Skill Group" onclick="ajax_call('/content/new_skill_group','content-admin-display')">
+
+<h2 class="text-gradient-info-dk text-center">Skill Group List</h2>
+<hr>
+<table class="table	table-bordered">
+	<thead>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Description</th>
+		<th colspan="2" class="text-center">Action</th>
+	<thead>
+	<tbody>
+		<% skills.forEach(function(skill, i) { %>
+		<tr>
+			<td><%= page > 1 ? ((page-1)*10)+(i+1) : i+1 %></td>
+			<td><%= skill.name %></td>
+			<td style="width: 400px"><%= skill.description %></td>
+			<td class="text-center" title="Edit"><a onclick="ajax_call('/content/add_skills_to_skill_groups/<%= skill.id %>','content-admin-display')"><i class="icm icm-pencil5"></i></a></td>
+			<td class="text-center" title="Delete"><a href="#"><i class="icm icm-remove"></i></a></td>
+		</tr>
+		<% }); %>
+	</tbody>
+</table>
+
+<% if(pages > 1) { %>
+	<ul class="pagination">
+	  <% if(prev == true) { %>
+	  	<li><a onclick='ajax_call("/skillgroup/list_skill_groups/<%= page-1 %>","content-admin-display")'>«</a></li>
+	  <% } %>
+	  <% if(prev == false) { %>
+	  	<li class="disabled"><a>«</a></li>
+	  <% } %>
+	  <% for(i = 0; i < pages ; i++) { %>
+	  <li class="<%= i+1 == page ? 'active' : ''%>"><a onclick='ajax_call("/skillgroup/list_skill_groups/<%= i+1 %>","content-admin-display")'><%= i+1 %></a></li>
+	  <% } %>
+	  <% if(next == true) { %>
+	  	<li><a onclick='ajax_call("/skillgroup/list_skill_groups/<%= page+1 %>","content-admin-display")'>»</a></li>
+	  <% } %>
+	  <% if(next == false) { %>
+	  	<li class="disabled"><a>»</a></li>
+	  <% } %>
+	</ul>
+<% } %>
+
+

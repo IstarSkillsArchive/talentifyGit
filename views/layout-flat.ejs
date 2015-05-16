@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <title>Talentify</title>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link rel="shortcut icon" href="/flat-ui/images/favicon.ico">
+        <link rel="stylesheet" href="/flat-ui/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/flat-ui/css/flat-ui.css">
+        <!-- Using only with Flat-UI (free)-->
+        <link rel="stylesheet" href="/flat-ui/common-files/css/icon-font.css">
+        <!-- end -->
+        <link rel="stylesheet" href="/flat-ui/css/style.css">
+        
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <script src="/modernizr/modernizr.js"></script>
+        <script src="/jquery/jquery.min.js"></script>
+		<script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script type="text/javascript" src="/javascripts/script.js"></script>
+        
+    </head>
+    
+    <body style="padding: 0px;"><!-- green: #2e734d; blue: #476a6f -->
+    	<div class="page-wrapper">
+	    	<!--[if lt IE 7]>
+	            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+	        <![endif]-->
+	    
+		    <!-- NAVBAR START -->
+		    
+		    	<nav class="navbar navbar-inverse navbar-lg navbar-embossed" role="navigation" style="border-radius: 0px; margin-bottom: 0px">
+				  <div class="navbar-header">
+				    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+				      <span class="sr-only">Toggle navigation</span>
+				    </button>
+				    <a class="navbar-brand" href="#"><span class="">Talentify</span></a>
+				  </div>
+				  <div class="collapse navbar-collapse pull-right" id="navbar-collapse-01" style="border-radius: 0px; box-shadow: none">
+				    <ul class="nav navbar-nav">			      
+				      <li><a href="#fakelink">Features</a></li>
+				      <li><a href="#fakelink">Pricing</a></li>
+				      <li><a href="#fakelink">About</a></li>
+				    </ul> 		      
+				  </div>
+				</nav>
+			
+			<!-- NAVBAR END -->
+			
+			<div id="spinner" class="spinner" style="display:none;">
+		        <img src="/images/ajax-loader.gif" alt="Spinner"/>
+		    </div>
+		    
+		    <section class="header-11-sub bg-green-sea">
+		    	<div class="container">
+						<% if(typeof(failure) === 'string' && failure !== null) { %>
+							<div class="row" style="position: relative; top: 10px;">
+								<p class="alert alert-danger"><%= failure %></p>
+							</div>
+						<% } %>
+						<% if(typeof(successFlash) === 'string' && successFlash !== null) { %>
+							<div class="row" style="position: relative; top: 10px;">
+								<p class="alert alert-success"><%= successFlash %></p>
+							</div>
+						<% } %>
+						<div class="row" style="padding: 0 15px; margin-top: 10px;">
+							<% if(currentUser && currentUser.isManager() && currentFlag == 'create') { %>
+								<ul class="nav nav-tabs">
+								 	<li class="li_tab"><a href="/hr_admin/dashboard">Company L&D Stats</a></li>
+								  	<li class="li_tab"><a href="/hr_admin/track">Employee Stats</a></li>
+								  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>">Roles</a></li>
+								 	<li class="li_tab active"><a href="/users/list">Manage Users</a></li>
+								</ul>
+							<% } %>
+							<%- body %>	
+						</div>
+			      <!--<footer style="margin-top: 50px; text-align: center;">
+			        <p>&copy; LePo 2014</p>
+			      </footer>-->
+			      
+			      
+			    </div> <!-- /container --> 
+			</section>
+			
+			<!-- BOTTOM MENU START -->
+			
+			<div class="bottom-menu" style="position: fixed; bottom: 0px; width: 100%; padding: 0px; z-index: 10">
+			  <div class="container">
+			  		<div class="row">
+			  			<p>&copy; LePo 2014</p>
+			  		</div>
+			  </div>
+			</div>
+				
+			<!-- BOTTOM MENU END -->
+		</div>
+	
+	</body>
+</html>

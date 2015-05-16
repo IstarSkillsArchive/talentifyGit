@@ -1,0 +1,51 @@
+<input type="submit" class="first-btn btn btn-primary" value="Create New Job">
+
+<h2 class="text-gradient-info-dk text-center">Job List</h2>
+<hr>
+
+<div class="table-responsive">
+	<table class="table	table-bordered">
+		<thead>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Salary</th>
+			<th>Location</th>
+			<th colspan="2">Action</th>
+		<thead>
+		<tbody>
+			<% jobs.forEach(function(job, i) { %>
+			<tr>
+				<td><%= page > 1 ? ((page-1)*10)+(i+1) : i+1 %></td>
+				<td><%= job.name %></td>
+				<td style="width: 400px"><%= job.description %></td>
+				<td><%= job.salary != null ? job.salary : '' %></td>
+				<td><%= job.location != null ? job.location : '' %></td>
+				<td class="text-center" title="Edit"><a onclick="ajax_call('/recruiter/edit_job/<%= job.id %>','content-admin-display')"><i class="icm icm-pencil5"></i></a></td>
+				<td class="text-center" title="Delete"><a href="#"><i class="icm icm-remove"></i></a></td>
+			</tr>
+			<% }); %>
+		</tbody>
+	</table>
+</table>
+
+<% if(pages > 1) { %>
+	<ul class="pagination">
+	  <% if(prev == true) { %>
+	  	<li><a onclick='ajax_call("/job/list_jobs/<%= currentUser.id %>/<%= page-1 %>","content-admin-display")'>«</a></li>
+	  <% } %>
+	  <% if(prev == false) { %>
+	  	<li class="disabled"><a>«</a></li>
+	  <% } %>
+	  <% for(i = 0; i < pages ; i++) { %>
+	  <li class="<%= i+1 == page ? 'active' : ''%>"><a onclick='ajax_call("/job/list_jobs/<%= currentUser.id %>/<%= i+1 %>","content-admin-display")'><%= i+1 %></a></li>
+	  <% } %>
+	  <% if(next == true) { %>
+	  	<li><a onclick='ajax_call("/job/list_jobs/<%= currentUser.id %>/<%= page+1 %>","content-admin-display")'>»</a></li>
+	  <% } %>
+	  <% if(next == false) { %>
+	  	<li class="disabled"><a>»</a></li>
+	  <% } %>
+	</ul>
+<% } %>
+

@@ -1,0 +1,177 @@
+<style>
+	#report-ajax .panel-body {
+		height: 200px;
+	}
+</style>
+<!-- start test stats -->
+	<div class="col-md-6">
+		<div class="captionable  horizontal">
+	        <div class="captionable-flip">
+	          <div class="captionable-front">
+	            
+				<div class="panel panel-primary">
+				  
+				  <div class="panel-header panel-colorize" >
+				    <ul class="nav nav-justified-all ">
+				      <% if(event_id != null) { %>
+					      <li class="question-stats-tab active" style="font-size: 15px" onclick="change_test_tab(this, 'question-stats-tab');ajax_call('/hr_admin/question_right_stats/<%= test.id %>/<%= event_id %>','question-stats-div')">
+					        <a>Right</a>
+					      </li>
+					  <% } %>
+					  <% if(role_id != null) { %>
+					      <li class="question-stats-tab active" style="font-size: 15px" onclick="change_test_tab(this, 'question-stats-tab');ajax_call('/hr_admin/question_right_stats/<%= role_id %>','question-stats-div')">
+					        <a>Right</a>
+					      </li>
+					  <% } %>
+					  <% if(event_id != null) { %>
+					      <li class="question-stats-tab" style="font-size: 15px" onclick="change_test_tab(this, 'question-stats-tab');ajax_call('/hr_admin/question_wrong_stats/<%= test.id %>/<%= event_id %>','question-stats-div')">
+					        <a>Wrong</a>
+					      </li>
+					  <% } %>
+					  <% if(role_id != null) { %>
+					      <li class="question-stats-tab" style="font-size: 15px" onclick="change_test_tab(this, 'question-stats-tab');ajax_call('/hr_admin/question_wrong_stats/<%= role_id %>','question-stats-div')">
+					        <a>Wrong</a>
+					      </li>
+					  <% } %>
+				    </ul>
+				  </div>
+				  
+				  <div class="panel-body no-padding-top" id="question-stats-div">
+				  		
+				  </div><!-- end panel body -->
+				</div><!-- end panel -->
+	
+	          </div>
+	        </div>
+	      </div>
+	 </div>
+	<!-- end test stats -->
+	<% if(test != null) { %>
+	
+	<!-- start took test -->
+	<div class="col-md-3">
+		<div class="captionable  horizontal">
+	        <div class="captionable-flip">
+	          <div class="captionable-front">
+	            
+				<div class="panel panel-primary">
+				  <div class="panel-heading">
+				    <div class="panel-title text-center">
+				      Took Test
+				    </div>
+				  </div>
+				  <div class="panel-body no-padding-top">
+				    
+					  <div class="padded">
+					    <div class="vpadded easy-pie-chart easy-pie-chart-normal" data-percent="<%= test.test_taken_count/test.user_count*100 %>" data-color="success">
+					      <span style="height: 20px"><%= test.test_taken_count %>/<%= test.user_count %></span>
+					    </div>
+					  </div>
+					  
+				  </div><!-- end panel body -->
+				</div><!-- end panel -->
+	
+	          </div>
+	        </div>
+	      </div>
+	 </div>
+	<!-- end took test -->
+	<!-- start passed -->
+	<div class="col-md-3">
+		<div class="captionable  horizontal">
+	        <div class="captionable-flip">
+	          <div class="captionable-front">
+	            
+				<div class="panel panel-primary">
+				  <div class="panel-heading">
+				    <div class="panel-title text-center">
+				      Passed
+				    </div>
+				  </div>
+				  <div class="panel-body no-padding-top">
+				    
+					  <div class="padded">
+					    <div class="vpadded easy-pie-chart easy-pie-chart-normal" data-percent="<%= test.test_passed_count/test.test_taken_count*100 %>" data-color="success">
+					      <span style="height: 20px"><%= test.test_passed_count %>/<%= test.test_taken_count %></span>
+					    </div>
+					  </div>
+					  
+				  </div><!-- end panel body -->
+				</div><!-- end panel -->
+	
+	          </div>
+	        </div>
+	      </div>
+	 </div>
+	<!-- end passed -->
+	<% } %>
+	<!-- start remaining content -->
+	<div style="overflow: auto; width: 100%">
+		<table class="table table-bordered test-detail-table" style="background-color: #fff">
+			<tr>
+				<td class="rd-td-border-right">
+					<b>Q No.</b>
+				</td>
+				<% if(event_id != null) { %>
+					<% testProblems.forEach(function(rd, i) { %>
+						<td style="cursor: pointer" title="Click this question to view more details" class="rd-td rd-td-<%= i %> <%= i==0?'active':''%>" onclick="mark_active_td('<%= i %>');ajax_call('/hr_admin/question_analytics_report/<%= event_id %>/<%= test.id %>/<%= rd.ProblemId %>', 'question_detail')"><span class="badge <%= rd.problem.difficultyLevel == 'Easy' ? 'badge-success' : (rd.problem.difficultyLevel == 'Medium' ? 'badge-warning' : 'badge-danger')%>"><%= (i+1) %></span></td>
+					<% }); %>
+				<% } %>
+				<% if(role_id != null) { %>
+					<% testProblems.forEach(function(rd, i) { %>
+						<td style="cursor: pointer" title="Click this question to view more details" class="rd-td rd-td-<%= i %> <%= i==0?'active':''%>" onclick="mark_active_td('<%= i %>');ajax_call('/hr_admin/question_analytics_report/<%= role_id %>/<%= rd.ProblemId %>', 'question_detail')"><span class="badge <%= rd.problem.difficultyLevel == 'Easy' ? 'badge-success' : (rd.problem.difficultyLevel == 'Medium' ? 'badge-warning' : 'badge-danger')%>"><%= (i+1) %></span></td>
+					<% }); %>
+				<% } %>
+			</tr>
+		</table>
+	</div>
+	
+</div>
+<!-- start question detail -->
+	<div style="width: 100%; overflow: hidden; white-space: nowrap;" class="playlist wide" id="question_detail">
+	</div>
+<!-- end question detail -->
+<script>
+	<% if(testProblems.length > 0) { %>
+		<% if(event_id != null) { %>
+			ajax_call('/hr_admin/question_analytics_report/<%= event_id %>/<%= test.id %>/<%= testProblems[0].ProblemId %>', 'question_detail');
+		<% } %>
+		<% if(role_id != null) { %>
+			ajax_call('/hr_admin/question_analytics_report/<%= role_id %>/<%= testProblems[0].ProblemId %>', 'question_detail');
+		<% } %>
+	<% } %>
+	var falseOrDefault;
+    falseOrDefault = function(el, def, value) {
+      if (value === 'false') {
+        return false;
+      }
+      return value || def;
+    };
+	$(".easy-pie-chart-normal").each(function() {
+      var $el, color, lineWidth, scaleColor, size, trackColor;
+      $el = $(this);
+      color = EmVars.colorFromName($el.data('color') || 'info');
+      size = $el.data('size') || 150;
+      lineWidth = $el.data('line-width') || 15;
+      trackColor = falseOrDefault($el, '#f2f2f2', $el.data('track-color'));
+      scaleColor = falseOrDefault($el, EmVars.colors.textColor, $el.data('scale-color'));
+      return $el.easyPieChart({
+        lineWidth: lineWidth,
+        size: size,
+        lineCap: "square",
+        barColor: color,
+        scaleColor: scaleColor,
+        animate: 1000,
+        trackColor: trackColor
+      });
+    }); 
+    <% if(event_id != null) { %> 
+   		ajax_call('/hr_admin/question_right_stats/<%= test.id %>/<%= event_id %>','question-stats-div')
+   	<% } %>
+   	<% if(role_id != null) { %>
+   		ajax_call('/hr_admin/question_right_stats/<%= role_id %>','question-stats-div')
+   	<% } %>
+</script>
+
+
+

@@ -1,0 +1,22 @@
+
+
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Reset Test</h4>
+	      </div>
+	      <div class="modal-body" style="font-size: 14px">
+	      		<div class="form-group">
+					<input type="password" class="form-control" placeholder="Password" name="password" id="password"/>
+				</div>
+				<div class="form-group display-none" id="wrong-password-message" style="color: red">
+					<p>Wrong Password</p>
+				</div>
+				<div class="form-group" style="text-align: center">
+					<a class="btn btn-danger" onclick="reset_test('<%= test_id %>', '<%= user_id %>')">Reset Test</a>
+				</div>
+			</div>
+		</div>
+	</div>

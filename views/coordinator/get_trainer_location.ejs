@@ -1,0 +1,58 @@
+<div class="animated fadeIn padded bg-info" style="overflow: hidden">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<h2 class="thin no-margin-top">
+  		Trainer Location
+  		&nbsp;
+  		<i class="icm icm-history icm-2x" title="Refresh" onclick="ajax_call('/coordinator/get_trainer_location/<%= event_id %>','turbo-content-open-id')"></i>
+  	</h2>
+  	
+  	<div class="tab-content bg-white padded margin-bottom" style="background-color: #f2f4f8">
+	  <div class="tab-pane fade in active">
+	  	<div id="map-canvas1"></div>
+	  </div>
+	</div>
+  	
+  	
+</div>
+
+<script>
+      <% if(tl && tl.length > 0) { %>
+	      function initialize() {
+	        var org_lat_lng = new google.maps.LatLng(13.00416, 77.60459);
+	        
+	        var trainer_lat_lng = new google.maps.LatLng(<%= tl[0].latitude %>, <%= tl[0].longitude %>);
+	        
+	        var mapCanvas = document.getElementById('map-canvas1');
+	        
+	        var mapOptions = {
+	          center: org_lat_lng,
+	          zoom: 12,
+	          mapTypeId: google.maps.MapTypeId.ROADMAP
+	        }
+	        
+	        var map = new google.maps.Map(mapCanvas, mapOptions);
+	        
+	        var icon = [{path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#F00', fillColor: '#F00', fillOpacity: 1, scale: 5}, {path: google.maps.SymbolPath.CIRCLE, strokeColor: '#00F', fillColor: '#00F', scale: 10}];
+	        
+	        var lineCoordinates = [org_lat_lng, trainer_lat_lng];
+			
+			  var line = new google.maps.Polyline({
+			    path: lineCoordinates,
+			    map: map
+			  });
+	        
+	        for (var i = 0; i < 2; i++) {
+			    var marker = new google.maps.Marker({
+			        position: i == 0 ? trainer_lat_lng : org_lat_lng,
+			        map: map,
+			        icon: icon[i],
+			        title: i == 0 ? 'Trainer Location' : 'MLA College'
+			    });
+			}
+	        
+	      }
+	      initialize();
+	<% } %>
+</script>
+
+

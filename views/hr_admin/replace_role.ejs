@@ -1,0 +1,7 @@
+<select onchange="replace_role(this, '<%= user_id %>')">
+	<option>Select Role</option>
+	<% roles.forEach(function(role, i) { %>
+		<option value="<%= role.id %>"><%= role.name %></option>
+	<% }); %>
+</select>
+<i class="icm icm-cancel-circle pull-right" onclick="ajax_call('/hr_admin/show_role/<%= user_id %>', 'replace-role')"></i>

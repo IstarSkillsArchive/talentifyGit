@@ -1,0 +1,19 @@
+<div class="animated fadeIn padded bg-info">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<h2 class="thin no-margin-top">Live Classes</h2>
+  	
+  	<table class="table table-striped bg-white">
+		<% events.forEach(function(event, i) { %>
+		  	<tr class="row-mid">
+				<td>
+		          <%= event.name %>
+		        </td>
+				<td><b>Date:&nbsp;</b> <%= event.date.toDateString() %></td>
+				<td>
+		     		<a class="btn btn-primary btn-xs" onclick='ajax_call("/zoom/join_live_class/<%= event.id %>","turbo-content-open-id")'>Join</a>
+		     	</td>
+		     </tr>
+		<% }); %>
+	</table>
+  	
+</div>

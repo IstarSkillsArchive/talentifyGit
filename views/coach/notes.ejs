@@ -1,0 +1,33 @@
+<script src="/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/javascripts/script.js"></script>
+
+<div class="notes_div_skill">
+	<div class="width_100" style="text-align: center">
+		<table>
+			<tr>
+				<td><span id="glyph_prev_<%= notes.SkillId %>" class="glyphicon glyphicon-backward" title="Prev" onclick="ajax_call('/coach/notes_prev/<%= notes.CoachId %>/<%= notes.UserId %>/<%= notes.SkillId %>/<%= notes.id %>/<%= len %>/<%= curr %>', 'notes_<%= notes.SkillId %>')"></span></td>
+				<td style="width: 90%">
+					<b>Notes</b>
+					<a href="#" onclick="non_ajax_call('/coach/do_add_notes/<%= notes.CoachId %>/<%= notes.UserId %>/<%= notes.SkillId %>');">
+						<span class="glyphicon glyphicon-plus-sign"></span>
+					</a>
+				</td>
+				<td><span id="glyph_next_<%= notes.SkillId %>" class="glyphicon glyphicon-forward" title="Next" onclick="ajax_call('/coach/notes_next/<%= notes.CoachId %>/<%= notes.UserId %>/<%= notes.SkillId %>/<%= notes.id %>/<%= len %>/<%= curr %>', 'notes_<%= notes.SkillId %>')"></span></td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<%= curr %>/<%= len %>
+				</td>
+			</tr>
+		</table>
+		<div class="width_100" style="margin-top: 4px; display: table; height: 75px">
+			<div id="div_notes_<%= notes.SkillId %>_<%= curr %>" style="display: table-cell; vertical-align: middle; ">
+				<%= notes.notes != null ? notes.notes : '' %>
+				<div style="text-align: center">
+					<a class="glyphicon glyphicon-edit" title="Edit" onclick="ajax_call('/coach/edit_notes/<%= notes.id %>', 'div_notes_<%= notes.SkillId %>_<%= curr %>')"></a>
+					<a class="glyphicon glyphicon-remove-circle" title="Delete" href="/coach/delete_notes/<%= notes.id %>"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

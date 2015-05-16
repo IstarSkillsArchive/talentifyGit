@@ -1,0 +1,18 @@
+
+	<div class="row pull-left" style="width: 100%; margin-top: 20px; margin-left: 0px; margin-right: 0px; overflow-x: auto; white-space: nowrap">
+	  	<% skills.forEach(function(skill,i) { %>
+	  		<div class="skills-for-role">
+		        <div class="captionable" style="position: relative">
+					<div class="panel <%= i%4 == 0 ? 'panel-warning' : (i%4 == 1 ? 'panel-primary' : (i%4 == 2 ? 'panel-success' : 'panel-danger')) %>">
+						  <div class="panel-heading panel-tile small">
+						    <div class="panel-title text-center panel-tile-table-cell">
+						      <i class="icm icm-trophy icm-2x"></i>
+						      <%= skill.name %>
+						    </div>
+						  </div>
+					</div><!-- end panel -->
+					<button type="button" class="btn btn-dark btn-xs close-btn" onclick="ajax_call('/hr_admin/do_map_skill_to_role/<%= skill.id %>/<%= role_id %>','role-skills-div')">Add</button>
+				</div><!-- end captionable -->
+			</div>
+	  	<% }); %>
+	</div>

@@ -1,0 +1,49 @@
+<% layout('layout') %>
+
+<ul class="nav nav-tabs">
+  <li id="home_li"><a href="/dashboard">Home</a></li>
+  <li id="gym_li"><a href="/users/gym/<%= currentUser.id %>" >Gym</a></li>
+  <li><a href="/users/report_card/<%= currentUser.id %>">Report Card</a></li>
+  <li><a href="/users/ratings/<%= currentUser.id %>">Ratings</a></li>
+  <li class="active"><a href="/users/skill_map/<%= currentUser.id %>">Skill Map</a></li>
+  <li><a href="/users/profile/<%= currentUser.id %>">Profile</a></li>
+</ul>
+
+<h3 style="text-align: left;">Skill Map</h3>
+<hr>
+<form class="form-inline" role="form" style="text-align: left;">
+  <div class="form-group">
+    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Search for Colleagues">
+  </div>
+	&nbsp;
+	&nbsp;
+	&nbsp;
+	&nbsp;
+	<label>Filter Results By:</label>
+	&nbsp;
+	&nbsp;
+	&nbsp;
+	<select class="form-control">
+		<option>Function</option>
+		<option>Sales</option>
+		<option>Marketing</option>
+		<option>Technology</option>
+	</select>
+	&nbsp;
+	&nbsp;
+	<select class="form-control">
+		<option>Level</option>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+	</select>
+	&nbsp;
+	&nbsp;
+	&nbsp;
+	&nbsp;
+  <button class="btn btn-default">Search</button>
+</form>
+<hr>
+<% include list_of_users.ejs %>

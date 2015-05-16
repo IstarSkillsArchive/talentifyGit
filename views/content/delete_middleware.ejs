@@ -1,0 +1,45 @@
+
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      		
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Delete</h4>
+      </div>
+      
+      <div class="modal-body">
+			<% if(message != null) { %>
+				<div class="form-group text-center">
+					<p><%= message %></p>
+				</div>
+				<div class="form-group text-center">
+					<input class="btn btn-primary" type="button" value="Ok" onclick="modal_ajax_call('<%= url1 %>','<%= div %>');<%= div == 'content-admin-display' ? 'coordinator_event_details(\'hide\')' : '' %>"/>
+				</div>
+			<% } %>
+			<% if(message == null) { %>
+				<form role="form" method="POST" action="<%= url2 %>" target="target-frame">
+					<input type="hidden" value="<%= url1 %>" name="url1"/>
+					<input type="hidden" value="<%= url2 %>" name="url2"/>
+					<input type="hidden" value="<%= val %>" name="val" />
+					<input type="hidden" value="<%= id %>" name="id" />
+					<input type="hidden" value="<%= div %>" name="div" />
+					
+					<div class="form-group text-center">
+						<p>Are you sure?</p>
+					</div>
+					
+					<div class="form-group text-center">
+						<input type="submit" value="Delete" class="btn btn-danger" onclick="<%= div == 'content-admin-display' ? 'coordinator_event_details(\'hide\')' : '' %>"/>
+						<input class="btn btn-default" type="button" value="Close" onclick="ajax_call('<%= url1 %>','<%= div %>');<%= div == 'content-admin-display' ? 'coordinator_event_details(\'hide\')' : '' %>"/>
+					</div>
+				</form>
+				<iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+			<% } %>
+      </div>
+      
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+
+
+
+		      

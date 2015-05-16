@@ -1,0 +1,14 @@
+<select name="mandatory_question" id="mandatory_question">
+	<% if(test.criticalQuestions != null) { %>
+		<option value="<%= test.criticalQuestions %>"><%= test.criticalQuestions %></option>
+	<% } %>
+	<option value="All">All</option>
+	<option value="One">One</option>
+	<option value="Two">Two</option>
+	<option value="Three">Three</option>
+	<option value="Four">Four</option>
+	<option value="Five">Five</option>
+	<option value="None">None</option>
+</select>
+<a class="" title="Save" onclick="do_edit_test_mandatory_question('<%= test.id %>')"><i class="icm icm-checkmark-circle"></i></a>
+<a class="" title="Cancel" onclick="ajax_call('/content/show_test_mandatory_question/<%= test.id %>','test_mandatory_question')"><i class="icm icm-cancel-circle"></i></span></a>

@@ -1,0 +1,25 @@
+<% if(value == 'Test') { %>
+	<a class="display-none" id="invisible-btn" data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="window.top.window.modal_ajax_call('/content/show_test_question/<%= test_id %>/<%= current_question_id %>/<%= duration %>/<%= second_duration %>','uide4b3dde6bb5097375d99eb18a83d7146')"></a>
+<% } %>
+<script language="javascript" type="text/javascript">
+    <% if(value=='Test') { %>
+    	//window.top.window.modal_ajax_call('/content/show_test_question/<%= test_id %>/<%= current_question_id %>/<%= duration %>/<%= second_duration %>','uide4b3dde6bb5097375d99eb18a83d7146');
+    	var a = document.getElementById("invisible-btn");
+		var evnt = a.onclick;
+		
+		if (typeof(evnt) == "function") {
+		    evnt.call(a);
+		}
+    <% } %>
+    <% if(value=='Next') { %>
+    	window.top.window.modal_ajax_call('/content/show_content_question/<%= test_id %>/<%= content_id %>/<%= skill_id %>/<%= current_question_id %>/<%= duration %>/<%= second_duration %>','uide4b3dde6bb5097375d99eb18a83d7146');
+    <% } %>
+    <% if(value=='Correct') { %>
+    	alert('Correct answer');
+    	window.top.window.ajax_call('/users/next_module/<%= currentUser.id %>/<%= skill_id %>/<%= message %>', 'opentok');
+    <% } %>
+    <% if(value=='Wrong') { %>
+    	window.top.window.ajax_call('/content/answer_wrong/<%= content_id %>/<%= skill_id %>/<%= current_question_id %>','opentok');
+    	window.top.window.show_id('opentok');
+    <% } %>
+</script>

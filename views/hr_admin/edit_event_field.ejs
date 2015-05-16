@@ -1,0 +1,15 @@
+<% if(val == 'name') { %>
+	<input type="text" value="<%= event.name %>" id="event-field"/><i title="Cancel" class="icm icm-cancel-circle pull-right" onclick="ajax_call('/hr_admin/show_event_field/name/<%= event.id %>', 'replace-event-name')"></i><i style="margin-right: 4px" class="icm icm-checkmark-circle pull-right" title="Submit" onclick="do_edit_event_field('event-field','<%= val %>','<%= event.id %>','replace-event-name')"></i>
+<% } %>
+<% if(val == 'description') { %>
+	<input type="text" value="<%= event.description != null ? event.description : event.name %>" id="event-field"/><i title="Cancel" class="icm icm-cancel-circle pull-right" onclick="ajax_call('/hr_admin/show_event_field/description/<%= event.id %>', 'replace-event-desc')"></i><i style="margin-right: 4px" class="icm icm-checkmark-circle pull-right" title="Submit" onclick="do_edit_event_field('event-field','<%= val %>','<%= event.id %>','replace-event-desc')"></i>
+<% } %>
+<% if(val == 'date') { %>
+	<input type="text" value="<%= event.date != null ? event.date : '' %>" id="event-field"/><i title="Cancel" class="icm icm-cancel-circle pull-right" onclick="ajax_call('/hr_admin/show_event_field/date/<%= event.id %>', 'replace-event-date')"></i><i style="margin-right: 4px" class="icm icm-checkmark-circle pull-right" title="Submit" onclick="do_edit_event_field('event-field','<%= val %>','<%= event.id %>','replace-event-date')"></i>
+<% } %>
+<% if(val == 'time') { %>
+	<input type="text" value="<%= event.time != null ? event.time : '' %>" id="event-field"/><i title="Cancel" class="icm icm-cancel-circle pull-right" onclick="ajax_call('/hr_admin/show_event_field/time/<%= event.id %>', 'replace-event-time')"></i><i style="margin-right: 4px" class="icm icm-checkmark-circle pull-right" title="Submit" onclick="do_edit_event_field('event-field','<%= val %>','<%= event.id %>','replace-event-time')"></i>
+<% } %>
+<% if(val == 'location') { %>
+	<input type="text" value="<%= event.location != null ? event.location : '' %>" id="event-field"/><i title="Cancel" class="icm icm-cancel-circle pull-right" onclick="ajax_call('/hr_admin/show_event_field/location/<%= event.id %>', 'replace-event-location')"></i><i style="margin-right: 4px" class="icm icm-checkmark-circle pull-right" title="Submit" onclick="do_edit_event_field('event-field','<%= val %>','<%= event.id %>','replace-event-location')"></i>
+<% } %>

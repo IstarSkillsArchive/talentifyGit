@@ -1,0 +1,35 @@
+<input type="button" class="first-btn btn btn-primary" value="List Skills" onclick="ajax_call('/content/list_skills','content-admin-display')">
+
+<h2 class="text-gradient-info-dk text-center">Create Skill</h2>
+<hr>
+
+<div class="col-md-6">
+	  <form action="/content/do_create_skill_ajax" method="POST" id="do_create_skill_ajax" target="target-frame">
+		  <div class="form-group">
+		    <label>Name</label>
+		    <input type="text" name="name" class="form-control" id="name" placeholder="Name">
+		  </div>
+		  
+		  <div class="form-group">
+		    <label>Description</label>
+		    <textarea name="description" class="form-control" id="description" placeholder="Description"></textarea>
+		  </div>
+		  
+		  <div class="form-group">
+		  	<input type="submit" class="btn btn-success" value="Submit" />
+		  </div>
+		  
+		  <!-- enctype="multipart/form-data"
+		  <div class="form-group">
+		  	<input type="file" name="content" class="form-control" id="content" />
+		  </div>
+		  
+		  
+		  <div class="form-group">
+		    <input type="radio" name="isPublic" class="" checked="checked" value="true" onclick="hide_div('organization_dropdown')">&nbsp;&nbsp;<label>Public</label>
+		    &nbsp;&nbsp;&nbsp;&nbsp;
+		    <input type="radio" name="isPublic" class="" value="false" onclick="show_id('organization_dropdown')">&nbsp;&nbsp;<label>Private</label>
+		  </div>-->
+	  </form>
+	  <iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+</div>

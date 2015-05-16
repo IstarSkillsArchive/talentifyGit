@@ -1,0 +1,225 @@
+<% layout('../new-layout') %>
+
+		<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script type="text/javascript" src="/javascripts/script.js"></script>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<ul class="nav navbar-nav">
+			<li class="li_tab"><a href="/hr_admin/list_events">Events</a></li>
+			<li class="active"><a href="/trainer/profile/<%= currentUser.id %>">Profile</a></li>
+		</ul>
+		 <ul class="nav navbar-nav pull-right">
+		 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+		 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+		 </ul>
+	</div>
+  
+</div>
+
+<!--<div class="btn-toolbar">
+    <div class="btn-group">
+      <a class="btn_toolbar_btn btn btn-primary active" href="#" title="Basic"><span class="fui-user"></span></a>
+      <a class="btn_toolbar_btn btn btn-primary" href="/trainer/billing/<%= currentUser.id %>" title="Billing"><span class="fui-time"></span></a>
+      <a class="btn_toolbar_btn btn btn-primary" href="/trainer/tag/<%= currentUser.id %>" title="Skills"><span class="fui-heart"></span></a>
+    </div>
+</div>-->
+
+<div class="tab-pane fade in active user_profile_outer_div trainer" id="profile" style="text-align: left">
+	<div class="user_profile">
+		<!--<h4 style="text-align: left;">PERSONAL</h4>
+		<hr>-->
+		<div class="row">
+			<div>
+				<div class="photo" style="padding: 0px"><img src="/flat-ui/common-files/img/crew/vladimir-k.png" /></div>
+                <div class="content_name" style="padding-left: 4px;">
+                  <h4>
+                    <%= user.first_name %>&nbsp;<%= user.last_name %>
+                  </h4>
+                </div>
+	       	</div>
+	    </div>
+	</div>
+	
+	<div class="user_profile left-align">
+		<!--<h4 style="text-align: left;">LOGIN</h4>-->
+		<hr>
+		<div class="row">
+			<div>
+				<div class="content" style="padding-left: 4px;">
+                  <label> Username:
+                  </label>
+                  <label>
+                    <%= user.username %>
+                  </label>
+                </div>
+                <div class="content" style="padding-left: 4px;">
+                  <label> Email:
+                  </label>
+                  <label>
+                    <%= user.email %>
+                  </label>
+                </div>
+            </div>
+		</div>
+	</div>
+	<!--
+	<div class="user_profile left-align">
+		<hr>
+		<div class="row">
+			<div>
+				<div class="content" style="padding-left: 4px;">
+                  <label> Organization:
+                  </label>
+                  <label>
+                    <%= user.organization != null ? user.organization.name : '-' %>
+                  </label>
+                </div>
+                <div class="content" style="padding-left: 4px;">
+                  <label> Role:
+                  </label>
+                  <label>
+                    <%= user.role != null ? user.role.name : '-' %>
+                  </label>
+                </div>
+                <div class="content" style="padding-left: 4px;">
+                  <label> Coach:
+                  </label>
+                  <label>
+                    <%= user.coach != null ? user.coach.first_name : '-' %>
+                  </label>
+                </div>
+                <div class="content" style="padding-left: 4px;">
+                  <label> Department:
+                  </label>
+                  <label>
+                    <%= user.department != null ? user.department : '-' %>
+                  </label>
+                </div>
+	     	</div>
+		</div>
+	</div>
+	-->
+	<!--
+	<a href="/users/edit_profile/<%= user.id %>" class="btn btn-primary" style="margin-top: 2%">Edit</a>
+	-->
+</div>
+
+<!-- BILLING -->
+	<div class="tab-pane fade in active user_profile_outer_div trainer" id="billing" style="text-align: left">
+		<div class="user_profile">
+			<div class="row">
+				<div>
+					<div class="content_name" style="">
+	                  <h4>
+	                    Billing Details
+	                  </h4>
+	                </div>
+		       	</div>
+		    </div>
+		</div>
+		
+		<div class="user_profile left-align">
+			<!--<h4 style="text-align: left;">LOGIN</h4>-->
+			<hr>
+			<div class="row">
+				<div>
+					<div class="content" style="padding-left: 4px;">
+	                  <label> Billing Rate:
+	                  </label>
+	                  <span id="billing_rate">
+		                  <label>
+		                    <%= billing != null && billing.rate != null ? billing.rate : '-' %> per hour
+		                  </label>
+		                  <span class="fui-new visibility_hidden" onclick="ajax_call('/trainer/edit_billing/rate','billing_rate')"></span>
+		               </span>
+	                </div>
+	                <div class="content" style="padding-left: 4px;">
+	                  <label> Total training hours:
+	                  </label>
+	                  <span id="billing_training_hours">
+		                  <label>
+		                    <%= billing != null && billing.trainingHours != null ? billing.trainingHours : '-' %>
+		                  </label>
+		                  <!--
+		                  <span class="fui-new visibility_hidden" onclick="ajax_call('/trainer/edit_billing/trainingHours','billing_training_hours')"></span>
+		              	-->
+		              </span>
+	                </div>
+	                <div class="content" style="padding-left: 4px;">
+	                  <label> Total Un-Billed hours:
+	                  </label>
+	                  <span id="billing_unbilled_hours">
+		                  <label>
+		                    <%= billing != null && billing.unBilledHours != null ? billing.unBilledHours : '-' %>
+		                  </label>
+		                  <!--
+		                  <span class="fui-new visibility_hidden" onclick="ajax_call('/trainer/edit_billing/unBilledHours','billing_unbilled_hours')"></span>
+	                  	-->
+	                  </span> 	
+	                </div>
+	            </div>
+			</div>
+		</div>
+	</div>
+<!-- END BILLING -->
+
+<!-- TAGS -->
+	<div class="tab-pane fade in active user_profile_outer_div trainer" id="tags" style="text-align: left">
+		<div class="user_profile">
+			<div class="row">
+				<div>
+					<div class="content_name" style="">
+	                  <h4>
+	                    Skills
+	                  </h4>
+	                </div>
+		       	</div>
+		    </div>
+		</div>
+		
+		<div class="user_profile left-align">
+			<hr>
+			<div class="row flat-tags" id="trainer_tags">
+				<% tags.forEach(function(tag) { %>
+					<span class='btn_toolbar_btn btn btn-primary'><%= tag.name %><span style='margin-left: 10px; cursor: default' onclick="non_ajax_call('/trainer/delete_tag/<%= tag.id %>')">X</span></span>
+				<% }); %>
+			</div>
+			
+		</div>
+		
+		<div class="user_profile left-align">
+			<hr>
+			<form action="/trainer/add_tag" method="POST" id="trainer_add_tag_form">
+				<input type="text" class="form-control" style="width:60%;display: inline-block" id="tag_text" name="tag_text"/>
+				<a href="#" onclick="submit_form('trainer_add_tag_form')" class="btn_toolbar_btn btn btn-default"><span class="fui-plus"></span></a>
+			</form>
+		</div>
+	</div>
+<!-- END TAGS -->
+
+<script type="text/javascript">
+$("#tag_text").autocomplete({
+      source: function( request, response ) {
+      	$.ajax({
+          url: "/content/get_tags/"+request.term,
+	      success: function(data) {
+	      	response(data);
+	      }
+        });
+      },
+      minLength: 1
+});
+</script>
+			
+			
+		
+				
+				

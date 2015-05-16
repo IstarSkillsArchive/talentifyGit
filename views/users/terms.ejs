@@ -1,0 +1,14 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="non_ajax_call('/users/gym/<%= user_id %>')">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Code of Conduct</h4>
+      </div>
+      	<div class="modal-body">
+	    	<iframe src="https://talentify.in:4000/terms.pdf" width="100%" height="450px"></iframe>
+	    </div>
+	    <div class="modal-footer" style="color:#000; font-size: 14px">
+	    	<b>I agree to the above code of conduct.</b>&nbsp;<input type="button" class="btn btn-success" value="I Agree" onclick="non_ajax_call('/users/do_agree_to_terms/<%= user_id %>')"/>	
+	    </div>
+	</div>
+</div>

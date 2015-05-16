@@ -1,0 +1,119 @@
+<!--<link href="/stylesheets/jquery.timepicker.css" rel="stylesheet" type="text/css" />
+<script src="/javascripts/jquery.timepicker.min.js" type="text/javascript"></script>-->
+
+<div class="animated fadeIn padded bg-info" id="report-ajax" style="overflow: hidden">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<div class="wizard-steps">
+        <div class="wizard-step" id="wizard-step-1">
+          <div class="badge badge-primary" title="Event details">Step 1</div>
+          <!-- start tooltip -->
+          <div class="tooltip fade top in" role="tooltip" id="tooltip424660" style="top: -24px; left: 154px; display: block;">
+          	<div class="tooltip-arrow"></div>
+          	<div class="tooltip-inner">Event details</div>
+          </div>
+          <!-- end tooltip -->
+        </div>
+        <div class="wizard-step" id="wizard-step-2">
+          <div class="badge badge-default" title="Select trainer">Step 2</div>
+          <!-- start tooltip -->
+          <div class="tooltip fade top in visibility-hidden" role="tooltip" id="tooltip424660" style="top: -24px; left: 154px; display: block;">
+          	<div class="tooltip-arrow"></div>
+          	<div class="tooltip-inner">Select trainer</div>
+          </div>
+          <!-- end tooltip -->
+        </div>
+        <div class="wizard-step" id="wizard-step-3">
+          <div class="badge badge-default" title="Assign Users">Step 3</div>
+          <!-- start tooltip -->
+          <div class="tooltip fade top in visibility-hidden" role="tooltip" id="tooltip424660" style="top: -24px; left: 154px; display: block;">
+          	<div class="tooltip-arrow"></div>
+          	<div class="tooltip-inner">Assign Users</div>
+          </div>
+          <!-- end tooltip -->
+        </div>
+    </div>
+  	<div class="row pull-left manage-users-div" style="width: 100%; margin-left: 0px; margin-right: 0px">
+	  	<div class="tab-content bg-white padded margin-bottom" style="background-color: #f2f4f8; overflow: hidden">
+			<input type="hidden" value="" name="event-id" id="event-id" />
+			
+			<!-- start event -->
+			<div class="col-md-4" id="new-event-details">
+				<div class="panel panel-danger">
+				      <div class="panel-header panel-colorize">
+				            <div class="panel-title panel-header-title" style="padding-left: 9px">
+				              Event details
+				            </div>
+						</div>
+				      <div class="tab-content">
+				        <div class="tab-pane fade active in" id="tests-filter" style="height: 472px; overflow-y: auto; overflow-x: hidden">
+				        	<table class="table">
+							  <tbody>
+							  	<tr>
+							  		<td><b>Name</b></td>
+							  		<td>
+							  			<input type="text" id="event-name" />
+							  		</td>
+							  	</tr>
+							  	<tr>
+							  		<td><b>Description</b></td>
+							  		<td>
+							  			<input type="text" id="event-description" />
+							  		</td>
+							  	</tr>
+							  	<tr>
+							  		<td><b>Date</b></td>
+							  		<td>
+							  			<input type="text" id="event-date" placeholder="mm/dd/yyyy"/>
+							  		</td>
+							  	</tr>
+							  	<tr>
+							  		<td><b>Time</b></td>
+							  		<td>
+							  			<input type="text" id="event-time" />
+							  		</td>
+							  	</tr>
+							  	<tr>
+							  		<td><b>Location</b></td>
+							  		<td>
+							  			<input type="text" id="event-location" />
+							  		</td>
+							  	</tr>
+							  	<tr>
+							  		<td colspan="2" class="text-center">
+							  			<input type="button" class="btn btn-success" value="Submit" onclick="create_event('<%= currentUser.id %>', '<%= currentUser.OrganizationId %>')"/>
+							  		</td>
+							  	</tr>
+							  </tbody>
+							</table>
+				        </div>
+				      </div>
+				</div>
+			</div>
+			<!-- end event -->
+			
+			<!-- start assign users -->
+			<div class="col-md-4" id="assign-trainer">
+				
+			</div>
+			<!-- end assign users -->
+			
+			<!-- start event name desc -->
+			<div class="col-md-4" id="assign-users">
+				
+			</div>
+			<!-- end event name desc -->
+			<div class="col-md-12 text-center">
+				<a class="btn btn-success" onclick="non_ajax_call('/hr_admin/dashboard')" style="display: none" id="event-done-btn">Done</a>
+				<a class="btn btn-danger" onclick="if(confirm('Are you sure?')) { delete_new_event() }">Cancel</a>
+			</div>
+		</div>
+	</div>
+	
+</div>
+<script>
+	/*$( "#event-date" ).datetimepicker({
+		pickTime: false
+	})*/
+	$( "#event-date" ).datepicker();
+	$( "#event-time" ).timepicker();
+</script>

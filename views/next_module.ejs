@@ -1,0 +1,58 @@
+
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <% if(message == null || message == '' || message == 'null') { %>
+        	<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="ajax_call('/skill/get_modules_for_skill_ajax/<%= skill.id %>','turbo-content-open-id')">&times;</button>
+        <% } %>
+        <h4 class="modal-title" id="myModalLabel"><%= skill.name %></h4>
+      </div>
+      <% if(message != null && message != '' && message != 'null') { %>
+      <div class="modal-body" style="text-align:center">
+      	<%= message %>
+      	<br/><br/>
+      	<% if(currentUser.permission == 'user') { %>
+      		<input type="button" value="OK" class="btn btn-primary" onclick="non_ajax_call('/users/gym/<%= currentUser.id %>')" />
+      	<% } %>
+      	<% if(currentUser.permission == 'trainer') { %>
+      		<input type="button" value="OK" class="btn btn-primary" onclick="non_ajax_call('/trainer/tot/<%= currentUser.id %>')" />
+      	<% } %>
+      </div>
+      <% } %>
+      <% if(message == null || message == '' || message == 'null') { %>
+      <div class="modal-body">
+			<% if(totalModules == 0) { %>
+				Modules are not yet created for this skill.
+			<% } %>
+			<% if(totalModules > 0) { %>
+				<% if(currentUser.permission == 'user' || currentUser.permission == 'trainer') { %>
+					<div class="next_module" style="text-align: center; margin-bottom: 1em;">
+						<!--
+						<a class="btn btn-warning btn-lg" onclick="ajax_call('/users/review_module/<%= skill.id %>','opentok')">Review</a>
+						-->
+						<% if(userSkill.status  != 'complete') { %>
+							<a id="launch_next_module" class="btn btn-primary" data-dismiss="modal" onclick="ajax_call('/skill/get_modules_for_skill_ajax/<%= skill.id %>','turbo-content-open-id')">Play Next</a>
+						<% } %>
+						<% if(userSkill.status == 'complete') { %>
+							Congratulations! You have completed all modules for this skill!
+						<% } %>
+					</div>
+				<% } %>
+				<table class="table table-striped bg-white">
+					<tbody>
+						<% if(skill.description != null) { %>
+						<tr><td><%= skill.description %></td></tr>
+						<% } %>
+						<!--
+						<tr><td>Skill Level Assessment - 5/10 by Manager, <%= userSkill.rating != null ? userSkill.rating : '- ' %>/10 by Coach</td></tr>
+						-->
+						<tr><td>Training Levels Completed - <%= completedModules %> of <%= totalModules %> modules</td></tr>
+					</tbody>
+				</table>
+			<% } %>
+      </div>
+      <% } %>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+

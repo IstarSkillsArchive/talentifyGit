@@ -1,0 +1,91 @@
+
+
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <button type="button" class="close turbo-toggle" data-dismiss="modal" aria-hidden="true" onclick="clear_test_timer()">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Question</h4>
+	        <span>Mandatory: <%= mandatory ? 'Yes':'No' %></span>
+	        &nbsp;&nbsp;&nbsp;
+	        <span>Critical: <%= critical ? 'Yes':'No' %></span>
+	        <span class="" style="display:inline-block;float:right">Time remaining (mins):&nbsp;<span id="test_duration"><%= duration %></span>:<span id="sec_duration"><%= second_duration %></span></span>
+	      </div>
+	      <div class="modal-body">
+	      		<% if(message != null) { %>
+	      			<%= message %>
+	      		<% } %>
+				<% if(message == null && question != null) { %>
+					<form role="form" method="POST" action="/content/answer" target="upload_target" id="answer_submit_form" name="answer_submit_form">
+			  
+					   	<input type="hidden" name="id" value="<%= question.id %>" />
+						<input type="hidden" name="user_id" value="<%= currentUser.id %>" />
+						<input type="hidden" name="skill_id" value="<%= skill_id %>" id="skill_id"/>
+						<input type="hidden" name="test_id" value="<%= test_id %>" id="test_id"/>
+						<input type="hidden" name="timeToAnswer" value="<%= problem_index == 1 ? duration : duration %>" id="timeToAnswer" />
+						<input type="hidden" name="oldDuration" value="" id="oldDuration"/>
+						<input type="hidden" name="oldSecondDuration" value="<%= second_duration %>" id="oldSecondDuration"/>
+						<input type="hidden" name="val" value="content" id="val"/>
+						
+						<% if(question.filePath != null) { %>
+							<div class="form-group col-md-12">
+								<% if(ext == 'pdf') { %>
+									<a href="<%= question.filePath %>" target="_blank" style="font-size: 14px; color: blue"><u>Click this link</u></a>
+								<% } %>
+								<% if(ext != 'pdf') { %>
+									<img src="<%= question.filePath %>" width="100%" alt="Question Image"/>
+								<% } %>
+							</div>
+						<% } %>
+						
+						<div class="form-group col-md-12" style="padding-left: 0px">
+							<div class="col-md-1">
+								<label style="font-size: 16px"><b><%= problem_index %>)</b></label>
+							</div>
+							<div class="col-md-11">
+								<label style="font-size: 16px"><b><%= question.text %></b></label>
+							</div>
+						</div>
+						
+						<% if(question.type == 'Single') { %>
+							<% answers.forEach(function(answer,i) { %>
+								<div class="form-group col-md-12" style="padding-left: 0px">
+									<div class="col-md-1">
+										<input type="radio" name="option" value="<%= answer.id %>">
+									</div>
+									<div class="col-md-11" style="font-size: 14px">
+										<label><%= answer.text %></label>
+									</div>
+								</div>
+							<% }); %>
+						<% } %>
+						
+						<% if(question.type == 'Multiple') { %>
+							<% answers.forEach(function(answer,i) { %>
+								<div class="form-group col-md-12" style="padding-left: 0px">
+									<div class="col-md-1">	
+										<input type="checkbox" name="option" value="<%= answer.text %>">
+									</div>
+									<div class="col-md-11" style="font-size: 14px">
+										<label><%= answer.text %></label>
+									</div>
+								</div>
+							<% }); %>
+						<% } %>
+						<div class="form-group col-md-12">
+							<button type="button" class="btn btn-success" onclick="answer_form_submit()">Submit</button>
+						</div>
+					</form>
+					<iframe id="upload_target" name="upload_target" style="width:0;height:0;border:0px"></iframe>
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<script>
+		set_time_interval_function();
+		
+		var height = $('#uide4b3dde6bb5097375d99eb18a83d7146 .modal-dialog').outerHeight(); 
+		height = height > 0 ? -(height/2+25) : -260;
+		$('#uide4b3dde6bb5097375d99eb18a83d7146').css('margin-top',height+'px');
+		$('#uide4b3dde6bb5097375d99eb18a83d7146').css('top', 50+'%');
+	</script>

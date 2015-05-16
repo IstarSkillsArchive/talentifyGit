@@ -1,0 +1,61 @@
+<% layout('../new-layout') %>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<li class="li_tab"><a href="/hr_admin/dashboard"><%= user.organization.type == 'College' ? 'College' : 'Company'%> L&D Stats</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/track"><%= user.organization.type == 'College' ? 'Student' : 'Employee'%> Stats</a></li>
+			  	<li class="li_tab active"><a href="/hr_admin/list_roles/<%= currentUser.id %>"><%= user.organization.type == 'College' ? 'Batches' : 'Roles'%></a></li>
+			 	<li class="li_tab"><a href="/users/list">Manage Users</a></li>
+			 	<li class="li_tab"><a href="/hr_admin/list_events">Events</a></li>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<form action="/hr_admin/new_role/<%= user_id %>">
+	<input type="submit" class="btn btn-primary" value="Create New Role" style="margin-top: 2%">
+</form>
+
+<h4 style="text-align: center">Role List</h4>
+<div class="table-responsive">
+	<table class="table	table-bordered">
+		<thead>
+			<th>ID</th>
+			<th>Name</th>
+			<th colspan="4" style="text-align:center">Action</th>
+		<thead>
+		<tbody>
+			<% roles.forEach(function(role) { %>
+			<tr>
+				<td><%= role.id %></td>
+				<td><%= role.name %></td>
+				<td><a href="/hr_admin/add_pre_test_to_role/<%= role.id %>">Add/View Pre-Test</a></td>
+				<td><a href="/hr_admin/map_skills/<%= user_id %>/<%= role.id %>">Map Skills</a></td>
+				<td><a href="#" onclick="view_skills('<%= role.id %>','view_skills_div')">View Skills</a></td>
+				<td><a href="#">Delete</a></td>
+				<!--
+				/hr_admin/delete_role/<%= user_id %>/<%= role.id %>
+				-->
+			</tr>
+			<% }); %>
+		</tbody>
+	</table>
+</div>
+<div class="DimBg"></div>
+<div class="modal" id="view_skills_div" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+

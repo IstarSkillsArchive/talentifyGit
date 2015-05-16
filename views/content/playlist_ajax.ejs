@@ -1,0 +1,35 @@
+<% if(playlists.length == 0) { %>
+	<p> No items in the playlist </p>
+<% } %>
+<% if(playlists.length > 0) { %>
+	  <table class="table table-bordered"> 
+	  		<% playlists.forEach(function(playlist,i) { %>
+	  			<tr class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+	  				<td style="width: 400px">
+	  					<input type="hidden" id="search_span_<%= playlist.id %>" value="<%= playlist.id %>"/>
+	  					<span id=""><%= playlist.name %></span>
+	  					<br/>
+	  					<%= playlist.description != null ? playlist.description : '' %>
+	  				</td>
+	  				<% if(module != null ) { %>
+						<td>
+							<a class="close" onclick="show_preview('search_span_<%= playlist.id %>','0', 'false')" style="font-size: 12px" title="Preview"><i class="icm icm-search3"></i></a>
+						</td>
+						<td>
+							<a class="close" onclick="ajax_call('/content/delete_content_from_playlist/<%= module.id %>/<%= playlist.id %>','div_playlist')" style="font-size: 12px" title="Delete"><i class="icm icm-cancel-circle2"></i></a>
+						</td>
+					<% } %>
+					<% if(skill != null ) { %>
+						<td class="text-center">
+		  					<span onclick="show_preview_module('search_span_<%= playlist.id %>','1','false')" style="font-size: 12px; cursor: pointer" title="Preview"><i class="icm icm-search3"></i></span>
+		  				</td>
+						<td>
+							<a class="close" onclick="ajax_call('/content/delete_module_from_playlist/<%= skill.id %>/<%= playlist.id %>','div_playlist')" style="font-size: 12px" title="Delete"><i class="icm icm-cancel-circle2"></i></a>
+						</td>
+					<% } %>
+	  			</tr>
+	  		<% }); %>
+	  </table>
+  <% } %>
+
+

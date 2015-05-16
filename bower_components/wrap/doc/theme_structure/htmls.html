@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en" class="high">
+<head>
+  
+<meta charset="utf-8">
+
+<!-- Always force latest IE rendering engine or request Chrome Frame -->
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+
+<meta name="viewport" content="width=device-width, minimal-ui, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+
+<!-- Apple Touch -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../images/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../../images/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../../images/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../../images/apple-touch-icon-57-precomposed.png">
+
+<!-- Favicon -->
+<link rel="shortcut icon" href="../../images/favicon.png">
+
+<!-- Use title if it's in the page YAML frontmatter -->
+<title>Emerald</title>
+
+<script type="text/javascript">
+    var polyfilter_scriptpath = "/themes/emerald/polyfills/filters/";
+    window.polyfilter_skip_stylesheets = true
+</script>
+
+  <link href="../../stylesheets/application.css" rel="stylesheet" type="text/css" />
+<!--[if lte IE 9]>
+<link href="../../stylesheets/application_split2.css" rel="stylesheet" type="text/css" /><link href="../../stylesheets/application_split3.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+  <script src="../../javascripts/application.js" type="text/javascript"></script>
+  <script src="../../javascripts/demo.js" type="text/javascript"></script>
+  <script src="../../javascripts/init.js" type="text/javascript"></script>
+
+
+</head>
+
+<body class="high emerald-default doc doc_theme_structure doc_theme_structure_htmls">
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <ul class="list-group">
+            <li class="list-group-item">
+              <a href="../carousel.html">Carousel</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../modals.html">Modals</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../utilities.html">Utilities</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheets.html">Stylesheets</a>
+            </li>
+            <li class="list-group-item">
+              <a href="fonts_and_icons.html">Fonts and icons</a>
+            </li>
+            <li class="list-group-item">
+              <a href="javascripts.html">Javascripts</a>
+            </li>
+            <li class="list-group-item">
+              <a href="bower.html">Bower</a>
+            </li>
+            <li class="list-group-item">
+              <a href="htmls.html">Htmls</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../panels.html">Panels</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../stylesheet_components/labels.html">Labels</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../stylesheet_components/lists.html">Lists</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../stylesheet_components/background_box.html">Background box</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../stylesheet_components/box_table.html">Box table</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../stylesheet_components/typography.html">Typography</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../stylesheet_components/forms.html">Forms</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../stylesheet_components/progress_bar.html">Progress bar</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../stylesheet_components/badges.html">Badges</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../stylesheet_components/buttons.html">Buttons</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../offcanvas.html">Offcanvas</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../upgrade.html">Upgrade</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../intro.html">Intro</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../captionable.html">Captionable</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../forms.html">Forms</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../trees.html">Trees</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../turbocards.html">Turbocards</a>
+            </li>
+            <li class="list-group-item">
+              <a href="../actionable.html">Actionable</a>
+            </li>
+      </ul>
+    </div>
+
+    <div class="col-md-9">
+      <h2 id="html-structure">HTML structure</h2>
+
+<p>Most of the html/erb templates reside in the <code>htmls</code> folder. There is also a <code>layouts</code> folder which holds layout elements exclusively (like sidebar, navbar etc)</p>
+
+<h2 id="the-menu">The menu</h2>
+
+<p>The sidebar menu gets configured from the <code>conf/sidebar.yml</code> file, which you could reuse if you're doing a static website starting directly from this template</p>
+
+<h2 id="the-htmls-folder-at-a-glance">The <code>htmls</code> folder at a glance</h2>
+
+<h3 id="components">components</h3>
+
+<p>the main (larger, more complex) components are here: the chat, timeline, calendar, gallery and the wizard page</p>
+
+<h3 id="elements">elements</h3>
+
+<p>smaller scale components, used in the demo</p>
+
+<h3 id="forms">forms</h3>
+
+<p>form elements partials included in forms.html</p>
+
+<h3 id="pages">pages</h3>
+
+<p>pages found in the demo menu (pages section)</p>
+
+<h3 id="panels">panels</h3>
+
+<p>here we made some panel helper partials that we use most of the demo pages</p>
+
+<h3 id="widgets">widgets</h3>
+
+<p>all the widgets form the widgets page</p>
+
+<h2 id="other-html-resources">Other HTML resources</h2>
+
+<h3 id="layouts">layouts</h3>
+
+<p>Here you'll find all you need to build the main layout of the theme (sidebar/top bar/main content)</p>
+
+<h3 id="swatches">swatches</h3>
+
+<p>This is a separate page that only contains swatches for all the colors that we're using in the theme</p>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div id="mq"></div>
+<div id="emvars"></div>
+
+</body>
+</html>

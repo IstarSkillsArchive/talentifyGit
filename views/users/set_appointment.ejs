@@ -1,0 +1,61 @@
+
+
+<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="hide_div('coach');hide_class('DimBg')">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Set Preferences for Appointment</h4>
+	      </div>
+	      <div class="modal-body">
+				<form role="form" method="POST" action="/users/scheduleMeetingWithCoach">
+					  
+					  <input type="hidden" name="coach_id" class="form-control" id="coach_id" value="<%= coach.id %>">
+					  <input type="hidden" name="user_id" class="form-control" id="user_id" value="<%= user.id %>">
+					  
+					  	<div class="form-group">
+						    <label><b>Option 1</b>:</label>
+						</div>
+						<div class="form-group">
+						    <input type="text" name="date_1" class="form-control" id="date_1" placeholder="Date: mm/dd/yyyy">
+						</div>
+						<div class="form-group">
+					    	<input type="text" name="time_1" class="form-control" id="time_1" placeholder="Time: hh:mm">
+					  	</div>
+					  	
+					  	<div class="form-group">
+						    <label><b>Option 2</b>:</label>
+						</div>
+						<div class="form-group">
+						    <input type="text" name="date_2" class="form-control" id="date_2" placeholder="Date: mm/dd/yyyy">
+						</div>
+						<div class="form-group">
+					    	<input type="text" name="time_2" class="form-control" id="time_2" placeholder="Time: hh:mm">
+					  	</div>
+					  	
+					  	<div class="form-group">
+						    <label><b>Option 3</b>:</label>
+						</div>
+						<div class="form-group">
+						    <input type="text" name="date_3" class="form-control" id="date_3" placeholder="Date: mm/dd/yyyy">
+						</div>
+						<div class="form-group">
+					    	<input type="text" name="time_3" class="form-control" id="time_3" placeholder="Time: hh:mm">
+					  	</div>
+					  
+					<button type="submit" class="btn btn-success">Submit</button>
+				</form>
+			</div>
+	    </div>
+	</div>	
+	
+	<script>
+		$( "#date_1" ).datepicker();
+		$( "#time_1" ).timepicker();
+		
+		$( "#date_2" ).datepicker();
+		$( "#time_2" ).timepicker();
+		
+		$( "#date_3" ).datepicker();
+		$( "#time_3" ).timepicker();
+	</script>

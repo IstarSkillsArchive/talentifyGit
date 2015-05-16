@@ -1,0 +1,94 @@
+<% layout('../new-layout') %>
+<script src="/jquery/jquery.min.js"></script>
+<script src="/javascripts/script.js"></script>
+<link href="/stylesheets/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/javascripts/jquery-ui-1.10.0.custom.min.js"></script>
+
+<style>
+	span.label-primary {
+		margin: 4px;
+		padding: 4px;
+		display: inline-block;
+	}
+</style>
+<script>
+	function del(obj) {
+		$(obj).parent().remove();
+	}
+	function add_tags(obj) {
+		$('#tags').append("<span class='label label-primary'>"+$(obj).val()+"<span style='margin-left: 10px; cursor: default' onclick='del(this)'>X</span></span>");
+	}
+</script>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<li class="li_tab"><a href="/hr_admin/dashboard"><%= hr.organization.type == 'College' ? 'College' : 'Company'%> L&D Stats</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/track"><%= hr.organization.type == 'College' ? 'Student' : 'Employee'%> Stats</a></li>
+			  	<li class="li_tab active"><a href="/hr_admin/list_roles/<%= currentUser.id %>"><%= hr.organization.type == 'College' ? 'Batches' : 'Roles'%></a></li>
+			 	<li class="li_tab"><a href="/users/list">Manage Users</a></li>
+			 	<li class="li_tab"><a href="/hr_admin/list_events">Events</a></li>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<% include ../util/errors %>
+
+<a href="/hr_admin/list_roles/<%= currentUser.id %>" class="btn btn-primary" style="margin-top: 2%">Back</a>
+
+<h4 style="text-align: center">Map Skills</h4>
+
+<div class="information">
+	  <style>.row { margin-left: 0px } </style>
+	  <div class="row">
+	  	<label class="navbar-left"><b>Id:</b>&nbsp;&nbsp;<%= role.id %></label>
+	  </div>
+	  <div class="row">
+	  	<label class="navbar-left"><b>Name:</b>&nbsp;&nbsp;<%= role.name %></label>
+	  </div>
+</div>
+
+
+<hr>
+<h5 style="text-align: center">
+	<a class="btn btn-default navbar-left" onclick="ajax_call('/hr_admin/add_pre_test/<%= role.id %>','modal_preview');show_class('DimBg');show_id('modal_preview')">Add Test</a>
+	Test
+</h5>
+
+<table class="table	table-bordered">
+	<thead>
+		<th>Id</th>
+		<th>Name</th>
+		<th>Description</th>
+		<th colspan="2">Action</th>
+	<thead>
+	<tbody>
+		<% if(test != null) { %>
+			<tr>
+				<td><%= test.id %></td>
+				<td><%= test.name %></td>
+				<td><%= test.description %></td>
+				<td><a href="#">View</a></td>
+				<td><a href="#">Delete</a></td>
+			</tr>
+		<% } %>
+	</tbody>
+</table>
+
+<div class="DimBg"></div>
+<div class="modal" id="modal_preview">
+</div>

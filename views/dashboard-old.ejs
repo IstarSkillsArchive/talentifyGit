@@ -1,0 +1,163 @@
+<% layout('layout') %>
+<style>
+	.btn-primary:hover, .btn-primary:focus, .btn-success:hover, .btn-success:focus, .btn-warning:hover, .btn-warning:focus {
+		background-position: 0;
+	}
+	.badge {
+		font-size: 24px; padding: 3px 10px;
+	}
+</style>
+<script type="text/javascript">
+	window.onload = function() {
+		var hash = window.location.hash;
+		var el = 'a[href="' + hash + '"]';
+		$("#end").hide();
+		$("#opentok_second").hide();
+
+    	$(el).tab('show');
+    	
+		$("a.start_rating").on("click", function(el) {
+				var skill = $(el.toElement).attr('id');
+				console.log(skill);
+				$("span#skill_name").text(skill);
+				$("a#launch_next_module").attr("href", "/modules/" + skill);
+		});
+		
+		
+
+		var opts = {
+      orientation: "vertical",
+      range: "min",
+      min: 0,
+      max: 100,
+      value: 60
+		};
+		$( "#slider-vertical, #slider-vertical1, #slider-vertical2" ).slider(opts);
+	}
+	
+</script>
+<!-- Nav tabs -->
+
+  
+  <% if(currentUser.isProfileCompleted == true && currentUser.isTestTaken == true && currentUser.isMetCoach == true) { %>
+	  <script>
+	  	window.location.replace("/users/gym/<%= currentUser.id %>");
+	  </script>
+  <% } %>
+
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane fade in active" id="home">
+		
+		
+		<div class="row" style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%; text-align: center">
+		  <p style="font-size: 35px;">First time here?</p>
+		  <p style="font-size: 15px;">Let's get started..</p>
+		  
+			<div style="margin-top:4%">
+				  <% if(currentUser.isProfileCompleted != true) { %>
+					  <div class="col-sm-6 col-md-4">
+					    <a class="thumbnail btn btn-primary btn-lg" style="border:0px; padding: 1em" href="/users/profile/<%= currentUser.id %>/true">
+					      	<span class="glyphicon glyphicon-user"></span>
+					      	<h4>Complete Your Profile </h4>
+					      	<span class="badge">1</span>
+					    </a>
+					  </div>
+				  <% } %>
+				  
+				  <% if(currentUser.isTestTaken != true) { %>
+					  <div class="col-sm-6 col-md-4">
+					    <% if(currentUser.isProfileCompleted != true) { %>
+						    <div class="thumbnail btn btn-success btn-lg" style="border:0px; padding: 1em" onclick="alert('Please complete the profile first')">
+						      	<span class="glyphicon glyphicon-book"></span>
+						      	<h4>Take a Test </h4>
+						      	<span class="badge">2</span>
+						     </div>
+						<% } %>
+						<% if(currentUser.isProfileCompleted == true) { %>
+						    <div class="thumbnail btn btn-success btn-lg" style="border:0px; padding: 1em" onclick="ajax_call('/users/start_pre_test','uide4b3dde6bb5097375d99eb18a83d7146');show_class('DimBg');show_id('uide4b3dde6bb5097375d99eb18a83d7146')">
+						      	<span class="glyphicon glyphicon-book"></span>
+						      	<h4>Take a Test </h4>
+						      	<span class="badge">2</span>
+						     </div>
+						<% } %>
+					  </div>
+				  <% } %>
+				  
+				  <% if(currentUser.isMetCoach != true) { %>
+					  <div class="col-sm-6 col-md-4">
+						 <% if(currentUser.isProfileCompleted != true) { %>
+						    <div class="thumbnail btn btn-warning btn-lg" style="border:0px; padding: 1em" onclick="alert('Please complete the profile first')">
+						      	<span class="glyphicon glyphicon-facetime-video"></span>
+						      	<h4>Request Meeting with Coach</h4>
+						      	<span class="badge">3</span>
+						    </div>
+						<% } %>
+						<% if(currentUser.isProfileCompleted == true && currentUser.isTestTaken != true) { %>
+						    <div class="thumbnail btn btn-warning btn-lg" style="border:0px; padding: 1em" onclick="alert('Please take the test')">
+						      	<span class="glyphicon glyphicon-facetime-video"></span>
+						      	<h4>Request Meeting with Coach</h4>
+						      	<span class="badge">3</span>
+						    </div>
+						<% } %>
+						<% if(currentUser.isProfileCompleted == true && currentUser.isTestTaken == true) { %>  
+						    <div class="thumbnail btn btn-warning btn-lg" style="border:0px; padding: 1em" onclick="ajax_call('/users/set_appointment/<%= currentUser.id %>','coach');show_id('coach');show_class('DimBg')">
+						      	<span class="glyphicon glyphicon-facetime-video"></span>
+						      	<h4>Request Meeting with Coach</h4>
+						      	<span class="badge">3</span>
+						    </div>
+						<% } %>
+					  </div>
+				<% } %>
+			  
+			</div>
+		  
+		</div>
+		
+	</div>
+</div>
+
+<div class="DimBg"></div>
+<div class="modal" id="uide4b3dde6bb5097375d99eb18a83d7146" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="remove_attr('opentok_iframe', 'src');hide_div('uide4b3dde6bb5097375d99eb18a83d7146');hide_class('DimBg');show_id('connect')">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Coach Session</h4>
+	      </div>
+	      <div class="modal-body">
+				
+				<iframe style="border: 0px;" height="450" width="550" border="0" id="opentok_iframe"></iframe>
+				<br/>
+				<input type="button" class="btn btn-default" onclick="remove_attr('opentok_iframe', 'src');hide_div('uide4b3dde6bb5097375d99eb18a83d7146');hide_class('DimBg');show_id('connect')" value="End" style="margin-top: 2%" id="end">
+				
+	      </div>
+	    </div>
+	</div>	
+</div>
+
+<div class="modal" id="test" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <a href="/users/updateIsTestTaken/<%= currentUser.id %>" class="close">&times;</a>
+	        <h4 class="modal-title" id="myModalLabel">Test</h4>
+	      </div>
+	      <div class="modal-body">
+				
+				<iframe src="https://docs.google.com/forms/d/139zL6jJ3S3tookyz_ptB_OSk_oGSqbAqLaPsWXVf7rc/viewform?embedded=true" style="border: 0px;" height="450" width="550" border="0" id="test_iframe"></iframe>
+				<br/>
+				<a href="/users/updateIsTestTaken/<%= currentUser.id %>" class="btn btn-default" style="margin-top: 2%" id="end">End</a>
+				
+	      </div>
+	    </div>
+	</div>	
+</div>
+
+<div class="modal" id="coach" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">	      
+</div>
+
+

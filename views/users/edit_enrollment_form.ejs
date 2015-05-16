@@ -1,0 +1,186 @@
+<% layout('../new-layout') %>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<% if(currentUser.isProfileCompleted == true && currentUser.isTestTaken == true && currentUser.isMetCoach == true) { %>
+					<li id="gym_li"><a href="/users/gym/<%= currentUser.id %>" >Gym</a></li>
+					<li><a href="/users/calendar" >Events</a></li>
+					<li><a href="/users/report_card/<%= currentUser.id %>">Report Card</a></li>
+					<li class="active"><a href="/users/profile/<%= currentUser.id %>">Profile</a></li>
+				<% } %>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<style>
+	.form-group { text-align: left; }
+</style>
+
+
+	<ul class="nav nav-tabs">
+		<li class="li_tab"><a href="/users/profile/<%= userDetails.UserId %>">Personal Profile</a></li>
+	 	<li class="li_tab active"><a>Enrollment Form</a></li>
+	</ul>
+
+
+<div class="tab-pane fade in active" id="profile">
+	<div style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%; text-align: center;border-top: 0px; border-top-right-radius: 0px; border-top-left-radius: 0px; margin-top: 0px">
+		<div class="row">
+			
+			<form role="form" method="POST" action="/users/update_user_details">
+				<div class="information col-md-8" style="">
+					  <input type="hidden" name="id" value="<%= userDetails.UserId %>"/>
+					  
+					  <div class="form-group">
+					  	<label><b>STUDENT INFORMATION</b></label>
+					  </div>
+					  <hr>
+					  
+					  <div class="form-group">
+					    <label><b>Address</b></label>
+					    <textarea name="address" class="form-control" rows="3"><%= userDetails.address %></textarea>
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Gender</b>:</label>
+					    <input type="radio" name="gender" value="Male" <%= userDetails.gender == 'Male' ? 'checked=checked' : '' %>>&nbsp;<label>Male</label>&nbsp;&nbsp;&nbsp;
+					    <input type="radio" name="gender" value="Female" <%= userDetails.gender == 'Female' ? 'checked=checked' : '' %>>&nbsp;<label>Female</label>
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Caste</b></label>
+					  	<input type="radio" name="caste" value="SC" <%= userDetails.caste == 'SC' ? 'checked=checked' : '' %>>&nbsp;<label>SC</label>&nbsp;&nbsp;&nbsp;
+					    <input type="radio" name="caste" value="ST" <%= userDetails.caste == 'ST' ? 'checked=checked' : '' %>>&nbsp;<label>ST</label>&nbsp;&nbsp;&nbsp;
+					    <input type="radio" name="caste" value="OBC" <%= userDetails.caste == 'OBC' ? 'checked=checked' : '' %>>&nbsp;<label>OBC</label>&nbsp;&nbsp;&nbsp;
+					    <input type="radio" name="caste" value="Gen" <%= userDetails.caste == 'Gen' ? 'checked=checked' : '' %>>&nbsp;<label>Gen</label>
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Religion</b>:</label>
+					    <input type="text" name="religion" class="form-control" value="<%= userDetails.religion %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Date of Birth</b>:</label>
+					    <input type="text" name="dob" class="form-control" value="<%= userDetails.dob %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Father's name</b>:</label>
+					    <input type="text" name="father_name" class="form-control" value="<%= userDetails.father_name %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Husband's name</b>:</label>
+					    <input type="text" name="husband_name" class="form-control" value="<%= userDetails.husband_name %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Father's occupation</b>:</label>
+					    <input type="text" name="father_occupation" class="form-control" value="<%= userDetails.father_occupation %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Husband's occupation</b>:</label>
+					    <input type="text" name="husband_occupation" class="form-control" value="<%= userDetails.husband_occupation %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Mother's name</b>:</label>
+					    <input type="text" name="mother_name" class="form-control" value="<%= userDetails.mother_name %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Mother's occupation</b>:</label>
+					    <input type="text" name="mother_occupation" class="form-control" value="<%= userDetails.mother_occupation %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Monthly Family Income (Rs)</b>:</label>
+					    <input type="text" name="monthly_family_income" class="form-control" value="<%= userDetails.monthly_family_income %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Aadhar No. (if available)</b>:</label>
+					    <input type="text" name="aadhar_number" class="form-control" value="<%= userDetails.aadhar_number %>">
+					  </div>
+					  
+					  <div class="form-group">
+					   	<label><b>EDUCATIONAL INFORMATION</b>:</label>
+					  </div>
+					  <hr>
+					  
+					  <div class="form-group">
+					  	<label><b>Last exam passed</b>:</label>
+					    <input type="text" name="last_exam_passed" class="form-control" value="<%= userDetails.last_exam_passed %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Percentage obtainged</b>:</label>
+					    <input type="text" name="percentage" class="form-control" value="<%= userDetails.percentage %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>After graduation, will you take up a job?</b>:</label>
+					    <input type="checkbox" name="isJobAfterGraduation" <%= userDetails.isJobAfterGraduation ? 'checked=checked' : '' %>>
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>After graduation, will you study further?</b>:</label>
+					    <input type="checkbox" name="isStudyAfterGraduation" <%= userDetails.isStudyAfterGraduation ? 'checked=checked' : '' %>>
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>If you take up a job, which sector would you like to join?</b>:</label>
+					    <input type="text" name="job_sector" class="form-control" value="<%= userDetails.job_sector %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>What is your expected salary on graduation?</b>:</label>
+					    <input type="text" name="expected_salary" class="form-control" value="<%= userDetails.expected_salary %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>If you study further, what course will you pursue?</b>:</label>
+					    <input type="text" name="course" class="form-control" value="<%= userDetails.course %>">
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Have you learnt MS Office?</b>:</label>
+					    <input type="checkbox" name="isLearntMsOffice" <%= userDetails.isLearntMsOffice ? 'checked=checked' : '' %>>
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>Have you learnt Tally?</b>:</label>
+					    <input type="checkbox" name="isLearntTally" <%= userDetails.isLearntTally ? 'checked=checked' : '' %>>
+					  </div>
+					  
+					  <div class="form-group">
+					  	<label><b>What is your career goal/dream?</b>:</label>
+					    <input type="text" name="goal" class="form-control" value="<%= userDetails.goal %>">
+					  </div>
+					
+					<div style="width: 100%; text-align: center; float: left; margin-top: 0.5em">
+						<button type="submit" class="btn btn-success">Submit</button>
+					</div>
+				
+			</form>
+		</div>
+	</div>
+</div>
+

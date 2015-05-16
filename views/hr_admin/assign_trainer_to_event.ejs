@@ -1,0 +1,44 @@
+<div class="panel panel-primary">
+      <div class="panel-header panel-colorize">
+            <div class="panel-title panel-header-title" style="padding-left: 9px">
+              Select Trainer
+            </div>
+		</div>
+      <div class="tab-content">
+        <div class="tab-pane fade active in" id="tests-filter" style="height: 472px; overflow-y: auto; overflow-x: hidden">
+        	<table class="table">
+			  <thead>
+				  <tr class="row-mid">
+				        <th colspan="2">Trainer</th>
+				    	<th>Preview</th>
+				  </tr>
+			  </thead>
+			  <tbody>
+			      <% trainers.forEach(function(trainer, i) { %>
+				      <tr class="row-mid role-filter-users role-filter-users-<%= i %>">
+				      	<td style="width: 30px">
+				              <label>
+				                <div><input type="radio" name="radio-test" value="<%= trainer.id %>" onclick="do_assign_trainer_to_event('<%= trainer.id %>', '<%= i %>')" /></div>
+				              </label>
+				        </td>
+				        <td>
+				          <%= trainer.first_name %> <%= trainer.last_name != null ? trainer.last_name : '' %>
+				        </td>
+				        <td>
+				        	<i class="icm icm-eye2"></i>
+				        </td>
+				      </tr>
+				      <tr>
+				      	<td style="width: 30px"></td>
+				      	<td colspan="2">
+				      		<% trainer.skills.forEach(function(skill, i) { %>
+				      			<span class="label label-success" style="margin:2px auto; display: inline-block"><%= skill.name %></span>
+				      		<% }); %>
+				      	</td>
+				      </tr>
+					<% }); %>
+				</tbody>
+			</table>
+        </div>
+      </div>
+</div>

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en" class="high">
+<head>
+  
+<meta charset="utf-8">
+
+<!-- Always force latest IE rendering engine or request Chrome Frame -->
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+
+<meta name="viewport" content="width=device-width, minimal-ui, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+
+<!-- Apple Touch -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../images/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../images/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../images/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../images/apple-touch-icon-57-precomposed.png">
+
+<!-- Favicon -->
+<link rel="shortcut icon" href="../images/favicon.png">
+
+<!-- Use title if it's in the page YAML frontmatter -->
+<title>Emerald</title>
+
+<script type="text/javascript">
+    var polyfilter_scriptpath = "/themes/emerald/polyfills/filters/";
+    window.polyfilter_skip_stylesheets = true
+</script>
+
+  <link href="../stylesheets/application.css" rel="stylesheet" type="text/css" />
+<!--[if lte IE 9]>
+<link href="../stylesheets/application_split2.css" rel="stylesheet" type="text/css" /><link href="../stylesheets/application_split3.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+  <script src="../javascripts/application.js" type="text/javascript"></script>
+  <script src="../javascripts/demo.js" type="text/javascript"></script>
+  <script src="../javascripts/init.js" type="text/javascript"></script>
+
+
+</head>
+
+<body class="high emerald-default doc doc_utilities">
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <ul class="list-group">
+            <li class="list-group-item">
+              <a href="carousel.html">Carousel</a>
+            </li>
+            <li class="list-group-item">
+              <a href="modals.html">Modals</a>
+            </li>
+            <li class="list-group-item">
+              <a href="utilities.html">Utilities</a>
+            </li>
+            <li class="list-group-item">
+              <a href="theme_structure/stylesheets.html">Stylesheets</a>
+            </li>
+            <li class="list-group-item">
+              <a href="theme_structure/fonts_and_icons.html">Fonts and icons</a>
+            </li>
+            <li class="list-group-item">
+              <a href="theme_structure/javascripts.html">Javascripts</a>
+            </li>
+            <li class="list-group-item">
+              <a href="theme_structure/bower.html">Bower</a>
+            </li>
+            <li class="list-group-item">
+              <a href="theme_structure/htmls.html">Htmls</a>
+            </li>
+            <li class="list-group-item">
+              <a href="panels.html">Panels</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/labels.html">Labels</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/lists.html">Lists</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/background_box.html">Background box</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/box_table.html">Box table</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/typography.html">Typography</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/forms.html">Forms</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/progress_bar.html">Progress bar</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/badges.html">Badges</a>
+            </li>
+            <li class="list-group-item">
+              <a href="stylesheet_components/buttons.html">Buttons</a>
+            </li>
+            <li class="list-group-item">
+              <a href="offcanvas.html">Offcanvas</a>
+            </li>
+            <li class="list-group-item">
+              <a href="upgrade.html">Upgrade</a>
+            </li>
+            <li class="list-group-item">
+              <a href="intro.html">Intro</a>
+            </li>
+            <li class="list-group-item">
+              <a href="captionable.html">Captionable</a>
+            </li>
+            <li class="list-group-item">
+              <a href="forms.html">Forms</a>
+            </li>
+            <li class="list-group-item">
+              <a href="trees.html">Trees</a>
+            </li>
+            <li class="list-group-item">
+              <a href="turbocards.html">Turbocards</a>
+            </li>
+            <li class="list-group-item">
+              <a href="actionable.html">Actionable</a>
+            </li>
+      </ul>
+    </div>
+
+    <div class="col-md-9">
+      <h2 id="utilities">Utilities</h2>
+
+<ul>
+  <li><code>.high</code> - adds <code>height: 100%</code> to the element</li>
+  <li>
+    <p><code>.fullscreen</code> - makes the element take the full screen</p>
+  </li>
+  <li><code>.vpadded</code> - adds padding to top/bottom</li>
+  <li><code>.vpadded-row</code> - adds padding to all the children inside (first level)</li>
+  <li><code>.hpadded</code> - adds a horizontal padding to left/right</li>
+  <li><code>.padded</code> - adds padding on all sides</li>
+  <li><code>.no-padding</code> - removes padding from all sides</li>
+  <li><code>.padded-DIRECTION</code> - adds padding to direction (top, left, right, bottom)</li>
+  <li><code>.no-padding-DIRECTION</code> - removes padding from direction (top, left, right, bottom)</li>
+  <li><code>.no-padding-v</code> - removes vertical padding (top,bottom)</li>
+  <li>
+    <p><code>.no-padding-h</code> - removes horizontal padding (left, right)</p>
+  </li>
+  <li><code>.no-margin</code> - removes margin from all sides</li>
+  <li>
+    <p><code>.no-margin-DIRECTION</code> - removes margin from direction (top, left, right, bottom)</p>
+  </li>
+  <li>
+    <p><code>.no-border-radius</code> - removes border-radius from all corners</p>
+  </li>
+  <li><code>.push-top</code> - adds a positive margin-top to a container</li>
+  <li><code>.push-bottom</code> - adds a positive margin-bottom to a container</li>
+  <li>
+    <p><code>.pull-top</code> - adds a negative margin-top to a container</p>
+  </li>
+  <li><code>.vertical-text-left</code> - rotates the text to the left</li>
+  <li><code>.vertical-text-right</code> - rotates the text to the right </li>
+  <li><code>.circle</code> - adds a 50% border-radius</li>
+  <li>
+    <p><code>.grayscale</code> - removes the saturation from an element (makes it look.. gray)</p>
+  </li>
+  <li><code>.pull-DIRECTION-SIZE</code>, <code>.push-DIRECTION-SIZE</code> - adds a margin (positive-push, negative-pull) to direction (can be top,left,bottom,right) , and to screen size (can be xs, sm, md, lg).<br />
+Example: <code>.pull-left-md</code> will pull the content with a <code>-15px</code> margin-left until it hits <code>md</code> screens (from mobile to md)</li>
+  <li>
+    <p><code>.no-pull-SIZE</code> - will cancel any margin done by <code>.pull-DIRECTION-SIZE</code> or <code>.push-DIRECTION-SIZE</code> for a specific size<br />
+Example: you want to pull a container to the left on all screens except mobile xs:  add <code>pull-left-lg no-pull-xs</code></p>
+  </li>
+  <li>
+    <p><code>.pull-center</code> - centers a container between bootstrap's pull-left and pull-right elements</p>
+  </li>
+  <li><code>.component-shadow</code> - adds a large shadow to a container</li>
+  <li><code>.text-component-shadow</code> - adds a large shadow to a text (used in jumpto menu)</li>
+</ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div id="mq"></div>
+<div id="emvars"></div>
+
+</body>
+</html>

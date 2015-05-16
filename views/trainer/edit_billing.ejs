@@ -1,0 +1,31 @@
+<% if(text == 'rate') { %>
+	<form action="/trainer/do_edit" method="POST" id="edit_billing_rate">
+		<input type="hidden" name="text" value="<%= text %>" />
+		<input type="text" name="rate" value="<%= billing.rate != null ? billing.rate : '' %>" /><label>per hour</label>
+		<input type="hidden" name="id" value="<%= billing.id %>" />
+		<div class="width_100">
+			<a href="#" onclick="submit_form('edit_billing_rate')" class="btn btn-success" title="Save"><span class="glyphicon glyphicon-save"></span></a>
+			<a href="/trainer/profile/<%= currentUser.id %>" class="btn btn-danger" title="Cancel"><span class="glyphicon glyphicon-ban-circle"></span></a>
+		</div>
+	</form>
+<% } %>
+
+<% if(text == 'trainingHours') { %>
+	<form action="/trainer/do_edit" method="POST" id="edit_billing_rate" class="display_inline_block">
+		<input type="hidden" name="text" value="<%= text %>" />
+		<input type="text" name="rate" value="<%= billing.trainingHours != null ? billing.trainingHours : '' %>" />
+		<input type="hidden" name="id" value="<%= billing.id %>" />
+		<a href="#" onclick="submit_form('edit_billing_rate')" class="btn btn-success" title="Save"><span class="glyphicon glyphicon-save"></span></a>
+		<a href="/trainer/dashboard/<%= currentUser.id %>" class="btn btn-danger" title="Cancel"><span class="glyphicon glyphicon-ban-circle"></span></a>
+	</form>
+<% } %>
+
+<% if(text == 'unBilledHours') { %>
+	<form action="/trainer/do_edit" method="POST" id="edit_billing_rate" class="display_inline_block">
+		<input type="hidden" name="text" value="<%= text %>" />
+		<input type="text" name="rate" value="<%= billing.unBilledHours != null ? billing.unBilledHours : '' %>" />
+		<input type="hidden" name="id" value="<%= billing.id %>" />
+		<a href="#" onclick="submit_form('edit_billing_rate')" class="btn btn-success" title="Save"><span class="glyphicon glyphicon-save"></span></a>
+		<a href="/trainer/dashboard/<%= currentUser.id %>" class="btn btn-danger" title="Cancel"><span class="glyphicon glyphicon-ban-circle"></span></a>
+	</form>
+<% } %>

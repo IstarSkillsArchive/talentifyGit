@@ -1,0 +1,19 @@
+<h2 class="thin no-margin-top">Test Results : <%= role.name %></h2>
+
+<% if(rt != null) { %>
+	<ul class="nav nav-tabs" >
+	  	<li class="test_details_test_tab_inner" onclick="change_test_tab(this, 'test_details_test_tab_inner')"><a onclick="ajax_call('/hr_admin/test_analytics_report/<%= role.id %>', 'report_details_inner')">Statistics</a></li>
+	  	<li class="test_details_test_tab_inner active" onclick="change_test_tab(this, 'test_details_test_tab_inner')"><a onclick="ajax_call('/hr_admin/view_role_test_result_details_score/<%= role.id %>', 'report_details_inner')">Report Card</a></li>
+	</ul>
+	<div class="tab-content bg-white padded margin-bottom">
+		  <div class="tab-pane fade in active" id="report_details_inner" style="overflow: hidden;">
+		  		
+		  </div>
+	</div>
+	<script>
+		ajax_call('/hr_admin/view_role_test_result_details_score/<%= role.id %>','report_details_inner');
+	</script>
+<% } %>
+<% if(rt == null) { %>
+	<p>No tests available for this role.</p>
+<% } %>

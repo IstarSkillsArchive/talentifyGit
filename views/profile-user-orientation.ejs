@@ -1,0 +1,49 @@
+<style>
+	.form-control {
+		background: #f2f4f8;	
+	}
+</style>
+<div class="animated fadeIn padded bg-info" style="overflow: hidden;">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<h2 class="thin no-margin-top">Complete Your Profile</h2>
+	<hr>
+	<div id="create_module">
+		<div class="col-md-6">
+		  <form action="/users/do_create_user_profile" method="POST" name="do_create_user_profile" id="do_create_user_profile">
+			  <div class="form-group">
+			    <label>First Name <span style="color:red">*</span></label>
+			    <input type="text" name="first_name" class="form-control" id="first_name" placeholder="First Name">
+			  	<span class="display-none" id="first-name-msg" style="color:red">Please enter a valid name. Do not include extra characters like 'space', '-', '.' etc</span>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label>Last Name</label>
+			    <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Last Name">
+			  </div>
+			  
+			  <div class="form-group">
+			    <label>Email <span style="color:red">*</span></label>
+			    <input type="text" name="email" class="form-control" id="email" placeholder="Email">
+			    <span class="display-none" id="email-msg" style="color:red">Please enter a valid email address</span>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label>Phone</label>
+			    <input type="text" name="phone" class="form-control" id="phone" placeholder="Phone">
+			  </div>
+			  
+			  <div class="form-group">
+			    <label>Location</label>
+			    <input type="text" name="location" class="form-control" id="location" placeholder="Location">
+			  </div>
+			  
+			  <input type="hidden" value="true" name="isProfileCompleted" />
+			  
+			  <div class="form-group">
+			  	<input type="button" value="Submit" class="btn btn-success" onclick="doCreateUserProfile()"/>
+			  </div>
+			</form>
+			<iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+		</div> 
+		
+	</div>

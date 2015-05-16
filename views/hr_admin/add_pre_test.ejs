@@ -1,0 +1,37 @@
+
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      		
+      <div class="modal-header">
+        <button type="button" class="close turbo-toggle" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add Test</h4>
+      </div>
+      
+      <div class="modal-body">
+		
+		 <div class="form-group">
+			<label><b>Enter test name</b></label>
+			<input type="text" class="form-control" id="test-name" style="border: 1px solid #ccc; color: #43494d"/>
+			<input type="button" class="btn btn-success turbo-toggle" data-dismiss="modal" value="Submit" style="margin-top: 8px" onclick="add_pre_test('<%= role_id %>')"/>
+		 </div>
+      	
+      </div>
+      
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+  
+<script type="text/javascript">
+	/*$("#test_name").autocomplete({
+	      source: function( request, response ) {
+	      	$.ajax({
+	          url: "/content/get_tests_name/"+request.term,
+		      success: function(data) {
+		      	response(data);
+		      }
+	        });
+	      },
+	      minLength: 1
+	});*/
+</script>
+

@@ -1,0 +1,149 @@
+<% if(url_string != null && url_param != null && url_string != 'null' && url_param != 'null' && url_string != '' && url_param != '') { %>
+	<% if(page != parseInt(0)) { %>
+		<input type="button" class="first-btn btn btn-primary" value="Back" onclick="ajax_call('/content/<%= url_string %>/<%= url_param %>/<%= page %>','content-admin-display')">
+	<% } %>
+	
+	<% if(page == parseInt(0)) { %>
+		<input type="button" class="first-btn btn btn-primary" value="Back" onclick="ajax_call('/content/<%= url_string %>/<%= url_param %>','content-admin-display')">
+	<% } %>
+<% } %>
+
+<% if(url_string == null || url_param == null) { %>
+<input type="button" class="first-btn btn btn-primary" value="List Content" onclick="ajax_call('/content/list_content','content-admin-display')">
+<% } %>
+
+<input style="margin-right: 8px" type="button" class="first-btn btn btn-primary" value="Create New Content" onclick="ajax_call('/content/upload','content-admin-display')">
+
+<h2 class="text-gradient-info-dk text-center">Edit Content</h2>
+<hr>
+<div class="col-md-6">
+	<div class="panel panel-primary gradient-diag1" id="rid0a5949b0e9f2e06afbd43ec07c3d3fc02">  
+		<div class="panel-heading panel-handle panel-colorize">
+    	    <div class="panel-title">
+		      <span class="" data-type="text">
+		        Content Details
+		      </span>
+		    </div>
+  		</div>
+		  <div class="panel-body-collapse collapse in">
+		      <div class="panel-body">
+		      		<form role="form" method="POST" action="/content/do_edit_content" enctype="multipart/form-data" target="target-frame">
+						  <div class="form-group">
+						  	<label>Name</label>
+						  	<input type="text" name="name" id="name" value="<%= content.name %>" class="form-control"/>
+						  </div>
+						  
+						  <div class="form-group">
+						  	<label>Description</label>
+						  	<input type="text" name="description" id="description" value="<%= content.description %>" class="form-control"/>
+						  </div>
+						  
+						  <div class="form-group">
+						  	<iframe src="<%= content.path %>" width="200px" height="200px"></iframe>
+						  </div>
+						  
+						  <div class="form-group">
+						  	<label>Path</label>
+						  	<input type="text" name="path" id="path" value="<%= content.path %>" class="form-control"/>
+						  </div>
+						  
+						  <div class="form-group">
+						    <label>Type</label>
+						    <select name="type" id="type" class="form-control">
+						    	<option value="<%= content.type %>"><%= content.type == 'ilt' ? 'Instructor Led' : 'E-Learning' %></option>
+						    	<option value="elt">E-Learning</option>
+						    	<option value="ilt">Instructor Led</option>
+						    </select>
+						  </div>
+						  
+						  <div class="form-group">
+						    <label>No. of Work Hours</label>
+						    <input type="text" name="hours" class="form-control" id="hours" value="<%= content.hours != null ? content.hours : 2 %>">
+						  </div>
+						  
+						  <input type="hidden" value="<%= content.id %>" name="content_id" />
+						  
+						  <input type="submit" value="Edit Content" class="btn btn-success"/>
+						  
+					</form>
+					<iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+		      </div>
+		  </div>
+	</div>
+	
+</div>
+
+<div class="col-md-6">
+	<div class="panel panel-primary gradient-diag1" id="rid0a5949b0e9f2e06afbd43ec07c3d3fc02">  
+		<div class="panel-heading panel-handle panel-colorize">
+    	    <div class="panel-title">
+		      <span class="" data-type="text">
+		        Add Tags
+		      </span>
+		    </div>
+  		</div>
+		  <div class="panel-body-collapse collapse in">
+		      <div class="panel-body">
+		      		<div class="form-group">
+						<div class="row" id="tags" style="margin: auto">
+							<% tags.forEach(function(tag) { %>
+								<span class='label label-primary'><%= tag.name %><a style='margin-left: 10px; cursor: default; color: #fff' onclick=ajax_call("/content/delete_content_tag/<%= content.id %>/<%= tag.id %>","content-admin-display")>X</a></span>
+							<% }); %>
+						</div>
+						<div class="input-group">
+						  <input type="hidden" name="tag_id" id="tag_id"/>
+						  <input type="text" name="tag_name" class="form-control" id="tag_name" placeholder="Type and Click Add">
+						  <span class="input-group-addon" onclick="add_content_tag('<%= content.id %>')" style="border: 1px solid #e1e1e1; cursor: pointer">Add</span>
+						</div>
+					 </div>
+		      </div>
+			</div>
+	</div>
+</div>
+
+<div class="col-md-12">
+	<hr class="no-margin-top">
+	<h3 class="text-center">
+		<a class="btn btn-primary navbar-left" data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="ajax_call('/content/add_test/content/<%= content.id %>','uide4b3dde6bb5097375d99eb18a83d7146')">Add Test</a>
+		Test
+	</h3>
+	
+	<table class="table	table-bordered">
+		<thead>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th colspan="2">Action</th>
+		<thead>
+		<tbody>
+			<% tests.forEach(function(test, i) { %>
+			<tr>
+				<td><%= i+1 %></td>
+				<td><%= test.name %></td>
+				<td><%= test.description %></td>
+				<td><a onclick=ajax_call("/content/edit_test/<%= test.id %>","content-admin-display")>View</a></td>
+				<td><a href="#">Delete</a></td>
+			</tr>
+			<% }); %>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+$("#tag_name").autocomplete({
+      source: function( request, response ) {
+      	$.ajax({
+          url: "/content/get_tags/"+request.term,
+	      success: function(data) {
+	      	response(data);
+	      }
+        });
+      },
+      minLength: 1,
+      select: function( event, ui ) {
+      	$('#tag_name').val(ui.item.label);
+      	$('#tag_id').val(ui.item.value);
+      	return false;
+      }
+});
+</script>

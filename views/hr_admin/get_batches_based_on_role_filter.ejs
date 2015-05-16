@@ -1,0 +1,5 @@
+<% batches.forEach(function(batch,i) { %>
+	<li>
+		<input type="checkbox" value="<%= batch.id %>" class="batch-filter-checkbox" onclick="get_batch_filter_checkbox_values('<%= val %>')"/> <%= batch.name %>
+	</li>
+<% }); %>

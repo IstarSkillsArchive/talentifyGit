@@ -1,0 +1,239 @@
+<% layout('../new-layout') %>
+
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script type="text/javascript" src="/javascripts/script.js"></script>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  	<div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<ul class="nav navbar-nav">
+			<li class="li_tab"><a href="/hr_admin/dashboard"><%= user.organization.type == 'College' ? 'College' : 'Company'%> L&D Stats</a></li>
+		  	<li class="li_tab"><a href="/hr_admin/track"><%= user.organization.type == 'College' ? 'Student' : 'Employee'%> Stats</a></li>
+		  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>"><%= user.organization.type == 'College' ? 'Batches' : 'Roles'%></a></li>
+		 	<li class="li_tab"><a href="/users/list">Manage Users</a></li>
+		 	<li class="li_tab active"><a href="/hr_admin/list_events">Events</a></li>
+		</ul>
+		 <ul class="nav navbar-nav pull-right">
+		 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+		 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+		 </ul>
+	</div>
+</div>
+
+<style>
+	label { font-weight: bold; }
+	.form-group { display: inline-block; width: 100%}
+	.form-group .form-control {
+		width: 500px;
+	}
+	@media (max-width: 767px) {
+		.form-group .form-control {
+			width: 100%	
+		  }		 
+	}
+</style>
+ 	
+<% include ../util/errors %>
+
+<form action="/hr_admin/list_events">
+	<input type="submit" class="btn btn-primary" value="Back" style="margin-top: 0%">
+</form>
+
+
+<h4 style="text-align: center;font-weight: 300">Create Event</h4>
+
+<form role="form" method="POST" action="/hr_admin/do_create_event" id="create_event_form" name="create_event_form">
+  
+  <div class="form-group">
+    <input type="text" name="name" class="form-control" id="name" placeholder="Name">
+  </div>
+  
+  <div class="form-group">
+    <input type="text" name="description" class="form-control" id="description" placeholder="Description">
+  </div>
+  
+  <div class="form-group">
+  	<label>Type</label>
+  	<select name="type" class="form-control" onchange="toggle_trainer_test(this)">
+  		<option value="Meeting">Meeting</option>
+  		<option value="Test">Test</option>
+  	</select>
+  </div>
+  
+  <div class="form-group">
+    <input type="text" name="location" class="form-control" id="location" placeholder="Location">
+  </div>
+  
+  <div class="form-group">
+    <input type="text" name="date" class="form-control" id="date" placeholder="Date: dd/mm/yyyy">
+  </div>
+  
+  <div class="form-group">
+    <input type="text" name="time" class="form-control" id="time" placeholder="Time: hh:mm">
+  </div>
+  
+  
+    <input type="hidden" name="InitiatorId" class="form-control" id="InitiatorId" value="<%= currentUser.id %>">
+  
+    <input type="hidden" name="OrganizationId" class="form-control" id="OrganizationId" value="<%= user.OrganizationId %>">
+  
+    <input type="hidden" name="status" class="form-control" id="status" value="Created Event">
+  
+  
+  <div class="playlist wide" id="search_trainer_div">
+	 <label>Search Trainers</label>
+	 
+	  <div class="playlist wide" style="border: 0px; overflow: hidden">
+		  	<div class="form-group search_trainer_div_form_group" id="search_trainer_div_form_group">
+	            <div class="input-group">
+				  <input type="text" class="form-control" placeholder="Search trainers by tags" name="Moderator_Id" id="Moderator_Id">
+				  <input type="hidden" name="ModeratorId" id="ModeratorId" value=""/>
+				  <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+				</div>
+	        </div>
+	        <div class="trainer_profile_div" id="trainer_profile_div">
+	        	<div class="trainer_profile_div_scroll" id="trainer_profile_div_scroll">
+	        	</div>
+	        </div>
+	  </div>
+  </div>
+  
+  <div class="playlist wide display_none" id="search_test_div" style="margin-top: 20px">
+	 <label>Add Test</label>
+	 
+	  <div class="playlist wide" style="border: 0px; overflow: hidden">
+	  	<div class="form-group search_trainer_div_form_group" id="search_test_div_form_group">
+            <div class="input-group">
+			  <input type="text" class="form-control" placeholder="Search tests by name" name="Test_Name" id="Test_Name">
+			</div>
+        </div>
+	  </div>
+  </div>
+  
+  </form>
+  
+  <!-- START -->
+  	  <br/>
+	  <div class="playlist wide">
+		  <div class="form-group">
+				<label>User List</label>
+		  </div>	
+		  
+		  <br/>
+		  
+		  <!--<ul class="nav nav-tabs">
+				<li class="li_tab active"><a href="#search_content" data-toggle="tab">Search</a></li>
+			 	<li class="li_tab"><a href="#browse_content" onclick="ajax_call('/content/browse/1','browse_content')" data-toggle="tab">Browse</a></li>
+		  </ul>-->
+		  
+		  
+		  <!-- START BROWSE -->
+		  
+		  <div class="form-group">
+			  	<label>Add Users</label>
+			  </div>
+			  
+			  <div class="playlist wide" id="filter_results">
+			  	<label>Filter Results</label>
+			  	
+			  	<form role="form" method="POST" action="/content/do_edit_module" style="display: inline-block">
+				  	<select name="skill" onchange="ajax_filter_users_skill(this, '0')" id="skill">
+				  		<option value="0">Select a skill</option>
+				  		<% skills.forEach(function(playlist,i) { %>
+				  			<option value="<%= playlist.id %>"><%= playlist.name %></option>
+				  		<% }); %>
+				  	</select>
+				  	
+				  	<select name="role" onchange="ajax_filter_users_role(this, '0')" id="role">
+				  		<option value="0">Select a role</option>
+				  		<% roles.forEach(function(playlist,i) { %>
+				  			<option value="<%= playlist.id %>"><%= playlist.name %></option>
+				  		<% }); %>
+				  	</select>
+				  	
+				  	<!--
+				  	<div class="btn-group btn-group-xs">
+				  		<input type="submit" value="Go" class="btn btn-default"/>
+				  	</div>
+				  	-->
+				  	
+				</form>
+			  	
+			  </div>
+			  
+			  <br/>
+			  
+			  <div class="form-group">
+			  	<div class="playlist wide" id="content">
+			  		<% users.forEach(function(playlist,i) { %>
+			  			<div class="<%= i%2 == 0 ? 'even' : 'odd' %>">
+							<a class="close" href="#" onclick="add_user_to_event('<%= playlist.id %>','0')" style="font-size: 12px">Add User</a>
+							<span>
+			  					<span id="search_span_<%= playlist.id %>"><%= playlist.first_name %>&nbsp;<%= playlist.last_name %></span>
+			  				</span>
+						</div>
+			  			
+					<% }); %>
+			  	</div>
+			  </div>
+		  
+		  <!-- END BROWSE -->
+	  </div>	
+  <!-- END -->
+  <br/>
+  <div class="form-group">
+  	<button type="button" class="btn btn-success" onclick="submit_form('create_event_form')">Submit</button>
+  </div>
+
+<script type="text/javascript">
+/*$("#Moderator_Id").autocomplete({
+      source: function( request, response ) {
+      	$.ajax({
+          url: "/trainer/get_trainers/"+request.term,
+	      success: function(data) {
+	      	response(eval(data));
+	      	$('.trainer_profile_div').show();
+	      	$('.trainer_profile_div_scroll').html(data);
+	      }
+        });
+      },
+      minLength: 1,
+      select: function( event, object ) {
+        //alert(object.item.id);
+        document.getElementById('ModeratorId').value = object.item.id;
+        //load_trainer_profile(object.item.id);
+      },
+      change: function( event, object ) {
+      	if(object.item != null) {
+      		document.getElementById('ModeratorId').value = object.item.id;
+      	}
+      }
+});*/
+$("#Moderator_Id").keyup(function(){
+      $.ajax({
+          url: "/trainer/get_trainers/"+$(this).val()+"/0",
+	      success: function(data) {
+	      	//response(eval(data));
+	      	$('#trainer_profile_div').show();
+	      	$('#trainer_profile_div_scroll').html(data);
+	      }
+     });
+});
+
+$("#Test_Name").autocomplete({
+      source: function( request, response ) {
+      	$.ajax({
+          url: "/content/get_tests_name/"+request.term,
+	      success: function(data) {
+	      	response(data);
+	      }
+        });
+      },
+      minLength: 1
+});
+</script>

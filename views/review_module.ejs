@@ -1,0 +1,58 @@
+<div class="animated fadeIn padded bg-info">
+  	<button type="button" class="close pull-right turbo-toggle">&times;</button>
+  	<h2 class="thin no-margin-top">Review</h2>
+  	<!--<ul class="nav nav-tabs" >
+	  	<% old_modules.forEach(function(module, i) { %>
+			<li class="test_tab" onclick="change_test_tab(this);ajax_call('/users/review_old_content/<%= skill_id %>/<%= module.id %>','main_0');">
+				<a><%= i+1 %></a>
+			</li>
+		<% }); %>
+		<li class="active test_tab" onclick="change_test_tab(this);ajax_call('/users/review_content/<%= skill_id %>/<%= current_module.id %>','main_0');">
+			<a><%= old_modules.length+1 %></a>
+		</li>
+		<% new_modules.forEach(function(module, j) { %>
+			<li class="test_tab not-allowed" title="View the earlier module to unlock this module" onclick="alert('View the earlier module to unlock this module')">
+				<a><%= old_modules.length+1+j+1 %></a>
+			</li>
+		<% }); %>
+	</ul>-->
+	<div class="tab-content padded margin-bottom">
+	  <div class="tab-pane fade in active" id="main_0">
+	  		<!-- start accordion -->
+	  		<div id="accordion">
+			  <% old_modules.forEach(function(module, i) { %>
+			  	<a onclick="ajax_call('/users/review_old_content/<%= skill_id %>/<%= current_module.id %>','accordion-<%= i+1 %>')" style="background: #eee; color: #171B24"><b class="caret"></b>&nbsp;Module <%= i+1 %>&nbsp;:&nbsp;<%= module.name %>&nbsp;<%= module.description != null ? '- '+module.description : '' %></a>
+			  	<div id="accordion-<%= i+1 %>">
+				</div>
+			  <% }); %>
+			  <a onclick="ajax_call('/users/review_content/<%= skill_id %>/<%= current_module.id %>','accordion-<%= old_modules.length+1 %>')" style="color: #f2f4f8"><b class="caret"></b>&nbsp;Module <%= old_modules.length+1 %>&nbsp;:&nbsp;<%= current_module.name %>&nbsp;<%= current_module.description != null ? '- '+current_module.description : '' %></a>
+			  <div id="accordion-<%= old_modules.length+1 %>">
+				    
+			  </div>
+			  <% new_modules.forEach(function(module, j) { %>
+			  	<a onclick="ajax_call('/users/review_new_content/<%= skill_id %>/<%= current_module.id %>','accordion-<%= old_modules.length+1+j+1 %>')" style="background: #eee; color: #171B24"><b class="caret"></b>&nbsp;Module <%= old_modules.length+1+j+1 %>&nbsp;:&nbsp;<%= module.name %>&nbsp;<%= module.description != null ? '- '+module.description : '' %></a>
+			  	<div id="accordion-<%= old_modules.length+1+j+1 %>">
+				    
+			    </div>
+			  <% }); %>
+			</div>
+		  	<!-- end accordion -->
+	  		<% if(current_module != null && current_module != '' && current_module != 'null') { %>
+				<script>
+					ajax_call('/users/review_content/<%= skill_id %>/<%= current_module.id %>','accordion-<%= old_modules.length+1 %>');
+				</script>
+			<% } %>
+	  </div>
+	</div>
+</div>
+
+<script>
+	$( "#accordion" ).accordion({
+		heightStyle: "content",
+		collapsible: true,
+		icons: null
+	});
+</script>
+
+
+

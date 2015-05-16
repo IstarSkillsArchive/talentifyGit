@@ -1,0 +1,72 @@
+<style>
+	.modal-dialog {
+		width: auto;
+		position: absolute;
+		top: 20%;
+		bottom: 20%;
+		left: 25%;
+		right: 25%;
+		width: auto;
+		margin: auto;
+	}
+	@media (max-width: 767px) {
+		.modal-dialog {
+			top: 5%;
+			left: 1%;
+			right: 1%;	
+		  }
+		  .modal-header h4 {
+		  	font-size: 1.5em;
+		  }
+	}
+</style>
+
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="hide_div('opentok');hide_class('DimBg')">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Question</h4>
+	      </div>
+	      <div class="modal-body">
+	      		<% if(question == null) { %>
+	      			No questions to display
+	      		<% } %>
+				<% if(question != null && question.question != null && question.question != '') { %>
+					<form role="form" method="POST" action="/content/answer" target="upload_target">
+			  
+					   	<input type="hidden" name="id" value="<%= question.id %>" />
+						<input type="hidden" name="user_id" value="<%= currentUser.id %>" />
+						<input type="hidden" name="skill_id" value="<%= skill_id %>" />
+						
+						<div class="form-group">
+							<label><%= question.question %></label>
+						</div>
+						
+						<div class="form-group">
+							<input type="radio" name="option" value="a">
+							<label><%= question.option_1 %></label>
+						</div>
+						
+						<div class="form-group">
+							<input type="radio" name="option" value="b">
+							<label><%= question.option_2 %></label>
+						</div>
+						
+						<div class="form-group">
+							<input type="radio" name="option" value="c">
+							<label><%= question.option_3 %></label>
+						</div>
+						
+						<div class="form-group">
+							<input type="radio" name="option" value="d">
+							<label><%= question.option_4 %></label>
+						</div>
+						
+						<button type="submit" class="btn btn-success">Submit</button>
+					</form>
+					<iframe id="upload_target" name="upload_target" style="width:0;height:0;border:0px"></iframe>
+				<% } %>
+			</div>
+		</div>
+	</div>

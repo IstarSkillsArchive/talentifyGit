@@ -1,0 +1,189 @@
+<% layout('../new-layout') %>
+<% include ../util/errors %>
+
+<link rel="stylesheet" href="../stylesheets/style.css">
+<script src="/jquery/jquery.min.js"></script>
+<script src="/javascripts/d3/d3.min.js"></script>
+<script src="/javascripts/d3_script.js"></script>
+<script src="/javascripts/d3_login_script.js"></script>
+<script src="/javascripts/script.js"></script>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<li class="li_tab active"><a href="/hr_admin/dashboard"><%= hr.organization.type == 'College' ? 'College' : 'Company'%> L&D Stats</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/track"><%= hr.organization.type == 'College' ? 'Student' : 'Employee'%> Stats</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>"><%= hr.organization.type == 'College' ? 'Batches' : 'Roles'%></a></li>
+			 	<li class="li_tab"><a href="/users/list">Manage Users</a></li>
+			 	<li class="li_tab"><a href="/hr_admin/list_events">Events</a></li>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<div class="tab-content">
+  
+	<div class="tab-pane fade in active">
+		<div id="login_dashboard" style="text-align: center; border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%;">
+			<ul class="nav nav-tabs">
+				<li class="li_tab active"><a href="/hr_admin/dashboard">Monthly</a></li>
+			  	<li class="li_tab"><a onclick="ajax_call('/hr_admin/show_quarterly_login_graph/Second','login_dashboard')">Yearly</a></li>
+			</ul>
+			<h6 style="display: inline-block;">Login Activity&nbsp;(<%= month_name %>)</h6>
+			<select style="float: right;" onchange="show_monthly_login_graph(this)">
+				<option>Select Month</option>
+				<option>January</option>
+				<option>February</option>
+				<option>March</option>
+				<option>April</option>
+				<option>May</option>
+				<option>June</option>
+				<option>July</option>
+				<option>August</option>
+				<option>September</option>
+				<option>October</option>
+				<option>November</option>
+				<option>December</option>
+			</select>
+			<div id="chart_login" style="text-align: center">
+				
+			</div>
+			<script>
+				var data = [];
+				<% daily_activity.forEach(function(x, j) { %>
+					data[<%= j %>] = {};
+					data[<%= j %>].day = '<%= x.day %>';
+					data[<%= j %>].count = <%= x.count %>;
+				<% }); %>
+				d3_login_display(data, 'No. of Users', 'chart_login');
+			</script>
+		</div>
+	</div>
+  
+</div>
+
+<div class="tab-content">
+  
+	<div class="tab-pane fade in active">
+		<div id="test_dashboard" style="text-align: center; border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%;">
+			<h6 style="display: inline-block;">Test Analytics</h6>
+			<div id="chart2" style="text-align: center">
+				
+			</div>
+			<script>
+				var t = [];
+				<% tests.forEach(function(x, j) { %>
+					t[<%= j %>] = {};
+					t[<%= j %>].name = '<%= x.name %>';
+					t[<%= j %>].rating = {};
+					t[<%= j %>].rating.Taken_Test = <%= x.test_taken_count %>;
+					t[<%= j %>].rating.Not_Taken_Test = <%= x.test_not_taken_count %>;
+					t[<%= j %>].rating.Passed_Test = <%= x.test_passed_count %>;
+					t[<%= j %>].rating.Failed_Test = <%= x.test_failed_count %>;
+				<% }); %>
+				d3_display(t, 2, 'No. of Users');
+			</script>
+			<table class="table	table-bordered margin_top_2" style="border-collapse: inherit">
+				<thead>
+					<th style="text-align: center">Test</th>
+					<th>No. of users who have taken the test</th>
+					<th>No. of users who have not taken the test</th>
+					<th>No. of users who have passed the test</th>
+					<th>No. of users who have failed the test</th>
+				<thead>
+				<tbody>
+					<% tests.forEach(function(test) { %>
+						<tr>
+							<td style="width: 300px"><a style="cursor: pointer" onclick="ajax_call('/hr_admin/test_analytics/all/<%= test.id %>','modal_preview'); show_class('DimBg');show_id('modal_preview')"><%= test.name %></a></td>
+							<td><%= test.test_taken_count %></td>
+							<td><%= test.test_not_taken_count %></td>
+							<td><%= test.test_passed_count %></td>
+							<td><%= test.test_failed_count %></td>
+						</tr>
+					<% }); %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+  
+</div>
+
+<!--<div class="tab-content">
+  
+	<div class="tab-pane fade in active">
+		<div id="login_dashboard" style="text-align: center; border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%;">
+			<h6 style="display: inline-block;">No. of users who have completed all modules</h6>
+			<div id="chart_completed" style="text-align: center">
+				
+			</div>
+			<script>
+				var s = [];
+				<% skills.forEach(function(x, j) { %>
+					s[<%= j %>] = {};
+					s[<%= j %>].day = '<%= x.name %>';
+					s[<%= j %>].count = <%= x.count %>;
+				<% }); %>
+				d3_login_display(s, 'No. of Users', 'chart_completed');
+			</script>
+		</div>
+	</div>
+  
+</div>-->
+
+<div class="tab-content">
+  
+	<div class="tab-pane fade in active">
+		<div id="dashboard_display" style="border-style: solid; border-width: 1px; border-color: #ddd; border-radius: 5px 5px 5px 5px; padding: 2em; margin-top: 2%;">
+			<div id="chart1" style="text-align: center">
+				
+			</div>
+			<script>
+				var d = [];
+				<% counts.forEach(function(x, j) { %>
+					d[<%= j %>] = {};
+					d[<%= j %>].name = '<%= x.name %>';
+					d[<%= j %>].rating = {};
+					d[<%= j %>].rating.Modules = <%= x.count_modules_completed %>;
+					d[<%= j %>].rating.Improvement = <%= x.count_coach_rating %>;
+				<% }); %>
+				d3_display(d, 1);
+			</script>
+			<table class="table	table-bordered margin_top_2" style="border-collapse: inherit">
+				<thead>
+					<th>Department</th>
+					<th>Total no. of users who have completed modules</th>
+					<th>No. of users improving on skills</th>
+				<thead>
+				<tbody>
+					<% counts.forEach(function(c) { %>
+						<tr>
+							<td><%= c.name %></td>
+							<td><%= c.count_modules_completed %></td>
+							<td><%= c.count_coach_rating %></td>
+						</tr>
+					<% }); %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+  
+</div>
+
+<div class="DimBg"></div>
+<div class="modal" id="modal_preview"></div>
+
+
+

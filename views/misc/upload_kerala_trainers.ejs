@@ -1,0 +1,28 @@
+<% layout('../layout') %>
+<% include ../util/errors %>
+
+<h2 style="text-align: center">Upload Kerala Trainers</h2>
+<hr>
+
+<form role="form" method="POST" action="/misc/do_upload_kerala_trainers" enctype="multipart/form-data">
+    <div class="form-group">
+	    <label><b>Organization</b>:</label>
+	    <select name="OrganizationId" id="OrganizationId" class="form-control">
+			
+		<% organizations.forEach(function(org) { %>
+			<option value = "<%= org.id %>"><%= org.name %></option>
+		<% }); %>
+		</select>
+	</div>
+	
+    <div class="form-group">
+	  	<div style="margin: 8px auto">
+		    <label>Upload file</label>&nbsp;
+		    <input type="file" name="csv" class="form-control" id="csv"/>
+	    </div>
+	  </div>
+ 
+ <input type="submit" class="btn btn-default" value="Submit" />   
+</form>
+
+

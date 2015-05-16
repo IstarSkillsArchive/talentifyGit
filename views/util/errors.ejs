@@ -1,0 +1,19 @@
+<% if(typeof(errors) === 'object') { %>
+	<% var keys = Object.keys(errors) %>
+	<div class="row" style="position: relative; top: -5px;">
+		<p class="alert alert-danger">
+		
+		<% if(keys.length > 10) { %>
+			
+			<%= errors["detail"] %><br>
+		<% } %>
+		
+		<% if(keys.length <10) { %>
+			<% keys.forEach(function(key) { %>
+				
+				<%= errors[key] %><br>
+			<% }); %>
+		<% } %>
+		</p>
+	</div>
+<% } %>

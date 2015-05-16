@@ -1,0 +1,155 @@
+<!-- start question text -->
+<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel panel-info">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      Question Text
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top" style="overflow: auto">
+			    
+				  <div class="padded">
+				    <div class="vpadded" style="white-space: normal">
+				      <span><%= problem.text %></span>
+				    </div>
+				  </div>
+				  
+			  </div><!-- end panel body -->
+			</div><!-- end panel -->
+
+          </div>
+        </div>
+      </div>
+ </div>
+<!-- end question text -->
+
+<!-- start diagnostics -->
+<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel panel-info">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      Diagnostics
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top" style="overflow: auto">
+			    
+				  <div class="">
+				    <div class="vpadded" style="white-space: normal">
+				      <table class="table table-bordered">
+				      	<tr>
+				      		<td><b>Difficulty Level:</b></td>
+				      		<td><%= problem.difficultyLevel %></td>
+				      	</tr>
+				      	<tr>
+				      		<td><b>What is Tested:</b></th>	
+				      		<td><%= problem.whatIsTested %></td>
+				      	</tr>
+				      </table>
+				    </div>
+				  </div>
+				  
+			  </div>
+			</div>
+
+          </div>
+        </div>
+      </div>
+ </div>
+<!-- end diagnostics -->
+
+<!-- start correct answer -->
+<div class="col-md-3">
+	<div class="captionable  horizontal">
+        <div class="captionable-flip">
+          <div class="captionable-front">
+            
+			<div class="panel panel-info">
+			  <div class="panel-heading">
+			    <div class="panel-title text-center">
+			      Answer
+			    </div>
+			  </div>
+			  <div class="panel-body no-padding-top" style="overflow: auto">
+			    
+				  <div class="padded">
+				    <table class="table table-striped test-detail-table question-analytics-table" style="margin-bottom:0px">
+						<% answers.forEach(function(answer, i) { %>
+							<% if(event_id != null) { %>
+								<tr class="row-mid" onclick="mark_active_tr('<%= i %>');ajax_call('/hr_admin/answer_analytics_report/<%= event_id %>/<%= test_id %>/<%= problem.id %>/<%= answer.id %>','answer_analytics_report')">
+							<% } %>
+							<% if(role_id != null) { %>
+								<tr class="row-mid" onclick="mark_active_tr('<%= i %>');ajax_call('/hr_admin/answer_analytics_report/<%= role_id %>/<%= problem.id %>/<%= answer.id %>','answer_analytics_report')">
+							<% } %>
+								<td class="rd-td rd-td-<%= i %> <%= answer.isAnswer ? 'active-default' : '' %>">
+						          <span class="<%= answer.isAnswer ? 'rd-span active-text' : '' %>"><%= answer.text %></span>
+							    </td>
+							    <td class="rd-td rd-td-<%= i %> <%= answer.isAnswer ? 'active-default' : '' %>"><span class='badge badge-primary'><%= answer.count %></span></td>
+							</tr>
+						<% }); %>
+					</table>
+				  </div>
+				  
+			  </div><!-- end panel body -->
+			</div><!-- end panel -->
+
+          </div>
+        </div>
+      </div>
+ </div>
+<!-- end correct answer -->
+
+<div>
+	<!-- start users -->
+	<div class="col-md-3">
+		<div class="captionable  horizontal">
+	        <div class="captionable-flip">
+	          <div class="captionable-front">
+	            
+				<div class="panel panel-info">
+				  <div class="panel-heading">
+				    <div class="panel-title text-center">
+				      Users
+				    </div>
+				  </div>
+				  <div class="panel-body no-padding-top" style="overflow: auto">
+				    
+					  <div class="">
+					    <!-- start ul list -->
+					    <ul class="nav nav-stacked nano-content" id="answer_analytics_report">
+					        
+						</ul>
+					    <!-- end ul list -->
+					  </div>
+					  
+				  </div><!-- end panel body -->
+				</div><!-- end panel -->
+	
+	          </div>
+	        </div>
+	      </div>
+	 </div>
+	<!-- end users -->
+</div>
+
+<script>
+	var a = <%= answers[0].id %>;
+	<% answers.forEach(function(answer) { %>
+	 	<% if(answer.isAnswer) { %>
+	 		a = <%= answer.id %>;
+	 	<% } %>
+	<% }); %>
+	<% if(event_id != null) { %>
+		ajax_call('/hr_admin/answer_analytics_report/<%= event_id %>/<%= test_id %>/<%= problem.id %>/'+a,'answer_analytics_report');
+	<% } %>
+	<% if(role_id != null) { %>
+		ajax_call('/hr_admin/answer_analytics_report/<%= role_id %>/<%= problem.id %>/'+a,'answer_analytics_report');
+	<% } %>
+</script>

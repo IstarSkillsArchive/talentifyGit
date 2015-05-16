@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+	<head>
+	    <meta charset="utf-8">
+
+		<!-- Always force latest IE rendering engine or request Chrome Frame -->
+		<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+		
+		<meta name="viewport" content="width=device-width, minimal-ui, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+		
+		
+		<!-- Apple Touch -->
+		    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/wrap/images/apple-touch-icon-144-precomposed.png">
+		    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/wrap/images/apple-touch-icon-114-precomposed.png">
+		    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/wrap/images/apple-touch-icon-72-precomposed.png">
+		    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/wrap/images/apple-touch-icon-57-precomposed.png">
+		
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="/wrap/images/favicon.png">
+		
+		<!-- Use title if it's in the page YAML frontmatter -->
+		<title>iLAB</title>
+		
+		<script type="text/javascript">
+		    var polyfilter_scriptpath = "/themes/emerald/polyfills/filters/";
+		    window.polyfilter_skip_stylesheets = true
+		</script>
+		
+		  <link href="/wrap/stylesheets/application.css" rel="stylesheet" type="text/css" />
+		  <!--<link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />-->
+		<!--[if lte IE 9]>
+		<link href="/wrap/stylesheets/application_split2.css" rel="stylesheet" type="text/css" />
+		<link href="/wrap/stylesheets/application_split3.css" rel="stylesheet" type="text/css" />
+		<![endif]-->
+		  <!--<script src="/javascripts/script.js" type="text/javascript"></script>-->
+	</head>
+	
+	<body class="high emerald-default htmls htmls_dashboard">
+		<div id="spinner" class="spinner" style="display:none;">
+	        <img src="/images/ajax-loader.gif" alt="Spinner"/>
+	    </div>
+	    
+	    <!-- first -->
+	    <div class="modal blur jump-to-modal" id="jump-to-menu">
+		  <div class="modal-dialog modal-lg">
+		    <div class="clearfix">
+		      <button type="button" class="close pull-right text-white-dk" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    </div>
+		    <div class="container-fluid">
+				<div class="row text-center vpadded-row">        
+					<div class="col-sm-4">
+						<a href="dashboard.html">            
+							<div class="jump-to-element padded text-gradient-white text-component-shadow">
+		              			<i class="icm icm-screen4 icm-4x"></i>
+		              			<h5>Gym</h5>
+		            		</div>
+						</a>       
+					</div>
+		        	<div class="col-sm-4">
+						<a href="#">            
+							<div class="jump-to-element padded text-gradient-white text-component-shadow">
+		              			<i class="icm icm-grid icm-4x"></i>
+		              			<h5>Careers</h5>
+		            		</div>
+						</a>        
+					</div>
+		        	<div class="col-sm-4">
+						<a href="#">            
+							<div class="jump-to-element padded text-gradient-white text-component-shadow">
+		              			<i class="icm icm-html5 icm-4x"></i>
+		              			<h5>Report Card</h5>
+		            		</div>
+						</a>        
+					</div>
+				</div>
+			</div>    
+		  </div>  
+		</div>
+	    <!-- end first -->
+	    
+	    <!-- second -->
+	    <div class="modal fade" id="modal">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header ">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		        <h4 class="modal-title"></h4>
+		      </div>
+		      <div class="modal-body">
+		        A eaque nemo saepe architecto. laboriosam rem repellat facere molestiae voluptatibus dolores omnis in alias commodi distinctio culpa est. dolores eveniet voluptas aut excepturi vero et sed modi fugit. impedit provident assumenda incidunt et expedita natus sequi veniam qui exercitationem tempore iste aliquid cumque. ut repellendus error voluptas neque quod et et. quisquam corrupti eum et optio qui repudiandae quibusdam excepturi in voluptatem aut odio rerum omnis. repellat esse magnam fuga cumque amet facere error sed recusandae ut est totam
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<div id="node-dialog-container"></div>
+	    <!-- end second -->
+	    
+	    <div class="oc-xs-push-push oc-sm-squeeze-push oc-md-squeeze-push oc-lg-squeeze-push modal-blur-content">
+			<div id="oc-wrapper" class="oc-wrapper oc-lg-open-left oc-md-partial-left oc-sm-partial-left oc-lg-left-squeeze oc-md-left-squeeze oc-sm-left-squeeze oc-xs-left-push oc-lg-right-push oc-md-right-push oc-sm-right-push oc-xs-right-push">
+			    <div class="oc-push oc-scroll">
+			    	<aside id="main-oc-sidebar-left" class="oc-sidebar oc-sidebar-left oc-sidebar-fixed nano">
+				        <div class="nano-content">
+				         	<div class="oc-sidebar-header">
+							  <ul class="nav nav-justified-all">
+							    <li>
+							      <a id="oc-left-toggle" href="#oc-wrapper"
+							         class="btn-nav" style="width: 50px;"
+							         data-toggle="offcanvas" data-control="left"
+							         data-states="open,partial"
+							         data-persist="lg,md,sm"
+							         data-parent="body" data-sibling="right">
+							        <i class="icm icm-menu6 oc-partial-rotate"></i>
+							      </a>
+							    </li>
+							    <li>
+									<a class="btn-nav" data-toggle="modal" href="#jump-to-menu">        <i class="icm icm-arrow-right6"></i>
+									</a>    
+								</li>
+							  </ul>
+							</div>
+							<!-- start sidebar content -->
+							<div class="oc-sidebar-content" id="collapseAvatarLeft">
+							  <ul class="nav nav-stacked oc-sidebar-nav visible-xs">
+							    <li>
+							      <form class="oc-header oc-search" role="search">
+							        <div class="form-group has-header">
+							          <span class="icm icm-search3 form-control-header"></span>
+							          <input type="text" class="form-control" placeholder="Search">
+							        </div>
+							      </form>
+							    </li>
+							    <li class="dropdown">
+							      <a href="#dropdownUserSidebar" class="collapsed"  data-toggle="collapse" data-parent="#collapseAvatarLeft">
+							        <div class="media">
+							          <img class="img-circle media-object pull-left" src="../images/faker/avatars/48/Faces_Users-23.png" />
+							          <div class="media-body">
+							            <h4 class="media-heading">Amy R. Hofstadter</h4>
+							            Et repellat at laudantium corporis laboriosam q...
+							          </div>
+							        </div>
+							      </a>
+							      <ul class="collapse dropdown-menu" id="dropdownUserSidebar">
+							        <li>
+							          <a href="#"><i class="icm icm-user"></i> Profile</a>
+							        </li>
+							        <li>
+							          <a href="#"><i class="icm icm-cog"></i> Settings</a>
+							        </li>
+							        <li>
+							          <a href="#">
+							            <i class="icm icm-switch text-danger"></i> <span class="text-danger">Sign out</span>
+							          </a>
+							        </li>
+							      </ul>
+							    </li>
+							  </ul>
+							  <ul class="nav nav-stacked oc-sidebar-nav" id="collapseNavbarLeft2">
+							    <li class="">
+									<a rel="popover-sidebar" data-container="body" data-placement="right" data-content="A mashup of components, mainly visual indicators." href="dashboard.html" class="collapsed" data-original-title="" title="">          
+										<i class="oc-partial-icon icm icm-screen4"></i>
+							        	<span class="oc-partial-menu-item">
+							          		Gym
+							        	</span>
+									</a>    
+								</li>
+							    <li class="">
+									<a class="collapsed" rel="popover-sidebar" data-container="body" data-placement="right" data-content="A mashup of components that you can easily drop in your project." href="widgets.html" data-original-title="" title="">          
+										<i class="oc-partial-icon icm icm-grid"></i>
+							        	<span class="oc-partial-menu-item">
+							          		Careers
+							        	</span>
+									</a>        
+									<span class="badge badge-primary oc-nav-caption">18</span>
+							    </li>
+							    <li class="dropdown">
+									<a class="collapsed" data-toggle="collapse" data-parent="#collapseNavbarLeft2" rel="popover-sidebar" data-container="body" data-placement="right" data-content="We styled the Bootstrap elements beautifuly, and added several of our own!" href="#uid392a71038bd462a6657abe6f74fba7b8" data-original-title="" title="">          
+										<i class="oc-partial-icon icm icm-html5"></i>
+							        	<span class="oc-partial-menu-item">
+							          		Report Card
+							        	</span>
+									</a>        
+								</li>
+							</ul>
+							</div>
+							<!-- end sidebar content -->
+						</div>
+				  	</aside>
+				  	
+				  	<!-- start main container -->
+				  	<div id="main-oc-container" class="oc-container">
+					 	<nav class="navbar navbar-default navbar-static-top navbar-inplace" role="navigation">
+						  <ul class="nav navbar-nav navbar-left pull-left hidden-sm hidden-md hidden-lg">
+						    <li>
+						      <a id="oc-left-toggle-xs" href="#oc-wrapper"
+						         class="btn-nav pull-left "
+						         data-toggle="offcanvas" data-control="left"
+						         data-states="open,hidden"
+						         data-persist="lg,md,sm"
+						         data-parent="body" data-sibling="right">
+						        <i class="icm icm-menu6"></i>
+						      </a>
+						    </li>
+						  </ul>
+							<a class="navbar-brand" href="dashboard.html">    
+							    <span class="text-gradient-success-dk">iStar : iLAB</span>
+							</a>  
+							
+						  <ul class="nav navbar-nav navbar-right pull-right hidden-xs">
+						    <li class="dropdown">
+						      <a href="#" data-toggle="dropdown" class="navbar-img-link">
+						        <img class="img-circle" src="/wrap/images/faker/avatars/48/Faces_Users-11.png" />
+						        <span class="hidden-xs hidden-sm hidden-md"><%= currentUser.first_name %></span>
+						        <b class="caret"></b>
+						      </a>
+						      <ul class="dropdown-menu animated fadeIn fast">
+						        <li>
+									<a href="pages/profile.html">            <i class="fa fa-user"></i> Profile
+									</a>        </li>
+									        <li>
+									<a href="pages/profile.html">            <i class="fa fa-cog"></i> Settings
+									</a>        </li>
+									        <li>
+									          <a href="#">
+									<a href="pages/sign_in.html">              <i class="fa fa-power-off text-danger"></i>
+									              <span class="text-danger">Sign out</span>
+									</a>          </a>
+						        </li>
+						      </ul>
+						    </li>
+						  </ul>
+						  <ul class="nav navbar-nav nav-center hidden-xs">
+						    <li>
+						      <form class="navbar-form-inplace navbar-form-search navbar-right" role="search">
+						        <div class="form-group has-header selectize-search no-margin-bottom">
+						          <span class="fa fa-search form-control-header"></span>
+						          <input type="text" class="form-control selectize-search-movie" placeholder="Search">
+						        </div>
+						      </form>
+						    </li>
+						  </ul>
+						</nav>
+						
+						<!-- start bread crumbs -->
+						<div class="container-fluid">
+						  <div class="row">
+						    <div class="col-sm-6">
+						      <h3 class="em-page-header v-mid-row thin">
+						        <i class="icm icm-screen4 text-gradient-info-dk"></i>
+						        <span class="text-gradient-info-dk">
+						          Gym
+						        </span>
+						      </h3>      
+						    </div>
+						    <div class="col-sm-6 text-right-sm text-right-md text-right-lg">
+						      <ul class="breadcrumb breadcrumb-top">
+						        <li><i class="fa fa-home"></i> Home</li>
+						            <li class="active">
+						                  Gym
+						            </li>
+						      </ul>      
+						    </div>
+						  </div>
+						</div>
+						<!-- end bread crumbs -->
+						
+						<!-- start middle layout -->
+						<div class="container-fluid turbo-cols-static turbo-grid-wrap">
+		  					<div class="turbo-grid">
+		  						<%- body %>
+		  					</div>
+		  				</div>
+						<!-- end middle layout -->
+					</div>
+				  	<!-- end main container -->
+			    </div>
+			</div>
+		</div>
+			
+		<!--<script src="/flat-ui/js/script.js"></script>-->
+		<script src="/wrap/javascripts/application.js" type="text/javascript"></script>
+		<script src="/wrap/javascripts/demo.js" type="text/javascript"></script>
+		<script src="/wrap/javascripts/init.js" type="text/javascript"></script>
+	</body>
+	
+</html>

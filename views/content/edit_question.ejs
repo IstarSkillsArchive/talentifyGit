@@ -1,0 +1,180 @@
+<input type="button" class="first-btn btn btn-primary" value="List Questions" onclick="ajax_call('/problem/list_questions','content-admin-display')">
+
+<h2 class="text-gradient-info-dk text-center">Edit Question</h2>
+<hr>
+
+<div class="col-md-6">
+	<div class="panel panel-primary gradient-diag1" id="rid0a5949b0e9f2e06afbd43ec07c3d3fc02">  
+		<div class="panel-heading panel-handle panel-colorize">
+    	    <div class="panel-title">
+		      <span class="" data-type="text">
+		        Question Details
+		      </span>
+		    </div>
+  		</div>
+		  <div class="panel-body-collapse collapse in">
+		      <div class="panel-body">
+		      
+		      		<form role="form" method="POST" action="/content/do_edit_question" target="target-frame">
+						  <div class="form-group">
+						  	<label>Text</label>
+						  	<textarea class="form-control" rows="3" name="text" id="text"><%= problem.text %></textarea>
+						  </div>
+						  
+						  <!--<div class="form-group">
+						  	<label>Upload File</label>
+						  	<input type="file" name="file" class="form-control display_none" id="file"/>
+						  </div>-->
+						  
+						  <div class="form-group">
+						  	<label>Difficulty Level</label>
+						  	<select name="difficultyLevel" id="difficultyLevel" class="form-control">
+						  		<% if(problem.difficultyLevel) { %>
+						  			<option><%= problem.difficultyLevel %></option>
+						  		<% } %>
+						  		<option value="Easy">Easy</option>
+						  		<option value="Medium">Medium</option>
+						  		<option value="Difficult">Difficult</option>
+						  	</select>
+						  </div>
+						  
+						  <div class="form-group">
+						  	<label>What is Tested</label>
+						  	<select name="whatIsTested" id="whatIsTested" class="form-control">
+						  		<% if(problem.whatIsTested) { %>
+						  			<option><%= problem.whatIsTested %></option>
+						  		<% } %>
+						  		<option value="Knowledge">Knowledge</option>
+						  		<option value="Recognition">Recognition</option>
+						  		<option value="Application">Application</option>
+						  	</select>
+						  </div>
+						  
+						  <div class="form-group">
+						  	<label>Type</label>
+						  	<select name="type" id="type" class="form-control">
+						  		<% if(problem.type) { %>
+						  			<option><%= problem.type %></option>
+						  		<% } %>
+						  		<option value="Single">MCQ (Single Answer)</option>
+						  		<option value="Multiple">MCQ (Multiple Answers)</option>
+						  		<option value="Text">Text</option>
+						  	</select>
+						  </div>
+						  
+						  <!--<div class="form-group">
+						  	<label>Positive Score (+)</label>
+						  	<input type="text" name="positiveScore" id="positiveScore" value="<%= problem.positiveScore != null ? problem.positiveScore : 0 %>"/>
+						  	&nbsp;&nbsp;&nbsp;
+						  	<label>Negative Score (-)</label>
+						  	<input type="text" name="negativeScore" id="negativeScore" value="<%= problem.negativeScore != null ? problem.negativeScore : 0 %>"/>
+						  </div>
+						  
+						  <div class="form-group">
+						    <input type="checkbox" name="isMandatory" class="" <% problem.isMandatory == true ? "checked='checked'" : ''%>>&nbsp;&nbsp;<label>Mandatory</label>
+						    &nbsp;&nbsp;&nbsp;&nbsp;
+						    <input type="checkbox" name="isProblemContentSpecific" class="" <% problem.isProblemContentSpecific == true ? "checked='checked'" : ''%>>&nbsp;&nbsp;<label>Content Specific</label>
+						    &nbsp;&nbsp;&nbsp;&nbsp;
+						    <input type="checkbox" name="isMultimedia" class="" <% problem.isMultiMedia == true ? "checked='checked'" : ''%>>&nbsp;&nbsp;<label>Multimedia</label>
+						  	&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="checkbox" name="isLocked" class="" <% problem.isLocked == true ? "checked='checked'" : ''%>>&nbsp;&nbsp;<label>Locked</label>
+						  </div>-->
+						  
+						  <input type="hidden" value="<%= problem.id %>" name="ProblemId" />
+						  
+						  <input type="submit" value="Edit Question" class="btn btn-success"/>
+						  
+					</form>
+					<iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+		      
+		      </div>
+		  </div>
+	</div>
+</div>
+
+<div class="col-md-6">
+	<div class="panel panel-primary gradient-diag1" id="rid0a5949b0e9f2e06afbd43ec07c3d3fc02">  
+		<div class="panel-heading panel-handle panel-colorize">
+    	    <div class="panel-title">
+		      <span class="" data-type="text">
+		        Add Tags
+		      </span>
+		    </div>
+  		</div>
+		  <div class="panel-body-collapse collapse in">
+		      <div class="panel-body">
+		      
+		      		<div class="form-group">
+						<div class="row" id="tags" style="margin: auto">
+							<% tags.forEach(function(tag) { %>
+								<span class='label label-primary'><%= tag.name %><a style='margin-left: 10px; cursor: default; color: #fff' href="/content/delete_problem_tag/<%= problem.id %>/<%= tag.id %>">X</a></span>
+							<% }); %>
+						</div>
+						<div class="input-group">
+						  <input type="hidden" name="tag_id" id="tag_id"/>
+						  <input type="text" name="tag_name" class="form-control" id="tag_name" placeholder="Type and Click Add">
+						  <span class="input-group-addon" onclick="add_problem_tag('<%= problem.id %>')" style="border: 1px solid #e1e1e1; cursor: pointer">Add</span>
+						</div>
+					 </div>
+		      
+		      </div>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-12">
+	<hr class="no-margin-top">
+	<h3 class="text-center">
+		<a class="btn btn-primary navbar-left" data-toggle="modal" data-target="#uide4b3dde6bb5097375d99eb18a83d7146" onclick="ajax_call('/content/add_answer/<%= problem.id %>','uide4b3dde6bb5097375d99eb18a83d7146')">Add Answer</a>
+		Answers
+	</h3>
+	
+	<table class="table	table-bordered">
+		<thead>
+			<th>Id</th>
+			<th>Text</th>
+			<th>What Answer Indicates</th>
+			<th class="text-center">Correct Answer</th>
+			<th class="text-center" colspan="2">Action</th>
+		<thead>
+		<tbody>
+			<% answers.forEach(function(answer, i) { %>
+			<tr>
+				<td><%= i+1 %></td>
+				<td style="width: 400px"><%= answer.text %></td>
+				<td style="width: 400px"><%= answer.whatAnswerIndicates != null ? answer.whatAnswerIndicates : '-' %></td>
+				<td class="text-center">
+					<% if(answer.isAnswer == true) { %>
+						<i class="icm icm-checkmark-circle"></i>
+					<% } %>
+					<% if(answer.isAnswer != true) { %>
+						<i class="icm icm-cancel-circle"></i>
+					<% } %>
+				</td>
+				<td class="text-center" title="Edit"><a onclick="coordinator_event_details('show');modal_ajax_call('/content/edit_answer/<%= answer.id %>','uide4b3dde6bb5097375d99eb18a83d7146')"><i class="icm icm-pencil5"><i></a></td>
+				<td class="text-center"><a onclick="coordinator_event_details('show');modal_ajax_call('/content/delete_answer/<%= answer.id %>/content-admin-display', 'uide4b3dde6bb5097375d99eb18a83d7146')"><i class="icm icm-remove"></i></a></td>
+			</tr>
+			<% }); %>
+		</tbody>
+	</table>
+	
+</div>
+
+<script type="text/javascript">
+$("#tag_name").autocomplete({
+      source: function( request, response ) {
+      	$.ajax({
+          url: "/content/get_tags/"+request.term,
+	      success: function(data) {
+	      	response(data);
+	      }
+        });
+      },
+      minLength: 1,
+      select: function( event, ui ) {
+      	$('#tag_name').val(ui.item.label);
+      	$('#tag_id').val(ui.item.value);
+      	return false;
+      }
+});
+</script>

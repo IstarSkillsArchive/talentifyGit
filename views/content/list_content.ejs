@@ -1,0 +1,61 @@
+<!--
+<input style="margin-left: 4px" type="button" class="first-btn btn btn-primary" value="Update Content to https" onclick="ajax_call('/content/update_content_to_https','content-admin-display')">
+-->
+
+<div class="row">
+	<div class="col-md-4" id="content-search-group">
+		
+	</div>
+	<div class="col-md-4">
+		<h2 class="text-gradient-info-dk text-center">Content List</h2>
+	</div>
+	<div class="col-md-4">
+		<input type="button" class="first-btn btn btn-primary" value="Create New Content" onclick="ajax_call('/content/upload','content-admin-display')">
+	</div>
+</div>
+
+<hr>
+<table class="table	table-bordered">
+	<thead>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Description</th>
+		<th colspan="2" class="text-center">Action</th>
+	<thead>
+	<tbody>
+		<% content.forEach(function(c, i) { %>
+		<tr>
+			<td><%= page > 1 ? ((page-1)*10)+(i+1) : i+1 %></td>
+			<td><%= c.name %></td>
+			<td style="width: 400px"><%= c.description %></td>
+			<td class="text-center" title="Edit"><a onclick="ajax_call('/content/edit_content/<%= c.id %>','content-admin-display')"><i class="icm icm-pencil5"></i></a></td>
+			<td class="text-center" title="Delete"><a href="#"><i class="icm icm-remove"></i></a></td>
+		</tr>
+		<% }); %>
+	</tbody>
+</table>
+
+<% if(pages > 1) { %>
+	<ul class="pagination">
+	  <% if(prev == true) { %>
+	  	<li><a onclick='ajax_call("/content/list_content/<%= page-1 %>","content-admin-display")'>«</a></li>
+	  <% } %>
+	  <% if(prev == false) { %>
+	  	<li class="disabled"><a>«</a></li>
+	  <% } %>
+	  <% for(i = 0; i < pages ; i++) { %>
+	  <li class="<%= i+1 == page ? 'active' : ''%>"><a onclick='ajax_call("/content/list_content/<%= i+1 %>","content-admin-display")'><%= i+1 %></a></li>
+	  <% } %>
+	  <% if(next == true) { %>
+	  	<li><a onclick='ajax_call("/content/list_content/<%= page+1 %>","content-admin-display")'>»</a></li>
+	  <% } %>
+	  <% if(next == false) { %>
+	  	<li class="disabled"><a>»</a></li>
+	  <% } %>
+	</ul>
+<% } %>
+
+<script type="text/javascript">
+	ajax_call('/content/searchByField/tag','content-search-group')
+</script>
+

@@ -1,0 +1,25 @@
+<div class="padded">
+    <div class="vpadded">
+      <% if(notes == null) { %>
+      	<span style="color: #43494d">No notes to display</span>
+ 	  <% } %>
+ 	  <% if(notes != null) { %>
+      	<span style="color: #43494d"><%= notes.notes != null ? notes.notes : '' %></span>
+      <% } %>
+    </div>
+    <!--<div class="text-center"><b>Modules Completed</b></div>-->
+</div>
+  
+<% if(notes != null) { %>
+	  <div class="row ">
+		  <div class="col-xs-4 text-center">
+		    <a class="btn btn-success btn-xs" title="Prev" onclick="ajax_call('/users/notes_prev/<%= notes.CoachId %>/<%= notes.UserId %>/<%= notes.SkillId %>/<%= notes.id %>/<%= len %>/<%= curr %>', 'notes-panel-body')"><i class="icm icm-arrow-left"></i></a>
+		  </div>
+		  <div class="col-xs-4 text-center">
+		    <a class="btn btn-default"><%= curr %>/<%= len %></a>
+		  </div>
+		  <div class="col-xs-4 text-center">
+		    <a class="btn btn-success btn-xs" title="Next" onclick="ajax_call('/users/notes_next/<%= notes.CoachId %>/<%= notes.UserId %>/<%= notes.SkillId %>/<%= notes.id %>/<%= len %>/<%= curr %>', 'notes-panel-body')"><i class="icm icm-arrow-right2"></i></a>
+		  </div>
+	  </div>
+ <% } %>

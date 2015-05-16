@@ -1,0 +1,83 @@
+<% layout('../new-layout') %>
+
+<div class="navbar navbar-inverse" role="navigation" style="">
+  
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+	      <span class="sr-only">Toggle navigation</span>
+	  </button>
+      <a class="navbar-brand" href="/dashboard"><!--<img src="/flat-ui/common-files/icons/Map@2x.png" height="30" width="30"/>--><span class="glyphicon glyphicon-gift"></span></a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-collapse-01">
+		<% if(currentUser) { %>
+			<ul class="nav navbar-nav">
+				<li class="li_tab"><a href="/hr_admin/dashboard"><%= hr.organization.type == 'College' ? 'College' : 'Company'%> L&D Stats</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/track"><%= hr.organization.type == 'College' ? 'Student' : 'Employee'%> Stats</a></li>
+			  	<li class="li_tab"><a href="/hr_admin/list_roles/<%= currentUser.id %>"><%= hr.organization.type == 'College' ? 'Batches' : 'Roles'%></a></li>
+			 	<li class="li_tab"><a href="/users/list">Manage Users</a></li>
+			 	<li class="li_tab active"><a href="/hr_admin/list_events">Events</a></li>
+			</ul>
+			 <ul class="nav navbar-nav pull-right">
+			 		<li><a href="#"><%= (currentUser.first_name != null && currentUser.first_name != '') ? 'Hi, '+currentUser.first_name : 'Hi, '+currentUser.username %></a></li>
+			 		<li title="Logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+			 </ul>
+		<% } %>
+	</div>
+  
+</div>
+
+<form action="/hr_admin/new_event">
+	<input type="submit" class="btn btn-primary" value="Create New Event" style="margin-top: 2%">
+</form>
+
+<h4 style="text-align: center">Event List</h4>
+<div class="table-responsive">
+	<table class="table	table-bordered">
+		<thead>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Trainer</th>
+			<th>Date</th>
+			<th>Status</th>
+			<th colspan="2">Action</th>
+		<thead>
+		<tbody>
+			<% events.forEach(function(event,i) { %>
+			<tr>
+				<td><%= event.name %></td>
+				<td><%= event.description %></td>
+				<td><%= event.type != null ? event.type : 'Meeting' %></td>
+				<td>
+					<%= trainers[i] != null ? trainers[i].first_name : '' %>&nbsp;<%= trainers[i] != null ? trainers[i].last_name : ''%>
+				</td>
+				<td><%= event.date %></td>
+				<td><%= event.status %></td>
+				<td>
+					<% if(event_users[i] > 0) { %>
+						<a href="/hr_admin/event_user_list/<%= event.id %>">View/Edit Users</a>
+						<% if(event.status == 'Trainer Accepted Invite') { %>
+							<span>|</span>
+							<a href="/hr_admin/notify_event_users/<%= event.id %>">Notify Users</a>
+						<% } %>
+					<% } %>
+					<% if(event_users[i] == 0) { %>
+						<a href="/hr_admin/event_user_list/<%= event.id %>">Add Users</a>
+					<% } %>
+				</td>
+				<td>
+					<% if(event.status == 'Notified Users') { %>
+						<a href="/hr_admin/event_confirm/<%= event.id %>">Confirm</a>
+						<span>|</span>
+					<% } %>
+					<a href="/hr_admin/delete_event/<%= event.id %>">Delete</a>
+				</td>
+			</tr>
+			<% }); %>
+		</tbody>
+	</table>
+</div>
+<div class="DimBg"></div>
+<div class="modal" id="view_skills_div" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+

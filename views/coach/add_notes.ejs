@@ -1,0 +1,64 @@
+<script src="/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/javascripts/script.js"></script>
+<link href="/stylesheets/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/javascripts/jquery-ui-1.10.0.custom.min.js"></script>
+
+<style>
+	.modal-dialog {
+		width: auto;
+		position: absolute;
+		top: 25%;
+		bottom: 25%;
+		left: 25%;
+		right: 25%;
+		width: auto;
+		margin: auto;
+	}
+</style>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+      	<% if(typeof successFlash != 'undefined') { %>
+	      	<div class="row" style="position: relative; top: 10px;margin:4px">
+				<p class="alert alert-success"><%= successFlash %></p>
+			</div>
+		<% } %>	
+      <div class="modal-header">
+        <a class="close" href="#" onclick="hide_div('add_skill_div');hide_class('DimBg')">&times;</a>
+        <h4 class="modal-title" id="myModalLabel">Add Notes</h4>
+      </div>
+      <div class="modal-body">
+			
+			<form role="form" method="POST" action="/coach/do_add_notes">
+				<input type="hidden" name="UserId" value="<%= user_id %>"/>
+				<input type="hidden" name="CoachId" value="<%= coach_id %>"/>
+				<input type="hidden" name="SkillId" value="<%= skill_id %>"/>
+				
+				<div class="form-group" style="text-align: left">
+					<label><b>Notes</b>:</label>
+					<textarea name="notes" class="form-control" placeholder="Enter notes">
+					</textarea>
+				</div>
+				
+				<button type="submit" class="btn btn-success">Submit</button>
+				<button type="button" class="btn btn-default" onclick="hide_div('add_skill_div');hide_class('DimBg')">Close</button>
+			</form>
+			
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+$("#skill_name").autocomplete({
+      source: function( request, response ) {
+      	$.ajax({
+          url: "/hr_admin/get_skills/"+request.term,
+	      success: function(data) {
+	      	response(data);
+	      }
+	    });
+      },
+      minLength: 1
+});
+</script>
+

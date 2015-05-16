@@ -1,0 +1,119 @@
+<input type="button" class="first-btn btn btn-primary" value="List Tests" onclick="ajax_call('/test/list_tests','content-admin-display')">
+
+<h2 class="text-gradient-info-dk text-center">Edit Test</h2>
+<hr>
+
+<div class="col-md-6">
+	<div class="panel panel-primary gradient-diag1" id="rid0a5949b0e9f2e06afbd43ec07c3d3fc02">  
+		<div class="panel-heading panel-handle panel-colorize">
+    	    <div class="panel-title">
+		      <span class="" data-type="text">
+		        Test Details
+		      </span>
+		    </div>
+  		</div>
+		  <div class="panel-body-collapse collapse in">
+		      <div class="panel-body">
+		      
+		      		<form role="form" method="POST" action="/content/do_edit_test" target="target-frame">
+						  <div class="form-group">
+						  	<label>Name</label>
+						  	<input type="text" name="name" id="name" value="<%= test.name %>" class="form-control"/>
+						  </div>
+						  
+						  <div class="form-group">
+						  	<label>Description</label>
+						  	<textarea name="description" id="description" class="form-control"><%= test.description %></textarea>
+						  </div>
+						  
+						  <div class="form-group">
+						  	<label>Duration (in mins)</label>
+						  	<input type="text" name="duration" id="duration" value="<%= test.duration %>" class="form-control"/>
+						  </div>
+						  
+						  <input type="hidden" name="test_id" value="<%= test.id %>" />
+						  
+						  <input type="submit" value="Edit Test" class="btn btn-success" />
+					</form>
+					<iframe id="target-frame" name="target-frame" style="width:0;height:0;border:0px"></iframe>
+		      
+		      </div>
+		  </div>
+	</div>
+</div>
+
+<div class="col-md-12">
+	<hr class="no-margin-top">
+	<h3 class="text-center">
+		<a class="btn btn-primary navbar-left" onclick="coordinator_event_details('show');modal_ajax_call('/content/add_question_to_test/<%= test.id %>','uide4b3dde6bb5097375d99eb18a83d7146')">Add Question</a>
+		Questions
+	</h3>
+	
+	<table class="table	table-bordered">
+		<thead>
+			<th>Id</th>
+			<th>Text</th>
+			<th colspan="3" class="text-center">Action</th>
+			<th colspan="2" class="text-center">Score</th>
+			<th title="Critical">Critical</th>
+			<th title="Mandatory">Mandatory</th>
+		<thead>
+		<tbody>
+			<% questions.forEach(function(question, i) { %>
+			<tr>
+				<td><%= i+1 %></td>
+				<td style="width: 500px"><%= question.text %></td>
+				<td class="text-center"><a onclick="coordinator_event_details('show');modal_ajax_call('/content/edit_question_ajax/<%= question.id %>/<%= test.id %>','uide4b3dde6bb5097375d99eb18a83d7146');" title="View/Edit Question"><i class="icm icm-pencil5"></i> (Q)</a></td>
+				<td class="text-center"><a onclick="coordinator_event_details('show');modal_ajax_call('/content/edit_answers_ajax/<%= question.id %>/<%= test.id %>', 'uide4b3dde6bb5097375d99eb18a83d7146');" title="View/Edit Answer"><i class="icm icm-pencil5"></i> (A)</a></td>
+				<td class="text-center"><a title="Delete" onclick="coordinator_event_details('show');modal_ajax_call('/content/delete_problem_ajax/<%= question.id %>/<%= test.id %>/content-admin-display','uide4b3dde6bb5097375d99eb18a83d7146')"><i class="icm icm-remove"></i></a></td>
+				<td class="text-center">+<%= question.positiveScore != null ? question.positiveScore : 0 %></td>
+				<td class="text-center">-<%= question.negativeScore != null ? question.negativeScore : 0 %></td>
+				<td class="text-center">
+					<% if(question.isCritical) { %>
+						<span class="glyphicon glyphicon-ok"></span>
+					<% } %>
+					<% if(!question.isCritical) { %>
+						<span class="glyphicon glyphicon-remove"></span>
+					<% } %>
+				</td>
+				<td class="text-center">
+					<% if(question.isMandatory) { %>
+						<span class="glyphicon glyphicon-ok"></span>
+					<% } %>
+					<% if(!question.isMandatory) { %>
+						<span class="glyphicon glyphicon-remove"></span>
+					<% } %>
+				</td>
+			</tr>
+			<% }); %>
+			<tr>
+				<td colspan="7"></td>
+				<td style="width:20px">Total No. of Critical Questions</td>
+				<td style="width:20px">Total No. of Mandatory Questions</td>
+			</tr>
+			<tr>
+				<td colspan="5" align="right"><b>Total Score</b></td>
+				<td colspan="2" align="center" id="total_score"><%= total_score %></td>
+				<td id="critical_q"><%= critical_count %></td>
+				<td id="mandatory_q"><%= mandatory_count %></td>
+			</tr>
+			<tr>
+				<td colspan="5" align="right">
+					<b>Pass Score</b>
+				</td>
+				<td colspan="5" align="center" id="test_pass_score">
+					<%= test.passScore != null ? test.passScore : 0 %>
+					<a class="navbar-right" title="Edit" onclick="ajax_call('/content/edit_test_pass_score/<%= test.id %>','test_pass_score')"><i class="icm icm-pencil5"></i></a>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5" align="right"><b>No. of critical questions to be answered to pass</b></td>
+				<td colspan="5" align="center" id="test_mandatory_question">
+					<%= test.criticalQuestions != null ? test.criticalQuestions : 0 %>
+					<a class="navbar-right" title="Edit" onclick="ajax_call('/content/edit_test_mandatory_question/<%= test.id %>','test_mandatory_question')"><i class="icm icm-pencil5"></i></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+</div>

@@ -1,0 +1,41 @@
+
+<table class="table">
+  <thead>
+	  <tr class="row-mid">
+	        <th>
+	          <label>
+	            <div><input type="checkbox" onclick="check_all(this, 'user-checkbox')"></div>
+	          </label>
+	        </th>
+	    	<th>User</th>
+	    	<th>Action</th>
+	  </tr>
+  </thead>
+  <tbody>
+      <% users.forEach(function(user, i) { %>
+	      <tr class="row-mid role-filter-users role-filter-users-<%= i %>">
+	      	<td style="width: 30px"
+	              <label>
+	                <div><input type="checkbox" class="user-checkbox" value="<%= user.id %>"></div>
+	              </label>
+	        </td>
+	        <td>
+	          <% if(user.first_name != null) { %>
+	          	<%= user.first_name %>&nbsp;<%= user.last_name != null ? user.last_name : '' %>
+	          <% } %>
+	          <% if(user.first_name == null) { %>
+	          	<%= user.username %>
+	          <% } %>
+	          </td>
+	        <td class="" title="Add user">
+	        	<% if(user.eventUser == true || user.eventUser == 'true') { %>
+	        		Added user
+	        	<% } %>
+	        	<% if(user.eventUser == false || user.eventUser == 'false') { %>
+	        		<i class="icm icm-plus-circle" onclick="add_single_user_to_event('<%= user.id %>', '<%= val %>')"></i>
+	        	<% } %>
+	        </td>
+	      </tr>
+		<% }); %>
+	</tbody>
+</table>

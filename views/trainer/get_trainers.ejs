@@ -1,0 +1,26 @@
+<% users.forEach(function(user,i) { %>
+	<div class="trainer_profile skill_report">
+		<div class="width_100">
+			<div class="todo-icon" style="padding: 0px; float: left"><img src="/flat-ui/images/demo/browser-pic-<%= i+1 %>.jpg"></div>
+	        <div class="todo-content" style="padding-left: 8px;text-align: left">
+	          <a href="#" style="color: #2a6496"><b><%= user.first_name %>&nbsp;<%= user.last_name %></b></a>
+	          <br/>
+	          <span class="role-name">
+	          	<label><%= user.location != null ? user.location : '' %></label>
+	          </span> 
+	        </div>
+	  	</div>
+	  	<div class="width_100" style="float: left; text-align: left; margin-top: 2px">
+	  		<label>Billing rate:</label>
+	  		<label> <%= user.rate %> per hour</label>
+	  	</div>
+	  	<!--<div class="width_100" style="float: left">
+	  		<label>Skills:</label>
+	  	</div>-->
+	  	<span class="trainer_profile_btn">
+	  		<span class="btn btn-primary" id="trainer_profile_btn_invite_<%= i %>" onclick="invite_trainer_to_event('<%= user.id %>','<%= val %>')">Invite Trainer</span>
+	  		<span class="btn btn-primary display_none" id="trainer_profile_btn_invited_<%= i %>">Invited</span>
+	  	</span>
+	</div>
+	
+<% }); %>

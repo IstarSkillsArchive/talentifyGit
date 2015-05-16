@@ -1,0 +1,84 @@
+<% if(currentUser.isManager()) { %>
+	<% layout('../new-layout') %>
+<% } %>
+<% if(currentUser.isAdmin()) { %>
+	<% layout('../layout') %>
+<% } %>
+
+
+
+<!--<form action="/users/new/<%= currentUser.id %>">
+	<input type="submit" class="btn btn-primary" value="Create New User" style="margin-top: 2%">
+</form>-->
+
+<div class="form-group">
+	<label><b>Filter By Organization</b>:</label>
+    <select name="org_id" id="org_id" class="form-control" onchange="listUsersByOrg(this)" style="display: inline-block; width: 40%">
+		<option value="<%= selected_org.id %>"><%= selected_org.name %></option>
+		<% organizations.forEach(function(org) { %>
+			<% if(selected_org.id != org.id) { %>
+				<option value = "<%= org.id %>"><%= org.name %></option>
+			<% } %>
+		<% }); %>
+	</select>
+</div>
+
+<h4 style="text-align: center">User List</h4>
+<div class="table-responsive">
+	<table class="table	table-bordered">
+		<thead>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Username</th>
+			<th>Email</th>
+			<th>Role</th>
+			<th>Organization</th>
+			<th>Permission</th>
+			<th>Phone</th>
+			<% if(currentUser.isAdmin() || currentUser.isManager()) { %>
+				<th>Action</th>
+			<% } %>
+		<thead>
+		<tbody>
+			<% users.forEach(function(user) { %>
+			<tr>
+				<td><%= user.id %></td>
+				<td><%= user.first_name %> <%= user.last_name != null && user.last_name != 'null' && user.last_name != '' ? user.last_name : '' %></td>
+				<td><%= user.username %></td>
+				<td><%= user.email %></td>
+				<td><%= user.role != null && user.role != 'null' && user.role != '' ? user.role.name : '-' %></td>
+				<td><%= user.organization.name %></td>
+				<td><%= user.permission %></td>
+				<td><%= user.phone != null ? user.phone : '' %></td>
+				<% if(currentUser.isAdmin() || currentUser.isManager()) { %>
+					<td>
+						<% if(currentUser.id != user.id && !user.isAdmin()) { %>
+							<a href="/users/<%= user.id %>/delete">Delete</a>
+						<% } %>
+					</td>
+				<% } %>
+			</tr>
+			<% }); %>
+		</tbody>
+	</table>
+	<ul class="pagination">
+	  <% if(prev == true) { %>
+	  	<li><a href="/users/listByOrganization/<%= selected_org.id %>/<%= page-1 %>">«</a></li>
+	  <% } %>
+	  <% if(prev == false) { %>
+	  	<li class="disabled"><a>«</a></li>
+	  <% } %>
+	  <% for(i = 0; i < pages ; i++) { %>
+	  <li class="<%= i+1 == page ? 'active' : ''%>"><a href="/users/listByOrganization/<%= selected_org.id %>/<%= i+1 %>"><%= i+1 %></a></li>
+	  <% } %>
+	  <% if(next == true) { %>
+	  	<li><a href="/users/listByOrganization/<%= selected_org.id %>/<%= page+1 %>">»</a></li>
+	  <% } %>
+	  <% if(next == false) { %>
+	  	<li class="disabled"><a>»</a></li>
+	  <% } %>
+	</ul>
+</div>
+
+
+

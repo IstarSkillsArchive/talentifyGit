@@ -1,0 +1,53 @@
+<!--<ul class="nav nav-tabs">
+	<li class="li_tab"><a href="/hr_admin/dashboard">Monthly</a></li>
+  	<li class="li_tab active"><a onclick="ajax_call('/hr_admin/show_quarterly_login_graph/Second','login_dashboard')">Yearly</a></li>
+</ul>-->
+<h6 style="display: inline-block; float: left; margin-left: 10px">2014</h6>
+<select style="float: right; margin: 10px; visibility: hidden" onchange="show_monthly_login_graph(this)">
+	<option>Select Month</option>
+	<option>January</option>
+	<option>February</option>
+	<option>March</option>
+	<option>April</option>
+	<option>May</option>
+	<option>June</option>
+	<option>July</option>
+	<option>August</option>
+	<option>September</option>
+	<option>October</option>
+	<option>November</option>
+	<option>December</option>
+</select>
+<div id="chart_login" style="text-align: center">
+	
+</div>
+<script>
+	var data = [];
+	<% monthly_activity.forEach(function(x, j) { %>
+		data[<%= j %>] = {};
+		data[<%= j %>].day = '<%= x.month %>';
+		data[<%= j %>].count = <%= x.count %>;
+	<% }); %>
+	d3_login_display(data, 'No. of Users', 'chart_login', 'true', 'Month');
+</script>
+
+<!--<table class="table	table-bordered margin_top_2" style="border-collapse: inherit">
+	<thead>
+		<th style="text-align: center">Quarter</th>
+		<th>No. of logins</th>
+	<thead>
+	<tbody>
+		<tr>
+			<td>First Quarter</td>
+			<td align="left"><%= quarterly_activity[0] %></td>
+		</tr>
+		<tr>
+			<td>Second Quarter</td>
+			<td align="left"><%= quarterly_activity[1] %></td>
+		</tr>
+		<tr>
+			<td>Third Quarter</td>
+			<td align="left"><%= quarterly_activity[2] %></td>
+		</tr>
+	</tbody>
+</table>-->

@@ -1,0 +1,40 @@
+<style>
+	.modal-dialog {
+		width: auto;
+		position: absolute;
+		top: 30%;
+		bottom: 30%;
+		left: 25%;
+		right: 25%;
+		width: auto;
+		margin: auto;
+	}
+	@media (max-width: 767px) {
+		.modal-dialog {
+			top: 15%;
+			bottom: 15%;
+			left: 1%;
+			right: 1%;	
+		  }
+		  .modal-header h4 {
+		  	font-size: 1.5em;
+		  }
+	}
+</style>
+
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="hide_div('opentok');hide_class('DimBg')">&times;</button>
+	      	<h4>That was a wrong answer!</h4>
+	      </div>
+	      <div class="modal-body" style="text-align: center">
+	      	
+	      	
+	      	<input type="button" value="Revise" class="btn btn-warning" title="Go back to content" onclick="non_ajax_call('/skill/get_modules_for_skill/<%= skill_id %>')"/>
+	      	<input type="button" value="Try Again" class="btn btn-danger" title="Go to next question" onclick="ajax_call('/content/show_content_question/<%= content_id %>/<%= skill_id %>/<%= current_question_id %>','opentok');"/>
+	      	
+	      </div>
+		</div>
+	</div>

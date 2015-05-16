@@ -1,0 +1,114 @@
+
+
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	      	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Feedback</h4>
+	      </div>
+	      <div class="modal-body" id="trainer-feedback">
+	      		<div class="padded">
+	      			<div class="col-md-9">
+	      				Is module completed?
+	      			</div>
+	      			<div class="col-md-3">
+	      				<input type="radio" name="isModuleCompleted" value="yes" onclick="hide_div('module-completed')"/>&nbsp;Yes&nbsp;
+	      				<input type="radio" name="isModuleCompleted" value="no" onclick="show_id('module-completed')"/>&nbsp;No
+	      			</div>
+	      		</div>
+	      		<div class="padded display-none" id="module-completed">
+	      			<div class="col-md-12">
+	      				Please tell us which slide you stopped at:
+	      			</div>
+	      			<div class="col-md-12">
+	      				<textarea id="moduleComment"></textarea>
+	      			</div>
+	      		</div>
+	      		<div class="padded">
+	      			<div class="col-md-12">
+	      				Rate today's class
+	      			</div>
+	      			<div class="col-md-12 text-center">
+		      			<input type="radio" value="1" name="rating" onclick="show_id('class-rating-details')"/>&nbsp;1&nbsp;&nbsp;&nbsp;
+	      				<input type="radio" value="2" name="rating" onclick="show_id('class-rating-details')"/>&nbsp;2&nbsp;&nbsp;&nbsp;
+	      				<input type="radio" value="3" name="rating" onclick="show_id('class-rating-details')"/>&nbsp;3&nbsp;&nbsp;&nbsp;
+	      				<input type="radio" value="4" name="rating" onclick="hide_div('class-rating-details')"/>&nbsp;4&nbsp;&nbsp;&nbsp;
+	      				<input type="radio" value="5" name="rating" onclick="hide_div('class-rating-details')"/>&nbsp;5&nbsp;&nbsp;&nbsp;
+		      		</div>
+	      		</div>
+	      		
+	      		<div id="class-rating-details" class="display-none"><!-- start class rating -->
+	      			<div class="padded">
+	      				<div class="col-md-12">
+	      					Please tell us what went wrong:
+	      				</div>
+	      			</div>
+	      			<div class="padded">
+      					<div class="col-md-9">
+      						Content allocatted fits in time
+      					</div>
+      					<div class="col-md-3">
+      						<input type="radio" name="isContentAllocatedFitsInTime" value="yes" />&nbsp;Yes&nbsp;
+	      					<input type="radio" name="isContentAllocatedFitsInTime" value="no" />&nbsp;No
+      					</div>
+      				</div>
+      				<div class="padded">
+      					<div class="col-md-9">
+      						Student participation quality
+      					</div>
+      					<div class="col-md-3">
+      						<input type="radio" name="isStudentParticipationQuality" value="yes" />&nbsp;Yes&nbsp;
+	      					<input type="radio" name="isStudentParticipationQuality" value="no" />&nbsp;No
+      					</div>
+      				</div>
+      				<div class="padded">
+      					<div class="col-md-9">
+      						Class discipline
+      					</div>
+      					<div class="col-md-3">
+      						<input type="radio" name="isClassDiscipline" value="yes" />&nbsp;Yes&nbsp;
+	      					<input type="radio" name="isClassDiscipline" value="no" />&nbsp;No
+      					</div>
+      				</div>
+      				<div class="padded">
+      					<div class="col-md-9">
+      						Student enjoyed the content
+      					</div>
+      					<div class="col-md-3">
+      						<input type="radio" name="isStudentEnjoyedTheContent" value="yes" />&nbsp;Yes&nbsp;
+	      					<input type="radio" name="isStudentEnjoyedTheContent" value="no" />&nbsp;No
+      					</div>
+      				</div>
+      				<div class="padded" style="padding-top: 0px">
+      					<div class="col-md-9">
+      						Learning experience
+      					</div>
+      					<div class="col-md-3">
+      						<input type="radio" name="isLearningExperience" value="yes" />&nbsp;Yes&nbsp;
+	      					<input type="radio" name="isLearningExperience" value="no" />&nbsp;No
+      					</div>
+      				</div>
+	      		</div><!-- end class rating -->
+	      		<!--<div class="padded" style="padding-top: 0px">
+	      			<div class="col-md-9">
+	      				Any problem need help with?
+	      			</div>
+	      			<div class="col-md-3">
+	      				<input type="checkbox" />
+	      			</div>
+	      		</div>-->
+	      		<div class="padded" style="padding-top: 0px">
+	      			<div class="col-md-12">
+	      				Any additional comments?
+	      			</div>
+	      			<div class="col-md-12">
+	      				<textarea id="anyProblem"></textarea>
+	      			</div>
+	      		</div>
+	      	</div>
+	      	<div class="modal-footer" style="text-align: center" id="feedback-modal-footer">
+		    	<a class="btn btn-success" onclick="feedback.submit_feedback('<%= tf.id %>','<%= tf.EventId %>')">Submit</a>
+		  	</div>
+		</div>
+	</div>

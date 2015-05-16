@@ -1,0 +1,49 @@
+<!-- Modal -->
+<style>
+	.modal-dialog {
+		width: auto;
+		position: absolute;
+		top: 25%;
+		bottom: 25%;
+		left: 25%;
+		right: 25%;
+		width: auto;
+		margin: auto;
+	}
+	
+	span.label-primary {
+		margin: 4px;
+		padding: 4px;
+		display: inline-block;
+	}
+	
+	@media (max-width: 767px) {
+		.modal-dialog {
+			top: 10%;
+			/*bottom: 5%;*/
+			left: 1%;
+			right: 1%;	
+		  }
+		  h4 {
+		  	font-size: 1.5em;
+		  }
+	}
+
+</style>
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="hide_div('view_skills_div');hide_class('DimBg')">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Skills</h4>
+      </div>
+      <div class="modal-body">
+			
+			<% skills.forEach(function(skill) { %>
+				<span class='label label-primary'><%= skill.name %></span>
+			<% }); %>
+			
+      </div>
+    </div>
+  </div>
+
