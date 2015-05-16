@@ -27,9 +27,12 @@ app.set('view engine', 'ejs');
 
 module.exports = {
 		
+	//the initial view
 	dashboard: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		db.User.find({ where: { id: parseInt(req.param('user_id'))}}).success(function(user) {
+			//if user has completed profile, taken the test and fixed an appointment with coach, then redirect
+			//the user to the gym page. Else make sure, user completes all these steps
 			if(user && user.isProfileCompleted == true && user.isTestTaken == true && user.isMetCoach == true) {
 				res.redirect('/users/gym/'+user.id);
 			} else 
