@@ -42,6 +42,8 @@ module.exports = {
 		});
 	},
 	
+	//to create a new user
+	//only admin has access to this
 	new_user: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
@@ -59,7 +61,11 @@ module.exports = {
 				console.log("Error", errors);
 				res.render('dashboard', {errors: errors});
 			});
-		} else {
+		} 
+		//the else part was created initially, when both admin and hr manager / principal could create 
+		//a new user
+		//this has now been deprecated
+		else {
 			db.User.find({ where: { id: req.param('user_id')} , include: [db.Organization]}).success(function(user) { 
 				
 				db.Role.findAll({ where: { OrganizationId: user.organization.id}}).success(function(roles) { 
@@ -83,6 +89,8 @@ module.exports = {
 		}
 	},
 	
+	//user's placement center
+	//users can see new job, job interview, job test, job offer, workshop stats
 	careers: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
@@ -293,10 +301,19 @@ module.exports = {
 		});
 	},*/
 	
+	//mobile layout for user's gym page
 	gym_mobile: function(req, res) {
 		res.render('users/gym-mobile');
 	},
 	
+	//user's gym page
+	//the initial tile layout view
+	//the following tiles are dynamic:
+	//tests, live classes, learn, placement center, notice board, calendar and appointments
+	//the following tiles are static:
+	//certificates, leader board
+	//in this piece of code, the following tiles fetch their dynamic data
+	//learn, notice board, placement center
 	gym: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
@@ -331,24 +348,28 @@ module.exports = {
 							});
 						});
 					} else {
+						//get skill related information for a user
 						db.Skill.find({ where: { id: userSkills[x].SkillId}}).success(function(skill) {
 							skills[x] = {};
 							skills[x] = skill;
+							//find total modules for this skill
 							db.SkillModulePlaylist.count({ where: ['"SkillId" = ?', userSkills[x].SkillId] }).success(function(totalModules) { 
 								userSkills[x].totalModules = totalModules;
 								userSkills[x].completedModules = 0;
 								
+								//get no. of completed modules for a user, for this skill
 								var get_completed_modules = function(k, id) {
 									db.SkillModulePlaylist.find({ where: ['"ModuleId" = ? AND "SkillId" = ?', id, skill.id] }).success(function(module) {
 										if(module == null || module.PrevModuleId == null) {
 											userSkills[x].completedModules = k;
-											get_skills(x+1);
+											get_skills(x+1); //go and get information for the next skill
 										} else {
 											get_completed_modules(++k, module.PrevModuleId);
 										}
 									});
 								};
 								
+								//find in which module the user is in
 								db.SkillModulePlaylist.find({ where: ['"ModuleId" = ? AND "SkillId" = ?', userSkills[x].ModuleId, skill.id] }).success(function(module) {
 									if(userSkills[x].status == 'complete') {//completed all modules
 										userSkills[x].completedModules = totalModules;
@@ -372,13 +393,16 @@ module.exports = {
 		});
 	},
 	
+	//the 'Tests' tile on user's gym page
 	get_users_test_events: function(req, res) {
+		//get all events, that this user is a part of
 		db.EventUsers.findAll({ where: ['"UserId" = ?', parseInt(req.param('user_id'))]}).success(function(eventusers) {
 			var events = [];
 			var get_confirmed_events = function(i) {
 				if(i == eventusers.length) {
 					res.render('users/get_users_test_events', {events: events});
 				} else {
+					//filter only test events
 					db.Event.find({ where: ['"id" = ? AND type = ?', eventusers[i].EventId, 'Test']}).success(function(event) {
 						if(event) {
 							events[i] = {};
@@ -393,14 +417,17 @@ module.exports = {
 		});
 	},
 	
+	//the 'Live Classes' tile on user's gym page
 	get_users_live_events: function(req, res) {
+		//get all events, that this user is a part of
 		db.EventUsers.findAll({ where: ['"UserId" = ?', parseInt(req.param('user_id'))]}).success(function(eventusers) {
 			var events = [];
 			var get_confirmed_events = function(i) {
 				if(i == eventusers.length) {
 					res.render('users/get_users_live_events', {events: events});
 				} else {
-					db.Event.find({ where: ['"id" = ? AND (type ISNULL OR type != \'Test\')', eventusers[i].EventId]}).success(function(event) {
+					//filter events of type Live Class
+					db.Event.find({ where: ['"id" = ? AND (type ISNULL OR type != \'Live Class\')', eventusers[i].EventId]}).success(function(event) {
 						if(event) {
 							events[i] = {};
 							events[i] = event;
@@ -414,6 +441,7 @@ module.exports = {
 		});
 	},
 	
+	//the 'Appointments' tile on user's gym page
 	get_users_coach_appointments: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.param('user_id'))}}).success(function(user) {
 			db.Appointment.findAll({ where: ['"UserId" = ? AND "status" = \'confirm\'', parseInt(req.param('user_id'))]}).success(function(appointments) {
@@ -422,15 +450,19 @@ module.exports = {
 		});
 	},
 	
+	//the 'Certificates' tile on user's gym page
+	//currently, this is static
 	certificates: function(req, res) {
 		res.render('users/certificates');
 	},
 	
+	//the 'Calendar' tile on user's gym page
 	calendar: function(req, res) {
 		/*query = 'select DISTINCT "EventId" from "EventUsers" where "UserId"='+parseInt(req.param('user_id'));
 		db.sequelize.query(query, null, {raw: true}).success(function(eu){
 			
 		});*/
+		//get all events for an user
 		db.EventUsers.findAll({ where: { UserId: parseInt(req.param('user_id'))}}).success(function(eu) {
 			var events_classes = [], events_tests = [];
 			var get_events = function(i) {
@@ -440,9 +472,9 @@ module.exports = {
 					//});
 				} else {
 					db.Event.find({ where: ['id = ? AND date IS NOT NULL', eu[i].EventId]}).success(function(event) {
-						if(event && event.type == 'Test') {
+						if(event && event.type == 'Test') { //test events
 							events_tests.push(event);
-						} else if(event) {
+						} else if(event) { //live class events
 							events_classes.push(event);
 						}
 						get_events(++i);
@@ -453,6 +485,8 @@ module.exports = {
 		});
 	},
 	
+	//alternate url when '/users/next_module/:user_id/:skill_id' is without a message
+	//redirect to '/users/next_module/:user_id/:skill_id/null' 
 	next_module_no_message: function(req, res) {
 		var message = null;
 		res.redirect('/users/next_module/'+req.param('user_id')+'/'+req.param('skill_id')+'/'+message);
@@ -489,14 +523,22 @@ module.exports = {
 //		});
 //	},
 	
+	// following are the sequence of steps to arrive at this piece of code
+	// user gym >> play button in 'Learn' tile >> /skill/get_modules_for_skill_ajax/:skill_id (skill controller) >>
+	// >> module_turbo_ajax.ejs (view) >> 'Next' button in module_turbo_ajax.ejs >> /content/show_test_instructions (content controller) >>
+	// >> if there is no content test, or if user has already taken up this test, then >> /content/advance_next/ (content controller)
+	// next_module.ejs gives a summary about modules completed, coach rating etc
+	// it also shows descriptive messages when a user has completed all skills or when there are no modules for this skill
 	next_module: function(req, res) {
 		db.UserSkills.find({ where: ['"UserId" = ? AND "SkillId" = ?', req.param('user_id'), req.param('skill_id')] }).success(function(userSkill) { 
 			db.Skill.find({ where: ['"id" = ?', req.param('skill_id')] }).success(function(skill) { 
 				var do_next_step = function() {
+					// get the total modules for this skill
 					db.SkillModulePlaylist.count({ where: ['"SkillId" = ?', req.param('skill_id')] }).success(function(totalModules) { 
 						var completedModules = 0;
 						
 						var get_completed_modules = function(i, id) {
+							// get the no. of completed modules
 							db.SkillModulePlaylist.find({ where: ['"ModuleId" = ? AND "SkillId" = ?', id, skill.id] }).success(function(module) {
 								if(module == null || module.PrevModuleId == null) {
 									res.render('next_module', {userSkill: userSkill, skill: skill, totalModules: totalModules, completedModules: i, message: req.param('message')});
@@ -519,10 +561,12 @@ module.exports = {
 					});
 				};
 				
+				// if ModuleId or ContentId is null in "UserSkills" table, the following function updates it
 				var update_user_skill_table = function() {
 					
 					var update_user_skill_table_for_content = function() {
 						if(userSkill.ContentId == null && userSkill.ModuleId != null) {
+							//if ContentId is null, then get the first content for this module from "ModuleContentPlaylist" table
 							db.ModuleContentPlaylist.find({ where: ['"ModuleId" = ? AND "PrevContentId" ISNULL', userSkill.ModuleId, null] }).success(function(mcpl) {
 								if(mcpl) {
 									userSkill.updateAttributes({ContentId: mcpl.ContentId}).success(function(){
@@ -538,6 +582,7 @@ module.exports = {
 					};
 					
 					if(userSkill.ModuleId == null) {
+						//if ModuleId is null, then get the first module for this skill from "SkillModulePlaylist" table
 						db.SkillModulePlaylist.find({ where: ['"SkillId" = ? AND "PrevModuleId" ISNULL', userSkill.SkillId] }).success(function(smpl) {
 							if(smpl) {
 								userSkill.updateAttributes({ModuleId: smpl.ModuleId}).success(function(){
@@ -548,6 +593,7 @@ module.exports = {
 							}
 						});
 					} else {
+						//ModuleId is not null, check if ContentId is null
 						update_user_skill_table_for_content();
 					}
 				};
@@ -557,6 +603,8 @@ module.exports = {
 		});
 	},
 	
+	// user gym >> click on 'Review' button in 'Learn' tile
+	// gives a review of past, current and future modules for this skill, for this user
 	review_module: function(req, res) {
 		db.UserSkills.find({ where: ['"UserId" = ? AND "SkillId" = ?', parseInt(req.user.id), parseInt(req.param('skill_id'))] }).success(function(userSkill) { 
 			db.SkillModulePlaylist.count({ where: ['"SkillId" = ?', req.param('skill_id')] }).success(function(totalModules) { 
@@ -564,13 +612,16 @@ module.exports = {
 				var new_modules = [];
 				var current_module = {};
 				
+				//get current modules
 				var get_current_module = function() {
 					db.SkillModulePlaylist.find({ where: ['"SkillId" = ? AND "ModuleId" = ?', userSkill.SkillId, userSkill.ModuleId] }).success(function(c_smpl) {
 						if(c_smpl) {
 							db.Module.find({ where: ['"id" = ?', userSkill.ModuleId] }).success(function(m) {
 								current_module = m;
+								//get old modules
 								var get_old_modules = function(module) {
 									if(module.PrevModuleId == null) {
+										//get new modules
 										var get_new_modules = function(module) {
 											db.SkillModulePlaylist.find({ where: ['"SkillId" = ? AND "PrevModuleId" = ?', userSkill.SkillId, module.ModuleId] }).success(function(n_smpl) {
 												if(n_smpl) {
@@ -620,6 +671,7 @@ module.exports = {
 		});
 	},
 	
+	//users can view past content for completed modules. this content isn't locked
 	review_old_content: function(req, res) {
 		db.UserSkills.find({ where: ['"UserId" = ? AND "SkillId" = ?', parseInt(req.user.id), parseInt(req.param('skill_id'))] }).success(function(userSkill) { 
 			db.Module.find({ where: ['"id" = ?', parseInt(req.param('module_id'))] }).success(function(module) {
@@ -662,6 +714,7 @@ module.exports = {
 		});
 	},
 	
+	//users can only see thumbnail of content for future modules. this content is locked
 	review_new_content: function(req, res) {
 		var new_content = [];
 		var get_old_content = function() {
@@ -691,6 +744,8 @@ module.exports = {
 		get_old_content();
 	},
 	
+	// gives a review of past, current and future content for this module, for this user
+	// by default, review_content is for the current module
 	review_content: function(req, res) {
 		db.UserSkills.find({ where: ['"UserId" = ? AND "SkillId" = ?', parseInt(req.user.id), parseInt(req.param('skill_id'))] }).success(function(userSkill) { 
 			db.Module.find({ where: ['"id" = ?', parseInt(req.param('module_id'))] }).success(function(module) {
@@ -698,13 +753,16 @@ module.exports = {
 				var new_content = [];
 				var current_content = {};
 				
+				//get current content
 				var get_current_content = function() {
 					db.ModuleContentPlaylist.find({ where: ['"ModuleId" = ? AND "ContentId" = ?', parseInt(req.param('module_id')), userSkill.ContentId] }).success(function(c_mcpl) {
 						if(c_mcpl) {
 							db.Content.find({ where: ['"id" = ?', userSkill.ContentId] }).success(function(c) {
 								current_content = c;
+								//get old content
 								var get_old_content = function(content) {
 									if(content.PrevContentId == null) {
+										//get new content
 										var get_new_content = function(content) {
 											db.ModuleContentPlaylist.find({ where: ['"ModuleId" = ? AND "PrevContentId" = ?', userSkill.ModuleId, content.ContentId] }).success(function(n_mcpl) {
 												if(n_mcpl) {
@@ -757,10 +815,12 @@ module.exports = {
 		});
 	},
 	
+	//called when '/users/view_content/:id' is without a :skillid
 	view_content_no_skill: function(req, res) {
 		res.redirect('/users/view_content/'+req.param('id')+'/null');
 	},
 	
+	//called from review_content.ejs, to view content
 	view_content: function( req, res ) {
 		db.Content.find({ where: ['"id" = ?', parseInt(req.param('id'))] }).success(function(c) {
 			res.render('module_ajax', {content: c, skill_id: req.param('skill_id')});
@@ -769,6 +829,7 @@ module.exports = {
 		});
 	},
 	
+	// admin can get list of all users
 	list: function(req, res) {
 		db.Organization.findAll().success(function(organizations) {
 			db.User.find({ where: { id: parseInt(req.user.id) }, include: [db.Organization] }).success(function(user) {
@@ -779,7 +840,9 @@ module.exports = {
 						console.log('Error', error);
 						res.redirect('/dashboard');
 					});
-				}else if(req.user.isManager()){
+				}
+				//else part is now deprecated
+				else if(req.user.isManager()){
 					db.User.findAll({ where: {OrganizationId: user.OrganizationId}, offset: res.locals.offset, limit: res.locals.limit, order: 'id ASC', include: [db.Organization, db. Role]}).success(function(users) {
 						res.render('users/list', {organizations: organizations, hr: user, users: users, successFlash: req.flash('info')[0]});
 					}).error(function(error) {
@@ -791,19 +854,24 @@ module.exports = {
 		});
 	},
 	
+	// paginated list of users filtered by organization
 	listByOrganization: function(req, res) {
+		//start pagination variables
 		res.locals.limit = 10;
 		var limit = res.locals.limit;
 		var page = req.param('page') != null ? parseInt(req.param('page')) : 1;
 		res.locals.offset = (page - 1) * limit;
+		//end pagination variables
 		
 		db.User.count({where: {OrganizationId: parseInt(req.param('org_id'))}}).success(function(total) {
-	        res.locals.total = total;
+	        //start pagination variables
+			res.locals.total = total;
 	        res.locals.pages =  Math.ceil(total / limit);
 	        res.locals.page = page;
 	        
 	        res.locals.prev = page == 1 ? false : true;
 	        res.locals.next = page == parseInt(res.locals.pages) ? false : true;
+	        //end pagination variables
 	        
 	        db.Organization.findAll().success(function(organizations) {
 				db.Organization.find({where: {id: parseInt(req.param('org_id'))}}).success(function(org) {
@@ -819,12 +887,13 @@ module.exports = {
 	    });
 	},
 	
+	//admin can create a new user
 	create: function(req, res) {
 		
 		db.Organization.find({ where: { id: parseInt(req.param('OrganizationId')) } }).success(function(organization) {
 			var oldPassword = req.param('password');
-			var hashedPassword = passwordHash.generate(req.param('password'));
-			req.body.password = hashedPassword;
+			var hashedPassword = passwordHash.generate(req.param('password')); //encrypt the password
+			req.body.password = hashedPassword; // add the encrypted password to the form body
 			db.User.create(req.body).success(function(user) {
 				db.Role.find({ where: { id: parseInt(req.param('RoleId')) }, include: [db.Skill] }).success(function(role) {
 					if(role) {
@@ -875,6 +944,7 @@ module.exports = {
 									res.redirect('users/new/'+req.param('currentUserId'));
 								});
 							} else {
+								//once a user has been created, add skills for this new user
 								db.UserSkills.findOrCreate({SkillId: role.skills[i].id, UserId: user.id}).success(function(us, created) { 
 									console.log("User-Skill", created); 
 									if(created) {
@@ -921,7 +991,7 @@ module.exports = {
 					
 					} else {
 						// start
-						
+						// the following piece of code to send an email can be refactored
 						var mailOpts, smtpConfig;
 						
 						smtpConfig = mailer.createTransport('SMTP', {
@@ -984,6 +1054,8 @@ module.exports = {
 		});
 	},
 	
+	//admin can delete a user
+	//all the dependent tables need to be updated too
 	destroy: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.param('user_id')) } }).success(function(user) {
 			if(user) {
@@ -1079,17 +1151,21 @@ module.exports = {
 		});
 	},
 	
+	//users can change password
 	change_password: function(req, res) {
 		res.render('users/change_password', {user_id: req.param('user_id')});
 	},
 	
+	//change password, ajax view
 	change_password_ajax: function(req, res) {
 		res.render('users/change_password_ajax', {user_id: req.param('user_id')});
 	},
 	
+	//update the user's table with the new password
 	do_change_password: function(req, res) {
 		db.User.find({ where: {id: parseInt(req.param('user_id'))} }).success(function(user) {
 			var success = function() {
+				//make sure, the password is encrypted
 				var hashedPassword = passwordHash.generate(req.param('new_password'));
 				user.updateAttributes({password: hashedPassword}).success(function() {
 					req.flash('info', "Changed Password");
@@ -1106,7 +1182,8 @@ module.exports = {
 			
 			if(user) {
 				if(passwordHash.isHashed(user.password)) {
-					if(passwordHash.verify(req.param('old_password'), user.password)) {
+					//if the password is hashed, decrypt it
+					if(passwordHash.verify(req.param('old_password'), user.password)) { //decrypt user's password
 						success();
 					} else {
 						err('Login Failure! Wrong password');
@@ -1125,6 +1202,7 @@ module.exports = {
 		});
 	},
 	
+	//ajax version of the above function
 	do_change_password_ajax: function(req, res) {
 		db.User.find({ where: {id: parseInt(req.param('user_id'))} }).success(function(user) {
 			var success = function() {
@@ -1166,6 +1244,8 @@ module.exports = {
 		});
 	},
 	
+	//called from hr_admin/dashboard_new.ejs >> search_user_hr() javascript call
+	//used to search a user based on username
 	search: function(req, res) {
 		db.User.find({ where: { username: req.param('username') }}).success(function(user) {
 			var skills = [];
@@ -1196,6 +1276,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	detail: function(req, res) {
 		db.User.find({ where: { id: req.param('user_id') } }).success(function(user) {
 			res.render('users/user_detail', {user: user, keyword: req.param('keyword')});
@@ -1205,6 +1286,7 @@ module.exports = {
 		});
 	},
 	
+	//called from view_test_details.ejs to know more about a particular question
 	question_details: function(req, res) {
 		db.ReportDetail.find({ where: ['"id" = ?', parseInt(req.param('id'))]}).success(function(reportDetail) {
 			db.Problem.find({ where: { id: reportDetail.ProblemId}}).success(function(problem) {
@@ -1217,10 +1299,15 @@ module.exports = {
 		});
 	},
 	
+	//url '/users/view_report_details/:id' without :userid is being redirected here
+	//:id here refers to the test id
 	view_user_report_details: function(req, res) {
 		res.redirect('/users/view_report_details/'+req.param('id')+'/'+req.user.id);
 	},
 	
+	//for each test, get a detailed report
+	//called from view_test_details.ejs
+	//also called from hr_admin/view_detailed_report_card.ejs
 	view_report_details: function( req, res ) {
 		db.Test.find({ where: ['"id" = ?', parseInt(req.param('id'))]}).success(function(test) {
 			db.Report.find({ where: ['"TestId" = ? AND "UserId" = ?', parseInt(req.param('id')), req.param('user_id')]}).success(function(report) {
@@ -1256,10 +1343,13 @@ module.exports = {
 		});
 	},
 	
+	//called from report_ajax.ejs
 	view_user_test_details: function( req, res ) {
 		res.redirect('/users/view_test_details/'+req.user.id+'/'+req.param('skill_id'));
 	},
 	
+	//called to view each skill's test statistics
+	//find all content tests, module tests and skill tests for this skill
 	view_test_details: function( req, res ) {
 		db.SkillModulePlaylist.findAll({ where: ['"SkillId" = ?', parseInt(req.param('skill_id'))]}).success(function(smpl) {
 			var modules = [];
@@ -1369,6 +1459,7 @@ module.exports = {
 		});
 	},
 	
+	//view role test or event test results
 	view_other_test_details: function( req, res ) {
 		var tests = [];
 		db.Test.find({where: {id: parseInt(req.param('test_id'))}}).success(function(test){
@@ -1392,6 +1483,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated (mostly deprecated, not sure at this point on May 18, 2015 at 4:18pm)
 	skill_overview: function(req, res) {
 		var completedModules = 0;
 		db.UserSkills.find({ where: ['"SkillId" = ? AND "UserId" = ?', parseInt(req.param('skill_id')), parseInt(req.param('user_id'))] }).success(function(us) {
@@ -1430,6 +1522,7 @@ module.exports = {
 		});
 	},
 	
+	//user gym >> 'Learn' tile >> Report Card Button
 	report_card_ajax: function(req, res) {
 		db.Skill.find({ where: ['"id" = ?', parseInt(req.param('skill_id'))]}).success(function(skill) {
 			db.CoachNotesHistory.count({ where: ['"UserId" = ? AND "SkillId" = ?', parseInt(req.param('user_id')), parseInt(req.param('skill_id'))]}).success(function(n) {
@@ -1450,6 +1543,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated (mostly deprecated, not sure at this point on May 18, 2015 at 4:18pm)
 	report_card: function(req, res) {
 		db.UserSkills.findAll({ where: { UserId: parseInt(req.param('user_id'))}}).success(function(userSkills) { 
 			db.User.find({ where: { id: parseInt(req.param('user_id'))}, include: [db.Skill, db.Role, db.Organization]}).success(function(user) { 
@@ -1544,6 +1638,7 @@ module.exports = {
 		});
 	},
 	
+	//called from report_ajax.ejs, to display user's coach rating history
 	coach_rating_history: function(req, res) {
 		db.CoachRatingHistory.findAll({ where: ['"UserId" = ? AND "SkillId" = ?', parseInt(req.param('user_id')), parseInt(req.param('skill_id'))], order: 'id DESC' }).success(function(crh) {
 			var d = [];
@@ -1561,6 +1656,7 @@ module.exports = {
 		});
 	},
 	
+	//called from report_ajax.ejs, to display user's notes
 	notes: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.param('user_id')) }}).success(function(user) {
 			db.CoachNotesHistory.min("id", {where: ['"CoachId" = ? AND "UserId" = ? AND "SkillId" = ?', user.CoachId, parseInt(req.param('user_id')), parseInt(req.param('skill_id'))] }).success(function(min) {
@@ -1569,6 +1665,7 @@ module.exports = {
 		});
 	},
 	
+	//navigate to user's previous notes in notes.ejs
 	notes_prev: function(req, res) {
 		var len = parseInt(req.param('len'));
 		var curr = parseInt(req.param('curr'));
@@ -1581,13 +1678,14 @@ module.exports = {
 			db.CoachNotesHistory.find({ where: ['"CoachId" = ? AND "UserId" = ? AND "SkillId" = ? AND "id" < ?', parseInt(req.param('coach_id')), parseInt(req.param('user_id')), parseInt(req.param('skill_id')), parseInt(req.param('cnh_id'))], order: 'id DESC' }).success(function(notes) {
 				res.render('notes',{notes: notes, curr: curr, len: len});
 			});
-		}else{
+		}else{ //first notes
 			db.CoachNotesHistory.find({ where: ['"CoachId" = ? AND "UserId" = ? AND "SkillId" = ? AND "id" = ?', parseInt(req.param('coach_id')), parseInt(req.param('user_id')), parseInt(req.param('skill_id')), parseInt(req.param('cnh_id'))], order: 'id DESC' }).success(function(notes) {
 				res.render('notes',{notes: notes, curr: curr, len: len});
 			});
 		}
 	},
 	
+	//navigate to user's next notes in notes.ejs
 	notes_next: function(req, res) {
 		var len = parseInt(req.param('len'));
 		var curr = parseInt(req.param('curr'));
@@ -1601,12 +1699,14 @@ module.exports = {
 				res.render('notes',{notes: notes, curr: curr, len: len}); return;
 			});
 		}else {
+			//last notes
 			db.CoachNotesHistory.find({ where: ['"CoachId" = ? AND "UserId" = ? AND "SkillId" = ? AND "id" = ?', parseInt(req.param('coach_id')), parseInt(req.param('user_id')), parseInt(req.param('skill_id')), parseInt(req.param('cnh_id'))] }).success(function(notes) {
 				res.render('notes',{notes: notes, curr: curr, len: len}); return;
 			});
 		}
 	},
 	
+	//not sure at this point on May 18, 2015 at 4:45 pm
 	modules_completed: function(req, res) {
 		db.UserSkills.find({ where: ['"SkillId" = ? AND "UserId" = ?', parseInt(req.param('skill_id')), parseInt(req.user.id)] }).success(function(us) {
 			db.SkillModulePlaylist.count({ where: ['"SkillId" = ?', parseInt(req.param('skill_id'))] }).success(function(totalModules) { 
@@ -1639,6 +1739,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	ratings: function(req, res) {
 		db.User.find({ where: { id: req.param('user_id') }, include: [db.Skill] }).success(function(user) {
 			res.render('ratings', {user: user});
@@ -1648,10 +1749,12 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	skill_map: function(req, res) {
 		res.render('skill_map');
 	},
 	
+	//this is the second step for a new user in dashboard.ejs
 	start_pre_test: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.user.id) }}).success(function(user) {
 			db.RoleTest.find({where: {RoleId: user.RoleId}}).success(function(rt){
@@ -1664,6 +1767,8 @@ module.exports = {
 		});
 	},
 	
+	//NSDC enrollment form related
+	//needs to be improved
 	enrollment_form: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		db.User.find({ where: { id: parseInt(req.param('user_id')) }, include: [db.Role, db.Skill, db.Organization] }).success(function(user) {
@@ -1678,12 +1783,15 @@ module.exports = {
 		});
 	},
 	
+	//NSDC enrollment form related
+	//needs to be improved
 	edit_enrollment_form: function(req, res) {
 		db.UserDetails.find({UserId: parseInt(req.param('user_id'))}).success(function(userDetails){
 			res.render('users/edit_enrollment_form', {userDetails: userDetails});
 		});
 	},
 	
+	//NSDC enrollment form related
 	update_user_details: function(req, res) {
 		db.UserDetails.find({UserId: parseInt(req.param('id'))}).success(function(userDetails){
 			userDetails.updateAttributes(req.body).success(function(){
@@ -1692,6 +1800,7 @@ module.exports = {
 		});
 	},
 	
+	//NSDC enrollment form related
 	create_user_details: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.param('id')) }}).success(function(user) {
 			db.UserDetails.create({UserId: user.id}).success(function(ud){
@@ -1704,10 +1813,13 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	profile_firstTime_false: function(req, res) {
 		res.redirect('/users/profile/'+req.param('user_id')+'/false');
 	},
 	
+	//deprecated
+	//this piece of code could be used, provided the view is updated accordingly
 	profile: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		db.User.find({ where: { id: parseInt(req.param('user_id')) }, include: [db.Role, db.Skill, db.Organization] }).success(function(user) {
@@ -1718,6 +1830,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	profile_user_orientation: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.user.id) }}).success(function(user) {
 			res.render('profile-user-orientation', {user: user});
@@ -1727,6 +1840,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	do_create_user_profile: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.user.id) }}).success(function(user) {
 			if(req.param('email') == null || req.param('email') == '')
@@ -1737,6 +1851,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated, users could edit their profile
 	edit_profile: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		db.User.find({ where: { id: parseInt(req.param('user_id')) }, include: [db.Role, db.Skill, db.Organization] }).success(function(user) {
@@ -1757,6 +1872,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	update: function(req, res) {
 		db.User.find({ where: { id: req.param('id')} }).success(function(user) {
 			if(user) {
@@ -1790,6 +1906,7 @@ module.exports = {
 	
 	},
 	
+	//update user's "isTestTaken" field
 	updateIsTestTaken: function(req, res) {
 		db.User.find({ where: { id: req.param('user_id')} }).success(function(user) {
 			if(user) {
@@ -1809,6 +1926,9 @@ module.exports = {
 		});
 	},
 	
+	//this is the third and the final step for a new user in dashboard.ejs
+	//user is presented with a form to fill out three options for date/time
+	//data validation needs to be done on form submit
 	set_appointment: function(req, res) {
 		db.User.find({ where: { id: req.param('user_id')}}).success(function(user) {
 			if(user) {
@@ -1833,6 +1953,11 @@ module.exports = {
 		});
 	},
 	
+	//this is the third and the final step for a new user in dashboard.ejs
+	//this is a very old piece of code, written during the initial days
+	//user submits three date/time options
+	//the date field in the "appointments" table has been updated to 'timestamp' value
+	//this piece of code needs to re-written with appropriate data validations
 	scheduleMeetingWithCoach: function(req, res) {
 		db.User.find({ where: { id: req.param('user_id')}, include: [db.Role, db.Organization] }).success(function(user) {
 			if(user) {
@@ -1919,10 +2044,12 @@ module.exports = {
 		});
 	},
 	
+	//show terms pdf file
 	terms: function(req, res) {
 		res.render('users/terms', {user_id: req.param('user_id')});
 	},
 	
+	//update user's "isAgreedToTerms" field
 	do_agree_to_terms: function(req, res) {
 		db.User.find({where: {id: parseInt(req.param('user_id'))}}).success(function(user) {
 			user.updateAttributes({isAgreedToTerms: true}).success(function(){
