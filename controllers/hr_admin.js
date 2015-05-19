@@ -4,7 +4,7 @@ func = require('../controllers/functions'),
 passwordHash = require('password-hash');;
 
 module.exports = {
-		
+	//manger's dashboard page	
 	dashboard: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
@@ -17,7 +17,7 @@ module.exports = {
 				var departments = [];
 				var pos;
 				
-				//get unique departments
+				//get unique departments (deprecated, but there is future scope)
 				users.forEach(function(user){
 					pos = -1;
 					pos = departments.indexOf(user.department);
@@ -34,6 +34,7 @@ module.exports = {
 					counts[i].count_modules_completed = 0;
 				});
 				
+				//get the no. of users who have completed all modules. used for role-skill statistics
 				var get_users_count_for_modules_completed = function() {
 					db.UserSkills.findAll({ where: { status: 'complete'} }).success(function(us) {
 						var visited = [];
@@ -43,6 +44,7 @@ module.exports = {
 								var month = date.getMonth();
 								month = month < 9 ? '0'+(month+1) : ''+(month+1);
 								//db.Login.findAll({ where: ['"date" LIKE ?', '%-'+month+'-%'] }).success(function(logins) {
+									//start login activity related variables
 									var split_date;
 									var daily_activity = [];
 									var no_of_days;
@@ -67,6 +69,9 @@ module.exports = {
 										daily_activity[q].day = q+1;
 										daily_activity[q].count = 0;
 									}
+									//end login activity related variables
+									
+									//get the login activity
 									var get_login_for_each_day = function(p) {
 										if(p == no_of_days) {
 											db.Event.findAll({ where: ['type = ? and "InitiatorId" = ?', 'Test', hr.id], order: 'id DESC'}).success(function(events) {
@@ -126,6 +131,7 @@ module.exports = {
 														});
 														//end role
 													} else {
+														//get all test events
 														db.EventTest.find({ where: { EventId: events[r].id} }).success(function(eventTest) {
 															db.Test.find({ where: { id: eventTest.TestId} }).success(function(test) {
 																if(eventTest) {
@@ -154,6 +160,7 @@ module.exports = {
 												get_test_details(0);
 											});
 										} else {
+											//get login activity
 											query = 'select DISTINCT "UserId" from "Logins" where date=\'2014-'+month+'-'+(p+1)+'\' OR date=\'2015-'+month+'-'+(p+1)+'\'';
 											db.sequelize.query(query, null, {raw: true}).success(function(l){
 												daily_activity[p].count = l.length;
@@ -221,6 +228,7 @@ module.exports = {
 		});
 	},
 	
+	//for each role, show how the users are performing - apprentice, rookie, master, wizard
 	show_role_skill_report: function(req, res) {
 		db.Role.find({where: {name: req.param('role_name')}}).success(function(role) {
 			if(role) {
@@ -265,6 +273,7 @@ module.exports = {
 		});
 	},
 	
+	//show the login activity, for each month
 	show_monthly_login_graph: function(req, res) {
 		//db.Login.findAll({ where: ['"date" LIKE ?', '%-'+req.param('month')+'-%'] }).success(function(logins) {
 			var split_date;
@@ -318,6 +327,7 @@ module.exports = {
 		//});
 	},
 	
+	//this is the quarter yearly login activity
 	show_quarterly_login_graph: function(req, res) {
 		var monthly_activity = [];
 		var quarterly_activity = [];
@@ -393,6 +403,7 @@ module.exports = {
 		get_login_for_each_month(0);
 	},
 	
+	//get list of all roles for this organization
 	manage_roles: function(req, res) {
 		db.User.find({ where: { id: req.user.id}, include: [db.Organization]}).success(function(hr) {
 			db.Role.findAll({ where: { OrganizationId: hr.OrganizationId}}).success(function(roles) {
@@ -401,6 +412,7 @@ module.exports = {
 		});
 	},
 	
+	//every role has a pre-test (optional). manager can delete a pre-test and assign a new one.
 	delete_pre_test: function(req, res) {
 		db.RoleTest.find({where: ['"RoleId" = ? AND "TestId" = ?', parseInt(req.param('role_id')), parseInt(req.param('test_id'))]}).success(function(rt){
 			if(rt) {
@@ -413,6 +425,9 @@ module.exports = {
 		});
 	},
 	
+	//called from hr_admin/manage_roles.ejs
+	//lists all the skills for the selected role
+	//get pre-test for the selected role, if any
 	get_skills_for_role: function(req, res) {
 		db.RoleSkills.findAll({ where: { RoleId: parseInt(req.param('role_id'))}}).success(function(roleSkills) {
 			var skills = [];
@@ -442,12 +457,16 @@ module.exports = {
 		});
 	},
 	
+	//interface to add a skill to a role
+	//called from hr_admin/get_skills_for_role.ejs
 	add_skills_to_role: function(req, res) {
 		db.SkillGroup.findAll().success(function(skillGroups) {
 			res.render('hr_admin/add_skills_to_role', {skillGroups: skillGroups, role_id: req.param('role_id')});
 		});
 	},
 	
+	//called from hr_admin/add_skills_to_role.ejs
+	//list all the skills from a particular skill group
 	get_skills_from_skill_group: function(req, res) {
 		db.SkillGroupSkills.findAll({ where: { SkillGroupId: parseInt(req.param('skill_group_id'))}}).success(function(sgs) {
 			var skills = [];
@@ -466,10 +485,15 @@ module.exports = {
 		});
 	},
 	
+	//interface to create an event
+	//called from hr_admin/dashboard-new.ejs
 	create_event: function(req, res) {
 		res.render('hr_admin/create_event');
 	},
 	
+	//while creating an event, the first step is to enter the basic details like - 
+	// event name, description, location, date and time
+	// the second step is to assign a trainer to an event
 	assign_trainer_to_event: function(req, res) {
 		db.User.find({where: {id: parseInt(req.user.id)}}).success(function(hr) {
 			db.User.findAll({ where: ['permission = ? and "OrganizationId" = ?', 'trainer', hr.OrganizationId]}).success(function(trainers) {
@@ -477,6 +501,7 @@ module.exports = {
 					if(i == trainers.length) {
 						res.render('hr_admin/assign_trainer_to_event', {trainers: trainers});
 					} else {
+						//for each trainer, get his/her skills
 						db.UserTags.findAll({where: {UserId: trainers[i].id}}).success(function(ut){
 							trainers[i].skills = [];
 							var get_skills = function(j) {
@@ -498,12 +523,17 @@ module.exports = {
 		});
 	},
 	
+	//show event details, after assigning a trainer and users to an event
+	//manager can edit the event name, description here
 	show_event_details: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}}).success(function(event) {
 			res.render('hr_admin/show_event_details', {event: event});
 		});
 	},
 	
+	//second step of an event creation
+	//assign trainer to an event
+	//update the "ModeratorId" field for an event
 	do_assign_trainer_to_event: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}}).success(function(event) {
 			event.updateAttributes({ModeratorId: parseInt(req.param('moderator_id'))}).success(function(){
@@ -514,12 +544,15 @@ module.exports = {
 		});
 	},
 	
+	//list all tests, so that manager can choose one test and create a test event
 	create_test_event: function(req, res) {
 		db.Test.findAll({order: 'id DESC'}).success(function(tests){
 			res.render('hr_admin/create_test_event', {tests: tests});
 		});
 	},
 	
+	//third step of an event creation process
+	//assign users to event
 	assign_users_to_event: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.user.id)}, include: [db.Organization]}).success(function(hr) {
 			db.Role.findAll({ where: { OrganizationId: hr.OrganizationId}}).success(function(roles) {
@@ -528,6 +561,8 @@ module.exports = {
 		});
 	},
 	
+	//third step of an event creation process
+	//filter users based on skills, roles, batches
 	filter_users_for_event_on_role: function(req, res) {
 		var roles = req.param('str').split(',');
 		var str = "";
@@ -563,7 +598,14 @@ module.exports = {
 		});
 	},
 	
+	//third step of an event creation process
+	//select a role, and then get all skills for this role
+	//acts like a skill filter
+	//users can be filtered based on a role/roles and skill/skills
+	//this is an AND filter
 	get_skills_based_on_role_filter: function(req, res) {
+		//called from javascript function - get_role_filter_checkbox_values() in script.js
+		//req.param('str') will be role id's which are comma separated
 		var roles = req.param('str').split(',');
 		var str = "";
 		for(var i = 0; i< roles.length - 1; i++) {
@@ -572,6 +614,8 @@ module.exports = {
 			else
 				str = str + '"RoleId"='+roles[i]+' OR ';
 		}
+		//str now looks like -
+		//"RoleId" = 1 OR "RoleId" = 2 OR "RoleId" = 3
 		var query = 'select DISTINCT "SkillId" from "RoleSkills" where '+str;
 		db.sequelize.query(query, null, {raw: true}).success(function(roleSkills){
 			var skills = [];
@@ -590,6 +634,11 @@ module.exports = {
 		});
 	},
 	
+	//third step of an event creation process
+	//select a role, and then get all batches for this role
+	//acts like a batch filter
+	//users can be filtered based on a role/roles and batch/batches
+	//this is an AND filter
 	get_batches_based_on_role_filter: function(req, res) {
 		var roles = req.param('str').split(',');
 		var str = "";
@@ -605,6 +654,8 @@ module.exports = {
 		});
 	},
 	
+	//third step of an event creation process
+	//filter users based on a batch
 	filter_users_for_event_on_batch: function(req, res) {
 		var batches = req.param('str1').split(',');
 		var str1 = "";
@@ -632,6 +683,8 @@ module.exports = {
 		});
 	},
 	
+	//third step of an event creation process
+	//filter users based on a skill
 	filter_users_for_event_on_skill: function(req, res) {
 		var skills = req.param('str1').split(',');
 		var str1 = "";
@@ -666,6 +719,8 @@ module.exports = {
 					db.sequelize.query(query1, null, {raw: true}).success(function(u){
 						user = u[0];
 						if(user) {
+							//this is an ajax view, if a user is already added, then it displays 'Added'
+							//else it displays a '+' icon
 							db.EventUsers.find({where: ['"EventId" = ? AND "UserId" = ?', parseInt(req.param('event_id')), user.id]}).success(function(eu){
 								if(eu) {
 									user.eventUser = true;
@@ -718,6 +773,8 @@ module.exports = {
 		});
 	},*/
 	
+	//third step of an event creation process
+	//add a single user or multiple users
 	add_users_to_event: function(req, res) {
 		var users = req.param('str').split(',');
 		var add_users_to_event = function(i) {
@@ -734,18 +791,27 @@ module.exports = {
 		add_users_to_event(0);
 	},
 	
+	//final step before an event is created
+	//show event name, description
+	//manger can edit these fields
+	//called from hr_admin/assign_users_to_event.ejs and javascript call -
+	//add_users_to_event(val) in script.js
 	show_test_event_name_desc: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}}).success(function(event){
 			res.render('hr_admin/show_test_event_name_desc', {event: event});
 		});
 	},
 	
+	//final step before an event is created
+	//manager can edit name, description etc for an event
 	edit_event_field: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}}).success(function(event){
 			res.render('hr_admin/edit_event_field', {event: event, val: req.param('val')});
 		});
 	},
 	
+	//update the edited values for an event accordingly
+	//this is the final step before an event is created
 	do_edit_event_field: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}}).success(function(event){
 			switch(req.param('val')) {
@@ -773,12 +839,14 @@ module.exports = {
 		});
 	},
 	
+	//show the updated field, after an event field is edited
 	show_event_field: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}}).success(function(event){
 			res.render('hr_admin/show_event_field', {event: event, val: req.param('val')});
 		});
 	},
 	
+	//during the event creation process, delete an event, if you wish to
 	delete_new_event: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}}).success(function(event){
 			var get_event_users = function() {
@@ -809,6 +877,9 @@ module.exports = {
 		});
 	},
 	
+	//test event can be edited
+	//test already assigned to a test event can be deleted and 
+	//a new test can be addedd
 	edit_test_event: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}}).success(function(event){
 			db.EventTest.find({where: {EventId: parseInt(req.param('event_id'))}}).success(function(et){
@@ -825,10 +896,14 @@ module.exports = {
 		});
 	},
 	
+	//manage users
+	//manager can edit / add users
+	//import users, buy licenses is static
 	manage_users: function(req, res) {
 		res.render('hr_admin/manage_users');
 	},
 	
+	//called from hr_admin/manage_users.ejs
 	add_users: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.user.id)}, include: [db.Organization]}).success(function(hr) {
 			db.Role.findAll({ where: { OrganizationId: hr.OrganizationId}}).success(function(roles) {
@@ -837,6 +912,9 @@ module.exports = {
 		});
 	},
 	
+	//while adding a user, check if the username already exists
+	//called from hr_admin/add_users.ejs >> username_check(obj) in script.js
+	//an ajax call
 	check_username: function(req, res) {
 		db.User.find({ where: ['username = ? OR email = ?', req.param('username'), req.param('username')]}).success(function(user){
 			if(user) {
@@ -851,7 +929,12 @@ module.exports = {
 		});
 	},
 	
+	//manager can add a new user
+	//called from hr_admin/add_users.js >> create_user() in script.js
+	//same code from user controller to create a new user
+	//only difference is that, it is ajax here
 	create_user: function( req, res ) {
+		//encrypt the password
 		var hashedPassword = passwordHash.generate(req.param('password'));
 		req.body.password = hashedPassword;
 		db.User.create(req.body).success(function(user) {
@@ -1006,6 +1089,8 @@ module.exports = {
 		});
 	},
 	
+	//called from hr_admin/manage_users.ejs
+	//edit users
 	view_users: function(req, res) {
 		db.User.find({ where: { id: req.user.id}}).success(function(hr) {
 			db.Role.findAll({ where: { OrganizationId: hr.OrganizationId}}).success(function(roles) {
@@ -1014,6 +1099,8 @@ module.exports = {
 		});
 	},
 	
+	//filter users based on a role
+	//called from hr_admin/view_users.ejs
 	role_filter_users: function(req, res) {
 		db.Role.find({ where: { id: parseInt(req.param('role'))}}).success(function(role) {
 			db.User.findAll({ where: ['"RoleId" = ?', role.id]}).success(function(users) {
@@ -1022,6 +1109,8 @@ module.exports = {
 		});
 	},
 	
+	//called from hr_admin/role-filter-users.ejs
+	//click on a user, to view his/her profile
 	view_user_profile: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.param('user_id'))}, include: [db.Role, db.Skill]}).success(function(user) {
 			db.User.find({ where: { id: user.CoachId}}).success(function(coach) {
@@ -1031,6 +1120,8 @@ module.exports = {
 		});
 	},
 	
+	//manager can edit the "CoachId" for user
+	//called from hr_admin/view_user_profile.ejs
 	replace_coach: function( req, res ) {
 		db.User.find({ where: { id: parseInt(req.user.id)}}).success(function(hr) {
 			db.User.findAll({ where: ['"OrganizationId" = ? AND permission = ?', hr.OrganizationId, 'coach']}).success(function(coaches) {
@@ -1039,6 +1130,7 @@ module.exports = {
 		});
 	},
 	
+	//update the "CoachId" field for user
 	do_replace_coach: function( req, res ) {
 		db.User.find({ where: { id: parseInt(req.param('user_id'))}}).success(function(user) {
 			user.updateAttributes({CoachId: parseInt(req.param('coach_id'))}).success(function(){
@@ -1047,6 +1139,8 @@ module.exports = {
 		});
 	},
 	
+	//ajax call
+	//shows the updated "CoachId" field for user
 	show_coach: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.param('user_id'))}}).success(function(user) {
 			db.User.find({ where: { id: user.CoachId}}).success(function(coach) {
@@ -1056,6 +1150,8 @@ module.exports = {
 		});
 	},
 	
+	//manager can edit the "RoleId" for user
+	//called from hr_admin/view_user_profile.ejs
 	replace_role: function( req, res ) {
 		db.User.find({ where: { id: parseInt(req.user.id)}}).success(function(hr) {
 			db.Role.findAll({ where: ['"OrganizationId" = ?', hr.OrganizationId]}).success(function(roles) {
@@ -1064,6 +1160,7 @@ module.exports = {
 		});
 	},
 	
+	//update the "RoleId" field for user
 	do_replace_role: function( req, res ) {
 		db.User.find({ where: { id: parseInt(req.param('user_id'))}}).success(function(user) {
 			user.updateAttributes({RoleId: parseInt(req.param('role_id'))}).success(function(){
@@ -1072,16 +1169,24 @@ module.exports = {
 		});
 	},
 	
+	//ajax call
+	//shows the updated "RoleId" field for user
 	show_role: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.param('user_id'))}, include:[db.Role]}).success(function(user) {
 			res.render('hr_admin/show_role', {user: user});
 		});
 	},
 	
+	//static calendar view
+	//called from hr_admin/dashboard-new.ejs
 	list_events_calendar: function(req, res) {
 		res.render('hr_admin/list_events_calendar');
 	},
 	
+	//called from hr_admin/question_analytics_report.ejs
+	//used for either role test or an event test
+	//for role test, req.param('event_id') is null
+	//for event test, req.param('role_id') is null
 	answer_analytics_report: function(req, res) {
 		if(req.param('event_id') != null) {
 			db.Answer.find({ where: { id: parseInt(req.param('answer_id'))} }).success(function(answer) {
@@ -1124,6 +1229,10 @@ module.exports = {
 		}
 	},
 	
+	//called from hr_admin/test_analytics_report.ejs
+	//used for either role test or an event test
+	//for role test, req.param('event_id') is null
+	//for event test, req.param('role_id') is null
 	question_analytics_report: function(req, res) {
 		if(req.param('event_id') != null) {
 			db.Problem.find({ where: { id: parseInt(req.param('problem_id'))} }).success(function(problem) {
@@ -1164,6 +1273,10 @@ module.exports = {
 		}
 	},
 	
+	//called from hr_admin/test_analytics_report.ejs
+	//used for either role test or an event test
+	//for role test, req.param('event_id') is null
+	//for event test, req.param('role_id') is null
 	question_right_stats: function(req, res) {
 		if(req.param('event_id') != null) {
 			db.EventTest.find({ where: ['"TestId" = ? AND "EventId" = ?', parseInt(req.param('test_id')), parseInt(req.param('event_id'))] }).success(function(eventTest) {
@@ -1208,6 +1321,10 @@ module.exports = {
 		}
 	},
 	
+	//called from hr_admin/test_analytics_report.ejs
+	//used for either role test or an event test
+	//for role test, req.param('event_id') is null
+	//for event test, req.param('role_id') is null
 	question_wrong_stats: function(req, res) {
 		if(req.param('event_id') != null) {
 			db.EventTest.find({ where: ['"TestId" = ? AND "EventId" = ?', parseInt(req.param('test_id')), parseInt(req.param('event_id'))] }).success(function(eventTest) {
@@ -1252,6 +1369,8 @@ module.exports = {
 		}
 	},
 	
+	//report for test events
+	//called from hr_admin/dashboard-new.ejs
 	test_report: function(req, res) {
 		db.EventTest.find({ where: ['"TestId" = ? AND "EventId" = ?', parseInt(req.param('test_id')), parseInt(req.param('event_id'))] }).success(function(eventTest) {
 			if(eventTest) {
@@ -1262,8 +1381,13 @@ module.exports = {
 		});
 	},
 	
+	//called from hr_admin/test_report.ejs
+	//gives the analytics for a test
+	//used for either role test or an event test
+	//for role test, req.param('event_id') is null
+	//for event test, req.param('role_id') is null
 	test_analytics_report: function(req, res) {
-		if(req.param('event_id') != null) {
+		if(req.param('event_id') != null) { //test event
 			db.EventTest.find({ where: ['"TestId" = ? AND "EventId" = ?', parseInt(req.param('test_id')), parseInt(req.param('event_id'))] }).success(function(eventTest) {
 				if(eventTest) {
 					db.Test.find({ where: { id: eventTest.TestId} }).success(function(test) {
@@ -1299,7 +1423,7 @@ module.exports = {
 					res.render('hr_admin/test_analytics_report', {event_id: null, role_id: null, test: null, testProblems: testProblems});
 				}
 			});
-		} else {
+		} else { //role test
 			db.User.find({where: {id: parseInt(req.user.id)}}).success(function(hr) {
 				db.Role.find({where: {id: parseInt(req.param('role_id'))}}).success(function(role) {
 					db.RoleTest.find({where: {RoleId: role.id}}).success(function(rt) {
@@ -1341,6 +1465,8 @@ module.exports = {
 		}
 	},
 	
+	//called from hr_admin/test_report.ejs
+	//gives the score card for all users for a test (both role test or an event test)
 	test_report_card: function(req, res) {
 		var query1 = 'select distinct "whatIsTested" from "TestProblems" t,"Problems" p where "TestId"='+parseInt(req.param('test_id'))+' and p.id = t."ProblemId"';
 		db.sequelize.query(query1, null, {raw: true}).success(function(result1){
@@ -1407,10 +1533,12 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	calendar: function(req, res) {
 		res.render('hr_admin/calendar');
 	},
 	
+	//deprecated
 	test_analytics: function(req, res) {
 		db.EventTest.find({ where: { TestId: parseInt(req.param('test_id'))} }).success(function(eventTest) {
 			db.Test.find({ where: { id: eventTest.TestId} }).success(function(test) {
@@ -1532,12 +1660,14 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	stats: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
 		res.render('hr_admin/stats', {successFlash: successFlash});
 	},
 	
+	//deprecated
 	track: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
@@ -1546,6 +1676,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	new_role: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
@@ -1559,6 +1690,7 @@ module.exports = {
 		});
 	},
 	
+	//called from hr_admin/manage_roles.ejs
 	do_create_role: function(req, res) {
 		db.Role.create({name: req.param('role_name'), OrganizationId: parseInt(req.param('oid'))}).success(function(role) {
 			req.flash('info', "Role "+role.name+" created");
@@ -1568,6 +1700,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	list_roles: function(req, res) {
 		db.User.find({ where: { id: req.param('user_id')} , include: [db.Organization]}).success(function(user) {
 			//user.organizations.forEach(function(organization){
@@ -1588,6 +1721,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	delete_role: function(req, res) {
 		db.Role.find({ where: { id: req.param('role_id') } }).success(function(role) {
 			role.destroy().success(function() {
@@ -1600,6 +1734,7 @@ module.exports = {
 		});
 	},
 	
+	//never used
 	trainer_dashboard: function(req, res) {
 		//db.User.find({ where: { id: req.user.id} , include: [db.Organization]}).success(function(user) {
 			db.Event.findAll({ where: {ModeratorId: parseInt(req.param('user_id'))} }).success(function(events) {
@@ -1635,6 +1770,7 @@ module.exports = {
 		
 	},
 	
+	//deprecated
 	list_events: function(req, res) {
 		db.User.find({ where: { id: req.user.id} , include: [db.Organization]}).success(function(user) {
 			db.Event.findAll({ where: {OrganizationId: user.OrganizationId}}).success(function(events) {
@@ -1675,6 +1811,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	notify_event_users: function(req, res) {
 		db.Event.find({ where: {id: parseInt(req.param('event_id'))}}).success(function(event) {
 			db.EventUsers.findAll({ where: {EventId: event.id}}).success(function(eventusers) {
@@ -1733,6 +1870,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	rsvp: function(req, res) {
 		db.EventUsers.find({ where: ['"EventId" = ? AND "UserId" = ?', parseInt(req.param('event_id')), parseInt(req.param('user_id'))]}).success(function(eventuser) {
 			eventuser.updateAttributes({status: 'RSVP Yes'}).success(function(){
@@ -1745,6 +1883,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	new_event: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
@@ -1765,6 +1904,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	do_create_event: function(req, res) {
 		if(req.param('type') == 'Test') req.params.ModeratorId = null;
 		
@@ -1781,6 +1921,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	do_edit_event: function(req, res) {
 		db.Event.find({where: {id: req.param('event_id')}}).success(function(event) {
 			event.updateAttributes({type: req.param('type'), name: req.param('name'), description: req.param('description'), date: req.param('date'), time: req.param('time'), location: req.param('location'), status: req.param('status'), InitiatorId: req.param('InitiatorId'), ModeratorId: req.params.ModeratorId, OrganizationId: req.param('OrganizationId')}).success(function(){
@@ -1790,6 +1931,8 @@ module.exports = {
 		});
 	},
 	
+	//event creation process
+	//create an event, the ajax way
 	do_create_event_ajax: function(req, res) {
 		db.Event.create(req.body).success(function(event) {
 			if(event.type == 'Test') {
@@ -1808,6 +1951,8 @@ module.exports = {
 		});
 	},
 	
+	//add a user to an event
+	//deprecated
 	add_user_to_event: function(req, res) {
 		db.Event.find({ where: { id: parseInt(req.param('event_id')) } }).success(function(event) {
 			db.User.find({ where: { id: parseInt(req.param('user_id')) } }).success(function(user) {
@@ -1818,6 +1963,8 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
+	//send an email invite to a trainer for an event
 	invite_trainer_to_event: function(req, res) {
 		db.Event.find({ where: { id: parseInt(req.param('event_id')) } }).success(function(event) {
 			db.User.find({ where: { id: parseInt(req.param('trainer_id')) } }).success(function(user) {
@@ -1863,6 +2010,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	event_confirm: function(req, res) {
 		
 		db.Event.find({ where: {id: parseInt(req.param('event_id'))} }).success(function(event) {
@@ -1873,6 +2021,9 @@ module.exports = {
 		
 	},
 	
+	//deprecated
+	//delete an event
+	//also, notify trainers and event users that the event has been deleted
 	delete_event: function(req, res) {
 		db.Event.find({ where: {id: parseInt(req.param('event_id'))} }).success(function(event) {
 			db.EventUsers.findAll({ where: {EventId: event.id} }).success(function(eventusers) {
@@ -1970,6 +2121,8 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
+	//get all event users
 	event_user_list: function(req, res) {
 		db.Event.find({ where: { id: parseInt(req.param('event_id')) } }).success(function(event) {
 			db.User.find({ where: { id: event.ModeratorId } }).success(function(event_trainer) {
@@ -2027,6 +2180,9 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
+	//OR filter
+	//filter users by skills for an event
 	ajax_filter_users_skills: function(req, res) {
 		db.UserSkills.findAll({ where: { SkillId: parseInt(req.param('skill_id')) } }).success(function(us) {
 			var users = [];
@@ -2049,6 +2205,9 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
+	//OR filter
+	//filter users by roles for an event
 	ajax_filter_users_roles: function(req, res) {
 		db.User.findAll({ where: ['"RoleId" = ? AND permission = ?', parseInt(req.param('role_id')), 'user']}).success(function(users) {
 			res.render('hr_admin/users_ajax', {users: users, val: req.param('val')});
@@ -2107,6 +2266,7 @@ module.exports = {
 		
 	},
 	
+	//deprecated
 	map_skills: function(req, res) {
 		db.Role.find({ where: { id: req.param('role_id')} }).success(function(role) {
 			db.Organization.find({ where: {id: role.OrganizationId} }).success(function(organization) {
@@ -2123,6 +2283,8 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
+	//add skills to a role
 	do_map_skill_to_role: function(req, res) {
 		db.Skill.create(req.body).success(function(skill) {
 			console.log("Skill created "+skill.name);
@@ -2135,6 +2297,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	add_pre_test_to_role: function(req, res) {
 		db.User.find({ where: { id: req.user.id} , include: [db.Organization]}).success(function(hr) {
 			db.Role.find({ where: { id: parseInt(req.param('role_id'))} }).success(function(role) {
@@ -2155,6 +2318,8 @@ module.exports = {
 		res.render('hr_admin/add_pre_test', {role_id: req.param('role_id')});
 	},
 	
+	//deprecated
+	//add pre-test for a role
 	do_add_pre_test: function(req, res) {
 		db.Test.find({where: {name: req.param('test_name')}}).success(function(test){
 			if(test) {
@@ -2167,8 +2332,8 @@ module.exports = {
 		});
 	},
 	
-	
-	
+	//deprecated
+	//refer to hr_admin/view_role_test_result_details_score
 	view_user_test_details: function( req, res ) {
 		db.SkillModulePlaylist.findAll({ where: ['"SkillId" = ?', parseInt(req.param('skill_id'))]}).success(function(smpl) {
 			var modules = [];
@@ -2247,10 +2412,12 @@ module.exports = {
 		});
 	},
 	
+	//interface for manager to create new notification
 	create_new_notification: function(req, res) {
 		res.render('hr_admin/create_new_notification', {user_id: req.param('user_id')});
 	},
 	
+	//create the new notification
 	do_create_notification: function(req, res) {
 		db.Notification.create(req.body).success(function(notification) {
 			res.redirect('hr_admin/list_notifications_redirector/'+req.user.id);
@@ -2259,10 +2426,12 @@ module.exports = {
 		});
 	},
 	
+	//iframe based ajax form submission
 	list_notifications_redirector: function(req, res) {
 		res.render('hr_admin/list_notifications_redirector', {user_id: req.param('user_id')});
 	},
 	
+	//list all notifications created by this manager
 	list_notifications: function(req, res) {
 		db.Notification.findAll({ where: { UserId: parseInt(req.param('user_id')) }, order: 'id DESC' }).success(function(notifications) {
 			res.render('hr_admin/list_notifications', {notifications: notifications});
@@ -2271,6 +2440,7 @@ module.exports = {
 		});
 	},
 	
+	//delete notifications
 	delete_notification: function(req, res) {
 		db.Notification.find({ where: { id: parseInt(req.param('notification_id')) }}).success(function(notification) {
 			notification.destroy().success(function(){
@@ -2281,6 +2451,7 @@ module.exports = {
 		});
 	},
 	
+	//edit notifications
 	edit_notification: function(req, res) {
 		db.Notification.find({ where: { id: parseInt(req.param('notification_id')) }}).success(function(notification) {
 			res.render('hr_admin/edit_notification', {notification: notification});
@@ -2289,6 +2460,7 @@ module.exports = {
 		});
 	},
 	
+	//edit notifications
 	do_edit_notification: function(req, res) {
 		db.Notification.find({ where: { id: parseInt(req.param('notification_id')) }}).success(function(notification) {
 			notification.updateAttributes(req.body).success(function(){
@@ -2299,6 +2471,7 @@ module.exports = {
 		});
 	},
 	
+	//get placement statistics for this manager's organization
 	placement: function(req, res) {
 		var query = 'select * from "JobUsers" where "UserId" IN (select id from "Users" where "OrganizationId" = '+req.user.OrganizationId+')';
 		db.sequelize.query(query, null, {raw: true}).success(function(ju){
@@ -2360,6 +2533,7 @@ module.exports = {
 		});
 	},
 	
+	//refers to the 'Placement Center' tile in hr_admin/dashboard-new.ejs
 	get_placement_user_data: function(req, res) {
 		var query = 'select * from "Users" where id IN (select "UserId" from "JobUsers" where "JobId" = '+parseInt(req.param('job_id'))+')';
 		db.sequelize.query(query, null, {raw: true}).success(function(users){
@@ -2367,6 +2541,8 @@ module.exports = {
 		});
 	},
 	
+	//get role test results
+	//list all roles for this organization
 	view_role_test_results: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.user.id)} , include: [db.Organization]}).success(function(hr) {
 			db.Role.findAll({where: {OrganizationId: hr.OrganizationId}}).success(function(roles) {
@@ -2375,6 +2551,8 @@ module.exports = {
 		});
 	},
 	
+	//called from hr_admin/view_role_test_results.ejs
+	//get the pre-test results for this role
 	view_role_test_result_details: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.user.id)} , include: [db.Organization]}).success(function(hr) {
 			db.Role.find({where: {id: parseInt(req.param('role_id'))}}).success(function(role) {
@@ -2389,6 +2567,8 @@ module.exports = {
 		});
 	},
 	
+	//called from hr_admin/view_role_test_result_details.ejs
+	//get the pre-test result details for this role
 	view_role_test_result_details_score: function(req, res) {
 		db.User.find({ where: { id: parseInt(req.user.id)} , include: [db.Organization]}).success(function(hr) {
 			db.RoleTest.find({where: {RoleId: parseInt(req.param('role_id'))}}).success(function(rt) {
@@ -2418,10 +2598,14 @@ module.exports = {
 		});
 	},
 	
+	//get report card for role test
+	//deprecated
 	view_detailed_report_card: function(req, res) {
 		res.render('hr_admin/view_detailed_report_card', {event_id: null, role_id: req.param('role_id'), user_id: req.param('user_id'), test_id: req.param('test_id')});
 	},
 	
+	//get report card for test event
+	//deprecated
 	view_detailed_event_report_card: function(req, res) {
 		db.User.find({where: {username: req.param('username')}}).success(function(user) {
 			res.render('hr_admin/view_detailed_report_card', {event_id: req.param('event_id'), role_id: null, user_id: user.id, test_id: req.param('test_id')});
