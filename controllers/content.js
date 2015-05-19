@@ -4,8 +4,10 @@ var db = require('../models')
 , AdmZip = require('adm-zip')
 , rmdir = require('rimraf');
 
+//global variable, to store tags
 var tags = new Array();	
 
+//deprecated
 function isEmpty(obj, prop) {
     //for(prop in obj) {
         if((obj.prop != null && obj.prop != '' && obj.prop != 'null'))
@@ -15,6 +17,8 @@ function isEmpty(obj, prop) {
     return true;
 }
 
+//used to set a default value to 0
+//data validation, ensures that an integer value is submitted, wherever necessary
 function get_int_value(val) {
 	var pattern = /^\d+$/;
 	if(val == null || val == 'null') {
@@ -25,6 +29,7 @@ function get_int_value(val) {
 	return val;
 }
 
+//get the file extension for an uploaded file
 function get_file_extension(problem) {
 	var ext = null;
 	var fullPath = problem.filePath;
@@ -38,6 +43,8 @@ function get_file_extension(problem) {
 	return ext;
 }
 
+//while adding answers to questions, there needs to be only one correct answer for question of type - MCQ/Single Answer
+//this function ensures that there is only one correct answer for question of type - MCQ/Single Answer
 function check_correct_answers(res, pid, url, div) {
 	var render = function() {
 		res.render('iframe_middleware', {url: url, div: div});
@@ -70,6 +77,7 @@ function check_correct_answers(res, pid, url, div) {
 	});
 }
 
+//delete a generic database object
 function delete_record(deebee, id, callback) {
 	deebee.find({where: {id: parseInt(id)}}).success(function(obj) {
 		obj.destroy().success(function() {
@@ -78,6 +86,7 @@ function delete_record(deebee, id, callback) {
 	});
 }
 
+//delete an answer associated to a question
 function delete_answer(answer_id, callback) {
 	var message = null;
 	db.Answer.find({where: {id: parseInt(answer_id)}}).success(function(answer) {
@@ -91,6 +100,7 @@ function delete_answer(answer_id, callback) {
 	});
 }
 
+//delete a question
 function delete_problem(problem_id, url1, div, res, callback) {
 	var message = null;
 	db.Problem.find({where: {id: parseInt(problem_id)}}).success(function(problem) {
@@ -103,6 +113,7 @@ function delete_problem(problem_id, url1, div, res, callback) {
 	});
 }
 
+//callback to be executed after deleting a question
 var render_for_delete_problem = function(problem_id, message, url1, div, res) {
 	var url2 = null;
 	if(message == null)
@@ -112,6 +123,7 @@ var render_for_delete_problem = function(problem_id, message, url1, div, res) {
 
 module.exports = {
 	
+	//interface to create a new module
 	new_module: function(req, res) {
 		tags.length = 0;
 		var successFlash = req.flash('info')[0];
@@ -128,6 +140,11 @@ module.exports = {
 		});
 	},
 	
+	//to browse the content, with pagination
+	//app.get('/module/browse_modules', auth, pagination, content.browse_modules);
+	//the third field is a pagination function which is defined in app.js.
+	//it takes care of the pagination logic
+	//used in content/module_playlist.ejs
 	browse: function(req, res) {
 		db.Module.findAll({limit: 10}).success(function(modules) {
 			db.Content.findAll({offset: res.locals.offset, limit: res.locals.limit, order: 'id ASC'}).success(function(contents) {
@@ -138,16 +155,16 @@ module.exports = {
 		});
 	},
 	
+	//to browse the modules, with pagination
+	//used in content/skill_playlist.ejs
 	browse_modules: function(req, res) {
-		//db.Module.findAll({limit: 10}).success(function(modules) {
-			db.Module.findAll({offset: res.locals.offset, limit: res.locals.limit, order: 'id ASC'}).success(function(modules) {
-				//db.Skill.findAll({limit:10}).success(function(skills) {
-					res.render('content/browse_modules', {modules: modules});
-				//});
-			});
-		//});
+		db.Module.findAll({offset: res.locals.offset, limit: res.locals.limit, order: 'id ASC'}).success(function(modules) {
+			res.render('content/browse_modules', {modules: modules});
+		});
 	},
 	
+	//create a new module
+	//deprecated
 	do_create_module: function(req, res) {
 		db.Module.create({name: req.param('name'), description: req.param('description'), PrevModuleId: req.param('PrevModuleId') == 0 ? null : req.param('PrevModuleId'), OrganizationId: req.param('OrganizationId'), isPublic: req.param('isPublic')}).success(function(module) {
 			req.flash('info', "Module "+module.name+" created");
@@ -170,6 +187,12 @@ module.exports = {
 		});
 	},
 	
+	//called from content/module_playlist
+	//lets you delete content from the playlist
+	//the playlist needs to be adjusted accordingly
+	//different cases considered are -
+	//deleted content is the first content, or deleted content is the last content or
+	//deleted content is anywhere in between the playlist
 	delete_content_from_playlist: function(req, res) {
 		db.ModuleContentPlaylist.find({ where: ['"ModuleId" = ? AND "ContentId" = ?', parseInt(req.param('module_id')), parseInt(req.param('content_id'))] }).success(function(item) {
 			var delete_item = function() {
@@ -248,6 +271,12 @@ module.exports = {
 		});
 	},
 	
+	//called from content/skill_playlist
+	//lets you delete module from the playlist
+	//the playlist needs to be adjusted accordingly
+	//different cases considered are -
+	//deleted module is the first module, or deleted module is the last module or
+	//deleted module is anywhere in between the playlist
 	delete_module_from_playlist: function(req, res) {
 		db.SkillModulePlaylist.find({ where: ['"SkillId" = ? AND "ModuleId" = ?', parseInt(req.param('skill_id')), parseInt(req.param('module_id'))] }).success(function(item) {
 			var delete_item = function() {
@@ -324,22 +353,35 @@ module.exports = {
 		});
 	},
 	
+	//not to show the 'Add to Playlist' button in content/show_preview.ejs
+	//if items are already in the playlist, then the button needs to be disabled
+	//used in content/module_playlist.ejs
 	show_preview_display_false: function(req, res) {
 		res.redirect('/content/show_preview/'+req.param('content_id')+'/'+req.param('val')+'/'+req.param('id')+'/false');
 	},
 	
+	//called from content/browse.ejs, content/module_playlist.ejs
+	//if 'display' param is false, then 'Add to Playlist' button needs to be hidden,
+	//else, show the button
 	show_preview: function(req, res) {
 		db.Content.find({ where: { id: parseInt(req.param('content_id')) } }).success(function(content) {
 			res.render('content/show_preview', {content: content, val: req.param('val'), id: req.param('id'), display: req.param('display')});
 		});
 	},
 	
+	//not to show the 'Add to Playlist' button in content/show_preview_module.ejs
+	//if items are already in the playlist, then the button needs to be disabled
+	//used in content/skill_playlist.ejs
 	show_preview_module_false: function(req, res) {
 		res.redirect('/content/show_preview_module/'+req.param('module_id')+'/'+req.param('val')+'/'+req.param('id')+'/false');
 	},
 	
+	//called from content/browse_modules.ejs, content/skill_playlist.ejs
+	//if 'display' param is false, then 'Add to Playlist' button needs to be hidden,
+	//else, show the button
 	show_preview_module: function(req, res) {
 		db.Module.find({ where: { id: parseInt(req.param('module_id')) } }).success(function(module) {
+			//show the preview of all content, belonging to this module
 			db.ModuleContentPlaylist.findAll({ where: { ModuleId: module.id } }).success(function(pl) { 
 				function playlist(id, name, description, path)
 				{
@@ -364,26 +406,31 @@ module.exports = {
 		});
 	},
 	
+	//called from content/module_playlist.ejs
 	do_edit_module: function(req, res) {
 		db.Module.find({ where: { id: parseInt(req.param('module_id')) } }).success(function(module) {
 			module.updateAttributes({name: req.param('module_name'), description: req.param('module_description')}).success(function() {
 				req.flash('info', "Module '"+module.name+"' updated");
 				var url = '/content/module_playlist/'+module.id;
+				//ajax form submission through hidden iframe
 				res.render('iframe_middleware', {url: url, div: 'content-admin-display'});
 			});
 		});
 	},
 	
+	//called from content/skill_playlist.ejs
 	do_edit_skill: function(req, res) {
 		db.Skill.find({ where: { id: parseInt(req.param('skill_id')) } }).success(function(skill) {
 			skill.updateAttributes({name: req.param('skill_name'), description: req.param('skill_description')}).success(function() {
 				req.flash('info', "Skill '"+skill.name+"' updated");
 				var url = 'content/skill_playlist/'+skill.id;
+				//ajax form submission through hidden iframe
 				res.render('iframe_middleware', {url: url, div: 'content-admin-display'});
 			});
 		});
 	},
 	
+	//create a new module, the ajax way
 	do_create_module_ajax: function(req, res) {
 		db.Module.create(req.body).success(function(module) {
 			/*res.send(module, {
@@ -394,6 +441,7 @@ module.exports = {
 		});
 	},
 	
+	//create a new skill, the ajax way
 	do_create_skill_ajax: function(req, res) {
 		var newPath = null;
 		
@@ -405,6 +453,7 @@ module.exports = {
 		    });
 		};
 		
+		//entry point
 		if(req.files != null && req.files.content != null && req.files.content.originalFilename != null && req.files.content.originalFilename != '' && req.files.content.originalFilename != 'null') {
 			fs.readFile(req.files.content.path, function (err, data) {
 				var __parentDir = path.dirname(module.parent.filename);
@@ -422,6 +471,8 @@ module.exports = {
 		}
 	},
 	
+	//edit module
+	//click on the 'edit' icon from content/list_modules.ejs
 	module_playlist: function(req, res) {
 		db.Module.find({ where: { id: parseInt(req.param('module_id')) } }).success(function(module) {
 			db.ModuleContentPlaylist.findAll({ where: { ModuleId: module.id } }).success(function(pl) { // to return all playlists to module_playlist.ejs
@@ -434,6 +485,7 @@ module.exports = {
 				var playlists = new Array();
 				var build_playlist = function(i) {
 					if(i == pl.length) {
+						//get module test
 						db.ModuleTest.findAll({ where: ['"ModuleId" = ?', module.id] }).success(function(moduleTests) {
 							var tests = [];
 							var get_tests = function(j) {
@@ -460,6 +512,8 @@ module.exports = {
 		});
 	},
 	
+	//edit skill
+	//click on the 'edit' icon from content/list_skills.ejs
 	skill_playlist: function(req, res) {
 		db.Skill.find({ where: { id: parseInt(req.param('skill_id')) } }).success(function(skill) {
 			db.SkillModulePlaylist.findAll({ where: { SkillId: skill.id } }).success(function(pl) { // to return all playlists to module_playlist.ejs
@@ -472,6 +526,7 @@ module.exports = {
 				var playlists = new Array();
 				var build_playlist = function(i) {
 					if(i == pl.length) {
+						//get skill test
 						db.SkillTest.findAll({ where: ['"SkillId" = ?', skill.id] }).success(function(skillTests) {
 							var tests = [];
 							var get_tests = function(j) {
@@ -498,6 +553,10 @@ module.exports = {
 		});
 	},
 	
+	//build content module playlist
+	//called from build_module_content_playlist(id, val) function in script.js
+	//used to build module content playlist
+	//the new content would be the first content or anywhere in between the playlist
 	build_module_playlist: function(req, res) {
 		db.Module.find({ where: { id: parseInt(req.param('module_id')) } }).success(function(module) {
 			db.Content.find({ where: { id: parseInt(req.param('content_id')) } }).success(function(content) {
@@ -505,6 +564,7 @@ module.exports = {
 					var prevContentId = null;
 					
 					var create_playlist = function() {
+						//content will be added only once to this playlist
 						db.ModuleContentPlaylist.findOrCreate({ModuleId: module.id, ContentId: content.id}, {PrevContentId: prevContentId}).success(function() {
 							//res.redirect('/content/module_playlist/'+module.id);
 							function playlist(id, name, description)
@@ -531,14 +591,15 @@ module.exports = {
 						});
 					};
 					
-					if(pl.length > 0) {
+					if(pl.length > 0) { //playlist has atleast one item
+						//get the recent item in the playlist
 						db.ModuleContentPlaylist.max("createdAt", {where: { ModuleId: module.id } }).success(function(max) {
 							db.ModuleContentPlaylist.find({ where: ['"ModuleId" = ? AND "createdAt" = ?', module.id, max] }).success(function(mcpl) {
 								prevContentId = mcpl.ContentId;
 								create_playlist();
 							});
 						});
-					} else {
+					} else { //playlist has no items, new content will be the first item in the playlist
 						create_playlist();
 					}
 					
@@ -547,6 +608,10 @@ module.exports = {
 		});
 	},
 	
+	//build skill module playlist
+	//called from build_skill_playlist(val, disp) function in script.js
+	//used to build skill module playlist
+	//the new module would be the first module or anywhere in between the playlist
 	build_skill_playlist: function(req, res) {
 		db.Skill.find({ where: { id: parseInt(req.param('skill_id')) } }).success(function(skill) {
 			db.Module.find({ where: { id: parseInt(req.param('module_id')) } }).success(function(module) {
@@ -603,6 +668,7 @@ module.exports = {
 					};
 					
 					if(pl.length > 0) {
+						//get the recent item in the playlist
 						db.SkillModulePlaylist.max("createdAt", {where: { SkillId: skill.id } }).success(function(max) {
 							db.SkillModulePlaylist.find({ where: ['"SkillId" = ? AND "createdAt" = ?', skill.id, max] }).success(function(smpl) {
 								prevModuleId = smpl.ModuleId;
@@ -697,6 +763,8 @@ module.exports = {
 //		});
 //	},
 	
+	//search tests by name
+	//called from content/add_test.ejs
 	get_tests_name: function(req, res) {
 		var result = [];
 		db.Test.findAll({ where: ['"name" LIKE ?', '%'+req.param('q')+'%'] }).success(function(tags) {
@@ -714,6 +782,11 @@ module.exports = {
 		});
 	},
 	
+	//add test to a content or a module or a skill based on 'val' param
+	//called from content/add_test.ejs
+	//step test refers to a job test
+	//job has many steps
+	//each step could be either a test or an interview (appointment)
 	do_add_test: function( req, res ) {
 		db.Test.find({ where: ['"id" = ?', parseInt(req.param('test_id'))] }).success(function(test) {
 			switch(req.param('val')) {
@@ -795,6 +868,9 @@ module.exports = {
 	},
 	
 	
+	//interface to add test
+	//called from content/edit_content.ejs, content/module_playlist.ejs, content/skill_playlist.ejs
+	//'val' param = 'step' refers to the job test
 	add_test: function(req, res) {
 		switch(req.param('val')) {
 			case 'content': db.Content.find({ where: ['"id" = ?', parseInt(req.param('id'))] }).success(function(content) {
@@ -817,6 +893,8 @@ module.exports = {
 		
 	},
 	
+	//add tags to content
+	//called from content/edit_content.ejs
 	add_content_tag: function( req, res ) {
 		db.Content.find({ where: { id: parseInt(req.param('content_id')) } }).success(function(content) {
 			db.Tag.findOrCreate({ name: req.param('tag_name') }).success(function(tag) {
@@ -831,6 +909,8 @@ module.exports = {
 		});
 	},
 	
+	//delete a content tag
+	//called from content/edit_content.ejs
 	delete_content_tag: function( req, res ) {
 		db.ContentTags.find({ where: ['"ContentId" = ? AND "TagId" = ?', parseInt(req.param('content_id')), parseInt(req.param('tag_id'))] }).success(function(problemTag) {
 			problemTag.destroy().success(function(){
@@ -840,6 +920,8 @@ module.exports = {
 		});
 	},
 	
+	//edit content
+	//called from content/edit_content.ejs
 	do_edit_content: function( req, res ) {
 		db.Content.find({ where: { id: parseInt(req.param('content_id')) } }).success(function(content) {
 			var pattern = /^\d+$/;
@@ -851,17 +933,21 @@ module.exports = {
 			content.updateAttributes(req.body).success(function(){
 				req.flash('info', 'Updated content');
 				var url = '/content/edit_content/'+content.id 
+				//ajax form submission through hidden frame
 				res.render('iframe_middleware',{url: url, div: 'content-admin-display'});
 			});
 		});
 	},
 	
+	//the page to edit content
+	//click on the 'edit' icon on content/list_content.ejs
 	edit_content: function(req, res) {
 		db.Content.find({ where: { id: parseInt(req.param('id')) } }).success(function(content) {
 			db.ContentTest.findAll({ where: ['"ContentId" = ?', content.id] }).success(function(contentTests) {
 				var tests = [];
 				var get_tests = function(j) {
 					if(j == contentTests.length) {
+						//get all content tags
 						db.ContentTags.findAll({ where: ['"ContentId" = ?', content.id] }).success(function(contentTags) {
 							var tags = [];
 							var get_tags = function(i) {
@@ -877,6 +963,7 @@ module.exports = {
 							get_tags(0);
 						});
 					} else {
+						//get content test
 						db.Test.find({ where: ['"id" = ?', contentTests[j].TestId] }).success(function(test) {
 							tests.push(test);
 							get_tests(++j);
@@ -888,6 +975,7 @@ module.exports = {
 		});
 	},
 	
+	//called from content/add_question_to_test.ejs
 	do_add_question_to_test: function( req, res ) {
 		db.Problem.find({ where: ['"id" = ?', parseInt(req.param('question_id'))] }).success(function(problem) {
 			db.Test.find({ where: ['"id" = ?', parseInt(req.param('test_id'))] }).success(function(test) {
@@ -910,6 +998,7 @@ module.exports = {
 	},
 	
 	
+	//called from content/edit_test.ejs
 	add_question_to_test: function(req, res) {
 		db.Test.find({ where: ['"id" = ?', parseInt(req.param('test_id'))] }).success(function(test) {
 			res.render('content/add_question_to_test', {test: test});
@@ -950,18 +1039,29 @@ module.exports = {
 		});
 	},
 	
+	//list all tests
 	list_tests: function( req, res ) {
 		db.Test.findAll({offset: res.locals.offset, limit: res.locals.limit, order: 'id ASC'}).success(function(tests) {
 			res.render('content/list_tests', {tests: tests});
 		});
 	},
 	
+	//called from content/edit_test.ejs
+	edit_test_pass_score: function( req, res ) {
+		db.Test.find({where: {id: parseInt(req.param('test_id'))}}).success(function(test){
+			res.render('content/edit_test_pass_score', {test: test});
+		});
+	},
+	
+	//show test score after it's been edited
 	show_test_pass_score: function( req, res ) {
 		db.Test.find({where: {id: parseInt(req.param('test_id'))}}).success(function(test){
 			res.render('content/show_test_pass_score', {test: test});
 		});
 	},
 	
+	//update test pass score
+	//called from content/edit_test_pass_score.ejs
 	do_edit_test_pass_score: function( req, res ) {
 		var score = get_int_value(req.param('pass_score'));
 		db.Test.find({where: {id: parseInt(req.param('test_id'))}}).success(function(test){
@@ -971,18 +1071,22 @@ module.exports = {
 		});
 	},
 	
-	edit_test_pass_score: function( req, res ) {
+	//called from content/edit_test.ejs
+	edit_test_mandatory_question: function( req, res ) {
 		db.Test.find({where: {id: parseInt(req.param('test_id'))}}).success(function(test){
-			res.render('content/edit_test_pass_score', {test: test});
+			res.render('content/edit_test_mandatory_question', {test: test});
 		});
 	},
 	
+	//show mandatory questions' count after it's been edited
 	show_test_mandatory_question: function( req, res ) {
 		db.Test.find({where: {id: parseInt(req.param('test_id'))}}).success(function(test){
 			res.render('content/show_test_mandatory_question', {test: test});
 		});
 	},
 	
+	//update madatory questions' count
+	//called from content/edit_test_mandatory_question.ejs
 	do_edit_test_mandatory_question: function( req, res ) {
 		db.Test.find({where: {id: parseInt(req.param('test_id'))}}).success(function(test){
 			test.updateAttributes({criticalQuestions: req.param('option')}).success(function() {
@@ -991,23 +1095,21 @@ module.exports = {
 		});
 	},
 	
-	edit_test_mandatory_question: function( req, res ) {
-		db.Test.find({where: {id: parseInt(req.param('test_id'))}}).success(function(test){
-			res.render('content/edit_test_mandatory_question', {test: test});
-		});
-	},
-	
+	//edit test
 	do_edit_test: function( req, res ) {
 		db.Test.find({where: {id: parseInt(req.param('test_id'))}}).success(function(test){
 			req.body.duration = get_int_value(req.param('duration'));
 			test.updateAttributes(req.body).success(function(){
 				req.flash('info', 'Test updated');
 				var url = '/content/edit_test/'+test.id;
+				//ajax form submission through hidden iframe
 				res.render('iframe_middleware', {url: url, div: 'content-admin-display'});
 			});
 		});
 	},
 	
+	//edit test
+	//click on 'edit' icon in content/list_tests.ejs
 	edit_test: function( req, res ) {
 		db.Test.find({where: {id: parseInt(req.param('id'))}}).success(function(test){
 			db.TestProblems.findAll({where: {TestId: test.id}, order: 'id ASC'}).success(function(testProblems){
@@ -1042,6 +1144,7 @@ module.exports = {
 		});
 	},
 	
+	//create a new test
 	create_test: function( req, res ) {
 		req.body.duration = get_int_value(req.param('duration'));
 		db.Test.create(req.body).success(function(test) {
@@ -1051,16 +1154,19 @@ module.exports = {
 		});
 	},
 	
+	//show a form to create a new test
 	new_test: function( req, res ) {
 		res.render('content/new_test');
 	},
 	
+	//called from content/edit_question.ejs
 	edit_answer: function(req, res) {
 		db.Answer.find({where: { id: parseInt(req.param('answer_id'))}}).success(function(answer) {
 			res.render('content/edit_answer', {answer: answer});
 		});
 	},
 	
+	//called from content/edit_answer.ejs
 	do_edit_answer: function(req, res) {
 		req.param.isAnswer = typeof req.param('isAnswer') != 'undefined' ? req.param('isAnswer') : false;
 		db.Answer.find({where: { id: parseInt(req.param('id'))}}).success(function(answer) {
@@ -1080,12 +1186,14 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	edit_answer_ajax: function(req, res) {
 		db.Answer.find({where: { id: parseInt(req.param('answer_id'))}}).success(function(answer) {
 			res.render('content/edit_answer_ajax', {answer: answer, test_id: req.param('test_id')});
 		});
 	},
 	
+	//deprecated
 	do_edit_answer_ajax: function(req, res) {
 		req.body.isAnswer = typeof req.param('isAnswer') != 'undefined' ? req.param('isAnswer') : false;
 		db.Answer.find({where: { id: parseInt(req.param('id'))}}).success(function(answer) {
@@ -1096,6 +1204,7 @@ module.exports = {
 		});
 	},
 	
+	//called from content/edit_answer.ejs
 	delete_answer: function(req, res) {
 		db.Answer.find({where: { id: parseInt(req.param('answer_id'))}}).success(function(answer) {
 			var problem_id = answer.ProblemId;
@@ -1105,38 +1214,44 @@ module.exports = {
 		});
 	},
 	
+	//called from content/add_answer.ejs
 	do_add_answer: function( req, res ) {
 		db.Answer.create(req.body).success(function(answer) {
 			req.flash('info', 'Answer added successfully');
 			var url = '/content/add_answer/'+answer.ProblemId+'/'+req.flash('info')[0];
-			//res.render('iframe_middleware', {url: url, div: 'uide4b3dde6bb5097375d99eb18a83d7146'});
+			//the following function is used to ensure that there is only one correct answer for question of type 'MCQ/Single Answer'
 			check_correct_answers(res, answer.ProblemId, url , 'uide4b3dde6bb5097375d99eb18a83d7146');
 		});
 	},
 	
+	//called from content/add_answer.ejs
 	do_add_answer_ajax: function( req, res ) {
 		db.Answer.create(req.body).success(function(answer) {
 			req.flash('info', 'Answer created');
 			var url = '/content/edit_answers_ajax/'+req.param('ProblemId')+'/'+req.param('TestId');
-			//res.render('iframe_middleware',{url: url, div: 'uide4b3dde6bb5097375d99eb18a83d7146'});
+			//the following function calls redirects to iframe_middleware.ejs
 			check_correct_answers(res, answer.ProblemId, url , 'uide4b3dde6bb5097375d99eb18a83d7146');
 		});
 	},
 	
+	//called from content/edit_question.ejs
 	add_answer: function( req, res ) {
 		res.render('content/add_answer', {question_id: req.param('question_id'), successFlash: req.param('message')});
 	},
 	
+	//deprecated
 	add_answer_ajax: function(req, res) {
 		res.render('content/add_answer_ajax', {question_id: req.param('question_id'), test_id: req.param('test_id')});
 	},
 	
+	//called from content/edit_test.ejs
 	edit_answers_ajax: function( req, res ) {
 		db.Answer.findAll({where: { ProblemId: parseInt(req.param('problem_id'))}, order: 'id ASC'}).success(function(answers) {
 			res.render('content/edit_answers_ajax', {answers: answers, problem_id: req.param('problem_id'), test_id: req.param('test_id'), successFlash: req.flash('info')[0]});
 		});
 	},
 	
+	//called from content/edit_question_ajax.ejs
 	add_problem_tag_ajax: function( req, res ) {
 		db.Problem.find({ where: { id: parseInt(req.param('problem_id')) } }).success(function(problem) {
 			db.Tag.findOrCreate({ name: req.param('tag_name') }).success(function(tag) {
@@ -1152,6 +1267,7 @@ module.exports = {
 		});
 	},
 	
+	//called from content/edit_question_ajax.ejs
 	delete_problem_tag_ajax: function( req, res ) {
 		db.ProblemTags.find({ where: ['"ProblemId" = ? AND "TagId" = ?', parseInt(req.param('problem_id')), parseInt(req.param('tag_id'))] }).success(function(problemTag) {
 			problemTag.destroy().success(function(){
@@ -1184,6 +1300,7 @@ module.exports = {
 		});
 	},
 	
+	//list all questions
 	list_questions: function(req, res) {
 		
 		db.Problem.findAll({offset: res.locals.offset, limit: res.locals.limit, order: 'id ASC'}).success(function(problems) {
@@ -1199,20 +1316,25 @@ module.exports = {
 		res.render('content/create_new_question_to_test', {user_id: req.user.id, test_id: req.param('test_id'), successFlash: req.flash('info')[0]});
 	},
 	
+	//create a new question
+	//called from content/list_questions.ejs
 	new_question: function(req, res) {
 		res.render('content/new_question', {user_id: req.user.id, successFlash: req.flash('info')[0]});
 	},
 	
+	//called from content/edit_question.ejs
 	do_edit_question: function( req, res ) {
 		db.Problem.find({ where: { id: parseInt(req.param('ProblemId')) } }).success(function(problem) {
 			problem.updateAttributes(req.body).success(function(){
 				req.flash('info', 'Updated question');
 				var url = '/content/edit_question/'+problem.id;
+				//ajax based form submission through hidden frame
 				res.render('iframe_middleware', {url: url, div: 'content-admin-display'});
 			});
 		});
 	},
 	
+	//called from content/list_question.ejs
 	edit_question: function(req, res) {
 		db.Problem.find({ where: { id: parseInt(req.param('id')) } }).success(function(problem) {
 			db.Answer.findAll({ where: ['"ProblemId" = ?', problem.id], order: 'id ASC' }).success(function(answers) {
@@ -1234,6 +1356,7 @@ module.exports = {
 		});
 	},
 	
+	//called from content/edit_test.ejs
 	edit_question_ajax: function(req, res) {
 		db.Problem.find({ where: { id: parseInt(req.param('id')) } }).success(function(problem) {
 			db.TestProblems.find({ where: ['"ProblemId" = ? AND "TestId" = ?', problem.id, parseInt(req.param('test_id'))] }).success(function(testProblem) {
@@ -1262,6 +1385,7 @@ module.exports = {
 		});
 	},
 	
+	//called from content/edit_question_ajax.ejs
 	do_edit_question_ajax: function(req, res) {
 		db.TestProblems.find({ where: ['"TestId" = ? AND "ProblemId" = ?', parseInt(req.param('test_id')), parseInt(req.param('problem_id'))] }).success(function(testProblem) {
 			req.body.positiveScore = get_int_value(req.param('positiveScore'));
@@ -1339,6 +1463,7 @@ module.exports = {
 		}
 	},	
 	
+	//called from content/new_question.ejs
 	create_question: function(req, res) {
 		var create_question = function() {
 			db.Problem.create(req.body).success(function(problem) {
@@ -1360,6 +1485,7 @@ module.exports = {
 			});
 		};
 		
+		//entry point
 		if(req.files.file != null && req.files.file.originalFilename != null && req.files.file.originalFilename != '' && req.files.file.originalFilename != 'null') {
 		    var fullPath = req.files.file.path;
 		    var startIndex = (fullPath.indexOf('\.') >= 0 ? fullPath.lastIndexOf('\.') : -1);
@@ -1390,6 +1516,7 @@ module.exports = {
 		}
 	},
 	
+	//list all content
 	list_content: function(req, res) {
 		db.Content.findAll({offset: res.locals.offset, limit: res.locals.limit, order: 'id ASC'}).success(function(content) {
 			res.render('content/list_content', {user_id: req.user.id, content: content, successFlash: req.flash('info')[0]});
@@ -1400,6 +1527,7 @@ module.exports = {
 				
 	},
 	
+	//list all modules
 	list_modules: function(req, res) {
 		db.Module.findAll({offset: res.locals.offset, limit: res.locals.limit, order: 'id ASC'}).success(function(modules) {
 			res.render('content/list_modules', {user_id: req.user.id, modules: modules, successFlash: req.flash('info')[0]});
@@ -1410,6 +1538,10 @@ module.exports = {
 				
 	},
 	
+	//delete a module
+	//not called yet
+	//to be called from content/list_modules.ejs
+	//this piece of code is not complete
 	delete_module: function(req, res) {
 		db.Module.find({ where: { id: req.param('module_id') } }).success(function(module) {
 			db.UserSkills.findAll({ where: { "ModuleId": module.id } }).success(function(us) {
@@ -1421,9 +1553,9 @@ module.exports = {
 						var find_all_modules_in_skill_playlist = function() {
 							db.SkillModulePlaylist.findAll({ where: { "ModuleId": module.id } }).success(function(smpl) {
 								if(smpl.length > 0) {
-									
+									//to be filled
 								} else {
-									
+									//to be updated
 								}
 							});
 						};
@@ -1460,6 +1592,10 @@ module.exports = {
 		});
 	},
 	
+	// following are the sequence of steps to arrive at this piece of code
+	// user gym >> play button in 'Learn' tile >> /skill/get_modules_for_skill_ajax/:skill_id (skill controller) >>
+	// >> module_turbo_ajax.ejs (view) >> 'Next' button in module_turbo_ajax.ejs >> /content/show_test_instructions (content controller) >>
+	// >> if there is no content test, or if user has already taken up this test, then >> /content/advance_next/ (content controller)
 	advance_next: function(req, res) {
 		var last = function(userSkill) {
 			userSkill.updateAttributes({status: 'complete'}).success(function() {
@@ -1564,6 +1700,7 @@ module.exports = {
 		}
 	},
 	
+	//called from content/show_content_question.ejs
 	answer: function(req, res) {
 		db.Problem.find({ where: { id: parseInt(req.param('id')) } }).success(function(question) {
 			db.Answer.find({ where: ['"ProblemId" = ? AND "isAnswer" = ?', question.id, true] }).success(function(answer) {
@@ -1591,14 +1728,17 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	answer_wrong: function(req, res) {
 		res.render('content/answer_wrong', {skill_id: parseInt(req.param('skill_id')), content_id: req.param('content_id'), current_question_id: req.param('current_question_id')});
 	},
 	
+	//deprecated
 	add_question: function(req, res) {
 		res.render('content/add_question', {q: parseInt(req.param('q'))});
 	},
 	
+	//deprecated
 	show_question: function(req, res) {
 		db.UserSkills.find({ where: ['"UserId" = ? AND "SkillId" = ?', req.user.id, req.param('skill_id')] }).success(function(userSkill) {
 			if(userSkill.status == "complete") {
@@ -1638,6 +1778,15 @@ module.exports = {
 		});	
 	},
 	
+	//called from user gym page
+	//when a user has completed one of the following tests - role test / module test / skill test / content test / job test
+	//shows a summary of score along with reason for failure
+	//following is the logic to calculate pass score
+	//1)user has to get >= the test pass score
+	//2)user has to answer >= critical questions correctly
+	//3)user has to answer all mandatory questions
+	//user passes the test only if all of the above 3 conditions are satisfied
+	//else, the user fails the given test
 	show_content_test_report_details: function( req, res ) {
 		db.ReportDetail.findAll({ where: ['"UserId" = ? AND "TestId" = ?', parseInt(req.user.id), parseInt(req.param('test_id'))], order: 'id DESC' }).success(function(reportDetails) {
 			var total = 0;
@@ -1726,6 +1875,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	start_test: function( req, res ) {
 		switch(req.param('val')) {
 			case 'event':	db.Event.find({ where: ['"id" = ?', parseInt(req.param('id'))]}).success(function(event) {
@@ -1746,6 +1896,10 @@ module.exports = {
 		}
 	},
 	
+	//before a user takes the test, instructions are shown
+	//called from user gym page
+	//when a user tries to attempt one of the following tests - role test / module test / skill test / job test
+	//if a user has already taken the test, appropriate message will be shown
 	show_general_test_instructions: function( req, res ) {
 		db.Test.find({ where: ['"id" = ?', parseInt(req.param('id'))]}).success(function(test) {
 			db.TestProblems.count({ where: ['"TestId" = ?', test.id]}).success(function(test_problem_count) {
@@ -1770,6 +1924,9 @@ module.exports = {
 		});
 	},
 	
+	//before a user takes the test, instructions are shown
+	//called from user gym page
+	//when a user tries to attempt to take content test
 	show_test_instructions: function( req, res ) {
 		db.ContentTest.find({ where: ['"ContentId" = ?', parseInt(req.param('content_id'))]}).success(function(ct) {
 			if(ct) {
@@ -1796,11 +1953,14 @@ module.exports = {
 					});
 				});
 			} else {
+				//no test for this content, advance next
 				res.redirect('/content/advance_next/'+req.user.id+'/'+req.param('skill_id')+'/null');
 			}
 		});
 	},
 	
+	//when the user runs out of time, call the below code
+	//called from the set_time_interval_function() javascript function in script.js
 	force_end_test: function( req, res ) {
 		//res.render('content/force_end_test', {message: 'Oops! you ran out of time', test_id: req.param('test_id'), skill_id: req.param('skill_id')});
 		var date = new Date();
@@ -1832,10 +1992,14 @@ module.exports = {
 		
 	},
 	
+	//interface for admin to reset test when user runs out of time
+	//called from content/show_general_test_instructions.ejs
 	reset_test: function(req, res) {
 		res.render('content/reset_test', {user_id: req.param('user_id'), test_id: req.param('test_id')});
 	},
 	
+	//reset the test
+	//password is admin123 to reset the rest
 	do_reset_test: function(req, res) {
 		var query = 'delete from "ReportDetails" where "UserId" = '+parseInt(req.param('user_id'))+' and "TestId" = '+parseInt(req.param('test_id'));
 		db.sequelize.query(query, null, {raw: true}).success(function() {
@@ -1846,6 +2010,7 @@ module.exports = {
 		});
 	},
 	
+	//show question for content test
 	show_content_question: function(req, res) {
 		db.Test.find({ where: ['"id" = ?', parseInt(req.param('test_id'))]}).success(function(test) {
 			db.TestProblems.count({ where: ['"TestId" = ?', test.id]}).success(function(test_problem_count) {
@@ -1899,6 +2064,7 @@ module.exports = {
 		});
 	},
 	
+	//show question for general test - role test / module test / skill test / job test
 	show_test_question: function(req, res) {
 		db.Test.find({ where: ['"id" = ?', parseInt(req.param('id'))]}).success(function(test) {
 			db.TestProblems.count({ where: ['"TestId" = ?', test.id]}).success(function(test_problem_count) {
@@ -1950,11 +2116,14 @@ module.exports = {
 		});
 	},
 	
+	//create new content
 	upload: function(req, res) {
 		tags.length = 0;
 		res.render('content/upload');
 	},
 	
+	//show content preview before upload
+	//called from content/upload.ejs
 	show_content_preview_before_upload: function(req, res) {
 		
 		function preview(name, path)
@@ -1973,9 +2142,10 @@ module.exports = {
 		render();
 	},
 	
+	//create new content
 	do_upload: function(req, res) {
 		var create_content = function() {
-			var pattern = /^\d+$/;
+			var pattern = /^\d+$/; //ensure 'hours' param is of type int
 			if(req.param('hours') == null || req.param('hours') == 'null') {
 				req.body.hours = 1;
 			} else if(!pattern.test(req.param('hours'))) {
@@ -2019,7 +2189,7 @@ module.exports = {
 			  	});
 			};
 			
-			if(ext == 'zip') {
+			if(ext == 'zip') { //used for zip files generated from adobe captivate. the zip files contains various folders along with a .html file. The .html file needs to be rendered
 				// START ADM_ZIP
 			    var zip = new AdmZip(req.files.content.path);
 			    //var zipEntries = zip.getEntries(); // an array of ZipEntry records
@@ -2046,6 +2216,7 @@ module.exports = {
 		}
 	},
 	
+	//show content tags during auto-complete
 	get_tags: function(req, res) {
 		var result = [];
 		db.Tag.findAll({ where: ['"name" LIKE ?', '%'+req.param('q')+'%'] }).success(function(tags) {
@@ -2084,14 +2255,19 @@ module.exports = {
 		res.redirect('content/show_tag');
 	},
 	
+	//used for content search filter
+	//'val' param values are - tag, title, module, skill
 	searchByField: function(req, res) {
 		res.render('content/searchByField', {val: req.param('val')});
 	},
 	
+	//used for module search filter
+	//'val' param values are - title, skill
 	searchByFieldModule: function(req, res) {
 		res.render('content/searchByFieldModule', {val: req.param('val')});
 	},
 	
+	//search content based on tags
 	search_content: function(req, res) {
 		var result = [];
 		db.Tag.findAll({ where: ['"name" LIKE ?', '%'+req.param('q')+'%'] }).success(function(tags) {
@@ -2126,11 +2302,13 @@ module.exports = {
 		});
 	},
 	
+	//show matching content based on tags (more than one tag)
+	//called from searchByField(val) function in script.js which is called from content/searchByField.ejs
 	list_content_by_tags: function(req, res) {
 		var result = [];
 		var k = 0;
 		
-		res.locals.limit = 10;
+		res.locals.limit = 10; //pagination variables
 		var limit = res.locals.limit;
 		var page = req.param('page') != null ? parseInt(req.param('page')) : 1;
 		res.locals.offset = (page - 1) * limit;
@@ -2156,6 +2334,8 @@ module.exports = {
 		
 	},
 	
+	//show matching content based on single tag
+	//called from content/searchByField.ejs
 	list_content_by_tag: function(req, res) {
 		var result = [];
 		var j = 0;
@@ -2187,6 +2367,8 @@ module.exports = {
 	    });
 	},
 	
+	//show matching content based on titles (more than one title)
+	//called from searchByField(val) function in script.js which is called from content/searchByField.ejs
 	list_content_by_titles: function(req, res) {
 		var result = [];
 		var k = 0;
@@ -2213,6 +2395,8 @@ module.exports = {
 		
 	},
 	
+	//show matching content based on single title
+	//called from content/searchByField.ejs
 	list_content_by_title: function(req, res) {
 		var result = [];
 		var j = 0;
@@ -2238,6 +2422,8 @@ module.exports = {
 	    });
 	},
 	
+	//show matching content based on a single module
+	//called from content/searchByField.ejs
 	list_content_by_module: function(req, res) {
 		var result = [];
 		var j = 0;
@@ -2268,6 +2454,8 @@ module.exports = {
 	    });
 	},
 	
+	//show matching content based on modules (more than one module)
+	//called from searchByField(val) function in script.js which is called from content/searchByField.ejs
 	list_content_by_modules: function(req, res) {
 		var result = [];
 		var j = 0;
@@ -2295,6 +2483,8 @@ module.exports = {
 	    });
 	},
 	
+	//show matching content based on skills (more than one skill)
+	//called from searchByField(val) function in script.js which is called from content/searchByField.ejs
 	list_content_by_skills: function(req, res) {
 		var result = [];
 		var j = 0;
@@ -2322,6 +2512,8 @@ module.exports = {
 	    });
 	},
 	
+	//show matching content based on single skill
+	//called from content/searchByField.ejs
 	list_content_by_skill: function(req, res) {
 		var result = [];
 		var j = 0;
@@ -2352,6 +2544,8 @@ module.exports = {
 	    });
 	},
 	
+	//show matching tags
+	//called from content/searchByField.ejs
 	search_content_by_tag: function(req, res) {
 		var result = [];
 		var q = req.param('q');
@@ -2377,6 +2571,8 @@ module.exports = {
 		});
 	},
 	
+	//show matching titles
+	//called from content/searchByField.ejs
 	search_content_by_title: function(req, res) {
 		var result = [];
 		db.Content.findAll({ where: ['"name" LIKE ?', req.param('q')+'%'] }).success(function(contents) {
@@ -2398,6 +2594,8 @@ module.exports = {
 		});
 	},
 	
+	//show matching modules
+	//called from content/searchByField.ejs
 	search_content_by_module: function(req, res) {
 		var result = [];
 		db.Module.findAll({ where: ['"name" LIKE ?', req.param('q')+'%'] }).success(function(contents) {
@@ -2419,6 +2617,8 @@ module.exports = {
 		});
 	},
 	
+	//show matching skills
+	//called from content/searchByField.ejs
 	search_content_by_skill: function(req, res) {
 		var result = [];
 		db.Skill.findAll({ where: ['"name" LIKE ?', req.param('q')+'%'] }).success(function(contents) {
@@ -2440,6 +2640,8 @@ module.exports = {
 		});
 	},
 	
+	//show matching skills for module search
+	//called from content/searchByFieldModule.ejs
 	search_module_by_skill: function(req, res) {
 		var result = [];
 		db.Skill.findAll({ where: ['"name" LIKE ?', req.param('q')+'%'] }).success(function(contents) {
@@ -2461,6 +2663,8 @@ module.exports = {
 		});
 	},
 	
+	//show matching titles for module search
+	//called from content/searchByFieldModule.ejs
 	search_module_by_title: function(req, res) {
 		var result = [];
 		db.Module.findAll({ where: ['"name" LIKE ?', req.param('q')+'%'] }).success(function(contents) {
@@ -2482,6 +2686,8 @@ module.exports = {
 		});
 	},
 	
+	//show matching modules based on title
+	//called from content/skill_playlist.ejs while building a playlist
 	search_module: function(req, res) {
 		var result = [];
 		db.Module.findAll({ where: ['"name" LIKE ?', '%'+req.param('q')+'%'] }).success(function(modules) {
@@ -2504,6 +2710,9 @@ module.exports = {
 		});
 	},
 	
+	//show matching modules based on skills
+	//paginated view
+	//called from searchByFieldModule(val) in script.js which is called from content/searchByFieldModule.ejs
 	list_module_by_skills: function(req, res) {
 		var result = [];
 		var j = 0;
@@ -2531,6 +2740,8 @@ module.exports = {
 	    });
 	},
 	
+	//show matching modules based on single skill
+	//called from content/searchByFieldModule.ejs
 	list_module_by_skill: function(req, res) {
 		var result = [];
 		var j = 0;
@@ -2561,6 +2772,9 @@ module.exports = {
 	    });
 	},
 	
+	//show matching modules based on titles
+	//paginated view
+	//called from searchByFieldModule(val) in script.js which is called from content/searchByFieldModule.ejs
 	list_module_by_titles: function(req, res) {
 		var result = [];
 		var k = 0;
@@ -2587,6 +2801,8 @@ module.exports = {
 		
 	},
 	
+	//show matching modules based on single title
+	//called from searchByFieldModule(val) in script.js which is called from content/searchByFieldModule.ejs
 	list_module_by_title: function(req, res) {
 		var result = [];
 		var j = 0;
@@ -2612,6 +2828,7 @@ module.exports = {
 	    });
 	},
 	
+	//deprecated
 	ajax_load: function(req, res) {
 		switch(req.param('option')) {
 			case 'skill':
@@ -2662,6 +2879,10 @@ module.exports = {
 		}
 	},
 	
+	//was used one-time
+	//when we did the ssl certification
+	//initially youtube links where http, and they didn't load on https
+	//so this piece of code was written to update content links from http to https
 	update_content_to_https: function(req, res) {
 		/*db.Content.findAll({ where: ['"path" LIKE ? OR path LIKE ?', '%localhost%', '%talentify.in%'] }).success(function(content) {
 			var update_content = function(i) {
@@ -2700,16 +2921,18 @@ module.exports = {
 		});
 	},
 	
+	//incomplete code
 	delete_content: function(req, res) {
 		db.ModuleContent.Playlist.find({where: {id: parseInt(req.param('content_id'))}}).success(function(mcpl) {
 			if(mcpl) {
-			
+				//to be updated
 			} else {
-				
+				//to be updated
 			}
 		});
 	},
 	
+	//called from content/edit_answers_ajax.ejs
 	delete_answer_ajax: function(req, res) {
 		var render = function(problem_id, message) {
 			var url1 = null, url2 = null;
@@ -2721,6 +2944,7 @@ module.exports = {
 		delete_answer(req.param('answer_id'), render);
 	},
 	
+	//called from content/edit_answer.ejs
 	delete_answer: function(req, res) {
 		var render = function(problem_id, message) {
 			var url1 = null, url2 = null;
@@ -2732,6 +2956,7 @@ module.exports = {
 		delete_answer(req.param('answer_id'), render);
 	},
 	
+	//delete middleware called from the above and below delete functions
 	do_delete: function(req, res) {
 		var deebee = null;
 		
@@ -2742,6 +2967,7 @@ module.exports = {
 		var delete_object = function(val, id, callback) {
 			switch(val) {
 				case 'answer'		: 	deebee = db.Answer; 	
+										//function written in the beginning of this page
 										delete_record(deebee, id, callback);	
 										break;
 				
