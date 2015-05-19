@@ -4,7 +4,7 @@ func = require('../controllers/functions'),
 passwordHash = require('password-hash');;
 
 module.exports = {
-	//manger's dashboard page	
+	//manager's dashboard page	
 	dashboard: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
