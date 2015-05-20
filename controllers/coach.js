@@ -37,6 +37,7 @@ var get_module_count = function(z, userSkill) {
 
 module.exports = {
 		
+	//user of type 'coach' 's dashboard
 	dashboard: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
@@ -103,6 +104,7 @@ module.exports = {
 		});
 	},
 	
+	//coach can go through the list of users' appointments and accept/reject/re-schedule appointment
 	schedule_appointment: function(req, res) {
 		db.User.find({ where: { id: req.param('user_id')}, include: [db.Role, db.Organization] }).success(function(user) {
 			if(user) {
@@ -157,6 +159,7 @@ module.exports = {
 		});
 	},
 	
+	//interface to set appointment
 	set_appointment: function(req, res) {
 		db.Appointment.findAll({ where: ['"CoachId" = ? AND "UserId" = ? AND "status" = \'request\'', req.param('coach_id'), req.param('user_id')] }).success(function(appointments) { 
 			res.render('coach/set_appointment', {appointments: appointments, coach_id: req.param('coach_id'), user_id: req.param('user_id')});
@@ -167,6 +170,8 @@ module.exports = {
 		});
 	},
 	
+	//coach can view a user's gym page
+	//coach can view user's skills, coach notes history, coach rating
 	gym: function(req, res) {
 		var completedModules = new Array();
 		var totalModules = new Array();
@@ -242,6 +247,8 @@ module.exports = {
 		});
 	},
 	
+	//navigation for coach notes
+	//get user's previous notes
 	notes_prev: function(req, res) {
 		var len = parseInt(req.param('len'));
 		var curr = parseInt(req.param('curr'));
@@ -261,6 +268,8 @@ module.exports = {
 		}
 	},
 	
+	//navigation for coach notes
+	//get user's next notes
 	notes_next: function(req, res) {
 		var len = parseInt(req.param('len'));
 		var curr = parseInt(req.param('curr'));
@@ -280,6 +289,8 @@ module.exports = {
 		}
 	},
 	
+	//coach can add/delete skills for a user
+	//this is the ajax view of the user's skills in the user's gym page which the coach sees
 	user_skills: function(req, res) {
 		var completedModules = new Array();
 		var totalModules = new Array();
@@ -352,12 +363,14 @@ module.exports = {
 		});
 	},
 	
+	//interface for the coach to add notes
 	add_notes: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
 		res.render('coach/add_notes', {user_id: req.param('user_id'), coach_id: req.param('coach_id'), skill_id: req.param('skill_id'), successFlash: successFlash});
 	},
 	
+	//add notes
 	do_add_notes: function(req, res) {
 		db.CoachNotesHistory.create({CoachId: parseInt(req.param('coach_id')), UserId: parseInt(req.param('user_id')), SkillId: parseInt(req.param('skill_id'))}).success(function(cnh) { 
 			cnh.updateAttributes({date: new Date()}).success(function(){
@@ -366,6 +379,7 @@ module.exports = {
 		});
 	},	
 	
+	//coach can delete user's notes
 	delete_notes: function(req, res) {
 		db.CoachNotesHistory.find({ where: { id: parseInt(req.param('notes_id'))}}).success(function(note) { 
 			var coach_id = note.CoachId;
@@ -376,12 +390,14 @@ module.exports = {
 		});
 	},
 	
+	//interface for the coach to edit user's notes
 	edit_notes: function(req, res) {
 		db.CoachNotesHistory.find({ where: { id: parseInt(req.param('notes_id'))}}).success(function(note) { 
 			res.render('coach/edit_notes', {notes: note});
 		});
 	},
 	
+	//edit notes
 	do_edit_notes: function(req, res) {
 		db.CoachNotesHistory.find({ where: { id: parseInt(req.param('notes_id'))}}).success(function(note) { 
 			var coach_id = note.CoachId;
@@ -392,6 +408,7 @@ module.exports = {
 		});
 	},
 	
+	//interface to select a skill and add it to the user
 	add_skill: function(req, res) {
 		var successFlash = req.flash('info')[0];
 		console.log(successFlash);
@@ -403,6 +420,7 @@ module.exports = {
 		});
 	},
 	
+	//add a skill to the user
 	do_add_skill: function(req, res) {
 			db.Skill.findOrCreate({name: req.param('name')}).success(function(skill, created) { 
 					
@@ -459,6 +477,7 @@ module.exports = {
 		});
 	},
 	
+	//remove a user's skill
 	delete_user_skill: function(req, res) {
 		db.UserSkills.find({ where: ['"UserSkills"."SkillId" = ? AND "UserSkills"."UserId" = ?', parseInt(req.params.skill_id), parseInt(req.params.user_id)] }).success(function(us) {
 			us.destroy().success(function() {
@@ -468,6 +487,7 @@ module.exports = {
 		});
 	},
 	
+	//coach can reset the current module pointer for the user
 	reset_module: function(req, res) {
 		db.SkillModulePlaylist.findAll({where: ['"SkillId" = ?', parseInt(req.param('skill_id'))]}).success(function(moduleSkills) {
 			var modules = new Array();
@@ -495,6 +515,7 @@ module.exports = {
 		});
 	},
 	
+	//reset module pointer for the user
 	do_reset_module: function(req, res) {
 		db.UserSkills.find({where: ['"SkillId" = ? AND "UserId" = ?', parseInt(req.param('skill_id')), parseInt(req.param('user_id'))]}).success(function(us) {
 			db.ModuleContentPlaylist.findAll({ where: ['"ModuleId" = ?', parseInt(req.param('module_id'))] }).success(function(cm) {
@@ -519,6 +540,7 @@ module.exports = {
 		});
 	},
 	
+	//coach can rate users on a scale of 10
 	coach_rating: function(req, res) {
 		db.UserSkills.find({ where: ['"UserSkills"."SkillId" = ? AND "UserSkills"."UserId" = ?', parseInt(req.params.skill_id), parseInt(req.params.user_id)] }).success(function(us) { 
 			if(us) {
@@ -542,6 +564,7 @@ module.exports = {
 		});
 	},
 	
+	//coach can rate users on various levels - apprentice, rookie, master, wizard
 	coach_level: function(req, res) {
 		db.UserSkills.find({ where: ['"UserSkills"."SkillId" = ? AND "UserSkills"."UserId" = ?', parseInt(req.params.skill_id), parseInt(req.params.user_id)] }).success(function(us) { 
 			if(us) {
