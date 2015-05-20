@@ -1,3 +1,8 @@
+//this controller was written in an attempt to write common database calls
+//however, this wasn't considered a good approach
+//there is scope to look at this way of writing common database calls
+//scope for future enhancement
+
 var db = require('../models');
 //,func = require('../controllers/functions');
 
