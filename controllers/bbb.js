@@ -1,3 +1,5 @@
+/* DEPRECATED */
+
 var bbb = require('bigbluebutton'),
 db = require('../models');
 
@@ -91,3 +93,5 @@ module.exports = {
 		});
 	}
 };
+
+/* DEPRECATED */
