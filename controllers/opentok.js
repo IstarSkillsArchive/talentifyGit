@@ -1,3 +1,7 @@
+//deprecated
+//The OpenTok Platform allows developers to integrate live, face-to-face video
+//directly into their website and mobile apps using WebRTC.
+
 /* OLD CREDENTIALS
 var opentok = require('opentok')
 , OPENTOK_API_KEY = '44707312' // add your API key here
