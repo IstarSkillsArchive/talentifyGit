@@ -1,3 +1,5 @@
+//all admin related bulk import code using CSV is written here
+
 var db = require('../models')
 , path = require('path')
 , fs = require('fs')
@@ -7,6 +9,7 @@ var db = require('../models')
 
 module.exports = {
 		
+	//interface to upload a csv file containing user data
 	import_csv: function(req, res) {
 		db.Organization.findAll().success(function(organizations){
 			db.Role.findAll().success(function(roles){
@@ -15,6 +18,7 @@ module.exports = {
 		});
 	},
 	
+	//deprecated
 	do_import_csv1: function(req, res) {
 		var do_import_csv = function(path) {
 			console.log(" >> PATH "+path);
@@ -209,6 +213,8 @@ module.exports = {
 		}
 	},
 	
+	//interface to create many users
+	//the no. of users to be created is specified as a parameter
 	bulk_user_create: function(req, res) {
 		db.Organization.findAll().success(function(organizations){
 			db.Role.findAll().success(function(roles){
@@ -219,10 +225,16 @@ module.exports = {
 		});
 	},
 	
+	//no. of users to be created is specified in 'count' param
+	//the username is of the form '2015' followed by the database id for the user 
+	//the username length is 10 characters
+	//this doesn't need any csv file to be uploaded
+	//email is compulsory for a user, hence 'noreply@istarindia.com' is specified
+	//users generated from this process have no first name/last name
 	do_bulk_user_create: function(req, res) {
 		var pattern = /^\d+$/;
 		var count = req.param('count');
-		count = pattern.test(count) ? parseInt(count) : 1;
+		count = pattern.test(count) ? parseInt(count) : 1; //ensure 'count' parameter is an int value
 		var create = function(i) {
 			if(i == parseInt(count)) {
 				req.flash('info', "Successfully imported "+count+" student(s) data"); 
@@ -235,6 +247,7 @@ module.exports = {
 								RoleId: parseInt(req.param('RoleId')),
 								OrganizationId: parseInt(req.param('OrganizationId'))}).success(function(user) {
 					var username = '2015';
+					//code to generate usernames
 					switch(user.id.toString().length) {
 						case 1: username = username+'00000'+user.id;break;
 						case 2: username = username+'0000'+user.id;break;
@@ -253,6 +266,9 @@ module.exports = {
 		create(0);
 	},
 	
+	//this was written to import MLA college students' data using a CSV file
+	//the format of the csv file uploaded can be found on github -
+	//ISTARSkills/CSV repository
 	do_import_csv: function(req, res) {
 		var do_import_csv = function(path) {
 			console.log(">> PATH "+path);
@@ -285,6 +301,8 @@ module.exports = {
 								    res.redirect('/misc/import_csv');
 							    });
 							} else {
+								//normalize the user's name
+								//replace '.' (dot) with ' ' (space)
 								var n = users[i]["Student Name"];
 								n = n.replace(/[\.]+/g,' ');
 								var result = n.split(' ');
@@ -299,13 +317,9 @@ module.exports = {
 								//var username = college.id+""+Math.floor((Math.random() * 100) + 1)+""+first_name.toLowerCase();
 								
 								db.User.create({ username: current_year+'0'+(i+1),
-												//password: current_year+''+(i+1),
 												first_name: first_name, 
 												last_name: last_name, 
-												//phone: users[i]["Contact No"], 
-												//department: users[i]["Stream"],
-												//location: users[i]["Location"],
-												email: 'princiya@istarindia.com',
+												email: 'noreply@istarindia.com',
 												permission: 'user',
 												isProfileCompleted: req.param('isProfileCompleted'),
 												isTestTaken: req.param('isTestTaken'),
@@ -360,12 +374,14 @@ module.exports = {
 		}
 	},
 	
+	//deprecated
 	take_attendance: function(req, res) {
 		db.Organization.findAll().success(function(organizations){
 			res.render('misc/take_attendance', {organizations: organizations});
 		});
 	},
 	
+	//deprecated
 	show_user_list: function(req, res) {
 		db.Organization.find({ where: ['"id" = ?', parseInt(req.param('OrganizationId'))]}).success(function(organization) {
 			db.User.findAll({ where: ['"OrganizationId" = ? AND department = ?', organization.id, req.param('stream')]}).success(function(users) {
@@ -397,6 +413,7 @@ module.exports = {
 		});
 	},
 	
+	//called from trainer controller
 	mark_attendance: function(req, res) {
 		db.User.find({ where: ['"id" = ?', parseInt(req.param('user_id'))]}).success(function(user) {
 			var date = new Date(); 
@@ -419,12 +436,14 @@ module.exports = {
 		});
 	},
 	
+	//called from trainer controller
 	view_attendance: function(req, res) {
 		db.Organization.findAll().success(function(organizations){
 			res.render('misc/view_attendance', {organizations: organizations});
 		});
 	},
 	
+	//called from trainer controller
 	do_view_attendance: function(req, res) {
 		db.Organization.find({ where: ['"id" = ?', parseInt(req.param('OrganizationId'))]}).success(function(organization) {
 			db.Attendance.findAll({ where: ['date = ?', req.param('date')]}).success(function(attendances) {
@@ -472,10 +491,12 @@ module.exports = {
 		});
 	},
 	
+	//called from trainer controller
 	take_feedback: function(req, res) {
 		res.render('misc/take_feedback', {successFlash: req.flash('info')[0]});
 	},
 	
+	//called from trainer controller
 	do_submit_feedback: function(req, res) {
 		var date = new Date(); 
 		var year = date.getFullYear();
@@ -494,10 +515,12 @@ module.exports = {
 		});
 	},
 	
+	//called from trainer controller
 	view_feedback: function(req, res) {
 		res.render('misc/view_feedback');
 	},
 	
+	//called from trainer controller
 	do_view_feedback: function(req, res) {
 		db.TrainerFeedback.find({ where: ['"TrainerId" = ? AND date = ?', parseInt(req.user.id), req.param('date')]}).success(function(feedback) {
 			console.log(">>FEEDBACK",feedback);
@@ -505,6 +528,8 @@ module.exports = {
 		});
 	},
 	
+	//used to upload kerala training data
+	//csv format can be found in ISTARSkills/CSV github repo
 	upload_country_and_state: function(req, res) {
 		db.Country.findOrCreate({name: 'India'}).success(function(country, createdC) {
 			db.State.findOrCreate({name: 'Kerala', CountryId: country.id}).success(function(state, createdS) {
@@ -515,6 +540,8 @@ module.exports = {
 		});
 	},
 	
+	//used to upload kerala training data
+	//csv format can be found in ISTARSkills/CSV github repo
 	upload_kerala_districts: function(req, res) {
 		db.State.find({where: {name: 'Kerala'}}).success(function(state) {
 			var districts = ['Alapuzha', 'Ernakulam', 'Idukki', 'Kannur', 'Kasargode', 'Kollam', 'Kottayam', 'Kozhikode', 'Malappuram', 'Palakkad', 'Pattanamthitta', 'Thrissur', 'Trivandrum', 'Wayanad'];
@@ -533,10 +560,14 @@ module.exports = {
 		});
 	},
 	
+	//used to upload kerala training data
+	//csv format can be found in ISTARSkills/CSV github repo
 	upload_training_centres: function(req, res) {
 		res.render('misc/upload_training_centres');
 	},
 	
+	//used to upload kerala training data
+	//csv format can be found in ISTARSkills/CSV github repo
 	do_upload_training_centres: function(req, res) {
 		var do_import_csv = function(path) {
 			var reader = ya_csv.createCsvFileReader(path, { columnsFromHeader: true }, {
@@ -585,12 +616,16 @@ module.exports = {
 		});
 	},
 	
+	//used to upload kerala training data
+	//csv format can be found in ISTARSkills/CSV github repo
 	upload_kerala_trainers: function(req, res) {
 		db.Organization.findAll().success(function(organizations) {
 			res.render('misc/upload_kerala_trainers', {organizations: organizations});
 		});
 	},
 	
+	//used to upload kerala training data
+	//csv format can be found in ISTARSkills/CSV github repo
 	do_upload_kerala_trainers: function(req, res) {
 		var do_import_csv = function(path) {
 			var reader = ya_csv.createCsvFileReader(path, { columnsFromHeader: true }, {
@@ -686,12 +721,16 @@ module.exports = {
 		});
 	},
 	
+	//used to upload kerala training data
+	//csv format can be found in ISTARSkills/CSV github repo
 	upload_batches: function(req, res) {
 		db.Organization.findAll().success(function(organizations) {
 			res.render('misc/upload_batches', {organizations: organizations});
 		});
 	},
 	
+	//used to upload kerala training data
+	//csv format can be found in ISTARSkills/CSV github repo
 	do_upload_batches: function(req, res) {
 		var do_import_csv = function(path) {
 			var reader = ya_csv.createCsvFileReader(path, { columnsFromHeader: true }, {
@@ -763,6 +802,8 @@ module.exports = {
 		});
 	},
 	
+	//used to upload kerala training data
+	//csv format can be found in ISTARSkills/CSV github repo
 	upload_kerala_students: function(req, res) {
 		db.Organization.findAll().success(function(organizations) {
 			db.Role.findAll({order: 'id asc'}).success(function(roles) {
@@ -773,6 +814,8 @@ module.exports = {
 		});
 	},
 	
+	//used to upload kerala training data
+	//csv format can be found in ISTARSkills/CSV github repo
 	do_upload_kerala_students: function(req, res) {
 		var do_import_csv = function(path) {
 			var reader = ya_csv.createCsvFileReader(path, { columnsFromHeader: true }, {
@@ -834,12 +877,14 @@ module.exports = {
 		});
 	},
 	
+	//called from coordinator/schedule.ejs
 	create_kerala_schedule: function(req, res) {
 		db.Organization.findAll().success(function(organizations) {
 			res.render('misc/create_kerala_schedule', {organizations: organizations});
 		});
 	},
 	
+	//called from coordinator/create_kerala_schedule.ejs
 	do_create_kerala_schedule: function(req, res) {
 		var do_import_csv = function(path) {
 			var reader = ya_csv.createCsvFileReader(path, { columnsFromHeader: true }, {
@@ -910,18 +955,24 @@ module.exports = {
 		});
 	},
 	
+	//used for android app. called as a web service from the SMS android app
+	//code can be found in github repo
 	get_trainers: function(req, res) {
 		db.User.findAll({order: 'id asc', limit : 5}).success(function(users){
 			res.json(users);
 		});
 	},
 	
+	//used for android app. called as a web service from the SMS android app
+	//code can be found in github repo
 	get_districts: function(req, res) {
 		db.District.findAll().success(function(districts) {
 			res.json(districts);
 		});
 	},
 	
+	//used for android app. called as a web service from the SMS android app
+	//code can be found in github repo
 	get_courses: function(req, res) {
 		db.Organization.find({where: {name: 'Asap Kerala'}}).success(function(org) {
 			db.Role.findAll({where: {OrganizationId: org.id}, order: 'id desc', limit: 4}).success(function(roles) {
@@ -930,6 +981,8 @@ module.exports = {
 		});
 	},
 	
+	//used for android app. called as a web service from the SMS android app
+	//code can be found in github repo
 	get_district_trainers: function(req, res) {
 		db.Organization.find({where: {name: 'Asap Kerala'}}).success(function(org) {
 			db.District.find({where: {name: req.param('district')}}).success(function(district){
@@ -941,6 +994,8 @@ module.exports = {
 		});
 	},
 	
+	//used for android app. called as a web service from the SMS android app
+	//code can be found in github repo
 	get_course_trainers: function(req, res) {
 		db.Organization.find({where: {name: 'Asap Kerala'}}).success(function(org) {
 			var role_name = 'Software Developer';
