@@ -1,5 +1,8 @@
 var db = require('../models');
 
+//used to format time
+//time on localhost is IST
+//but time on digital ocean servers is GMT
 function get_formatted_time(val) {
 	var t = val.split(" ");
 	var time = t[0].split(":");
@@ -24,6 +27,9 @@ function set_local_time_zone(d) {
 	return d;
 }
 
+//used to get the appropriate time zone
+//time on localhost is IST
+//but time on digital ocean servers is GMT
 function get_date_with_time_zone(d) {
 	var obj = {};
 	var d_string = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
@@ -47,9 +53,11 @@ function get_date_with_time_zone(d) {
 
 module.exports = {
 		
+	//user of type - coordinator's dashboard
 	dashboard: function(req, res) {
-		var d = get_date_with_time_zone(new Date());
+		var d = get_date_with_time_zone(new Date()); //get date with time zone. lets you differentiate between localhost time zone and digital ocean server's time zone
 		
+		//get today's events
 		db.Event.findAll({where: ['type = ? AND date > ? ::timestamp with time zone and ("endDate" < ? ::timestamp with time zone or "endDate" IS NULL) AND (status = ? OR status = ?)', 'Class Training', d.start, d.end, 'Trainer Accepted Invite', 'Done Event'], order: 'date ASC'}).success(function(events){
 			
 			var render = function() {
@@ -96,6 +104,8 @@ module.exports = {
 					});
 				}
 			};
+			
+			//entry point
 			if(events.length > 0)
 				get_event_log(0);
 			else
@@ -103,6 +113,9 @@ module.exports = {
 		});
 	},
 	
+	//coordinator can create daily events, bulk events in this interface
+	//coordinator gets to see the calendar view of all the events
+	//monthly/yearly/weekly view of events are shown
 	schedule: function(req, res) {
 		db.Event.findAll({where: {type: 'Class Training'}, include: [db.Organization]}).success(function(events){
 			var get_skill_trainer = function(i) {
@@ -145,6 +158,7 @@ module.exports = {
 		});
 	},
 	
+	//interface to create a new schedule on a daily basis
 	create_new_schedule: function(req, res) {
 		db.Organization.findAll({where: ['("IstarCoordinatorId" IS NULL OR "IstarCoordinatorId" = ?)', parseInt(req.param('user_id'))]}).success(function(orgs){
 			if(orgs.length > 0) {
@@ -161,18 +175,21 @@ module.exports = {
 		});
 	},
 	
+	//get roles
 	get_batches_for_organization: function( req, res) {
 		db.Role.findAll({where: {OrganizationId: parseInt(req.param('oid'))}}).success(function(batches){
 			res.render('coordinator/get_batches_for_organization', {batches: batches});
 		});
 	},
 	
+	//get batches
 	get_learning_groups_for_organization: function( req, res) {
 		db.Batch.findAll({where: {RoleId: parseInt(req.param('rid'))}, order: 'id asc'}).success(function(batches){
 			res.render('coordinator/get_learning_groups_for_organization', {batches: batches});
 		});
 	},
 	
+	//create new schedule
 	do_create_new_schedule: function(req, res) {
 		var time1 = get_formatted_time(req.param('startTime'));
 		var time2 = get_formatted_time(req.param('endTime'));
@@ -196,6 +213,7 @@ module.exports = {
 								if(j == users.length) {
 									create_new_event(++i);
 								} else {
+									//add users to events based on role filter, batch filter
 									db.EventUsers.create({EventId: event.id, UserId: users[j].id}).success(function(){
 										create_event_user(++j);
 									});
@@ -211,6 +229,9 @@ module.exports = {
 		});
 	},
 	
+	//interface to assign skill, module, content, trainer to an event
+	//this needs to be done manually for each event
+	//it is being automated in the bulk event creation process; this feature isn't completed
 	assign_skill_trainer_to_event: function(req, res) {
 		db.EventSkill.find({where: {EventId: parseInt(req.param('event_id'))}}).success(function(event){
 			db.Role.find({where: {id: event.RoleId}, include: [db.Skill]}).success(function(role){
@@ -240,6 +261,9 @@ module.exports = {
 		});
 	},
 	
+	//assign skill, module, content, trainer to an event
+	//this needs to be done manually for each event
+	//trainer conflicts are checked here
 	do_assign_skill_trainer_to_event: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('EventId'))}}).success(function(event){
 			var common_function = function(return_msg) {
@@ -309,6 +333,7 @@ module.exports = {
 		});
 	},
 	
+	//interface to dynamically load modules for a chosen skill
 	get_modules_for_skill: function(req, res) {
 		db.SkillModulePlaylist.findAll({where: {SkillId: parseInt(req.param('skill_id'))}}).success(function(smpl){
 			var modules = [];
@@ -326,6 +351,9 @@ module.exports = {
 		});
 	},
 	
+	//coordinator needs to confirm the weekly schedule
+	//event status changes to 'Coordinator Confirmed Event With Conflict' if there is a trainer conflict or
+	//'Coordinator Confirmed Event' if there is no conflict
 	confirm_schedule: function(req, res) {
 		db.Event.findAll({where: ['(status = \'Assigned Trainer\' OR status = \'Trainer Conflict\') AND type = \'Class Training\' AND date >= ? AND "endDate" <= ?', req.param('date1'), req.param('date2')]}).success(function(events){
 			var confirm_events = function(i) {
@@ -347,6 +375,10 @@ module.exports = {
 		});
 	},
 	
+	//called from coordinator/schedule.ejs
+	//coordinator can click on an event in the calendar view, and get event details like -
+	//skill, module, content, trainer
+	//if an event has been completed, attendance and feedback can be viewed
 	get_event_details: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}, include: [db.Organization]}).success(function(event){
 			db.EventSkill.find({where: {EventId: event.id}}).success(function(es){
@@ -369,6 +401,7 @@ module.exports = {
 		});
 	},
 	
+	//delete an event
 	delete_event: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}}).success(function(event){
 			db.EventSkill.find({where: {EventId: event.id}}).success(function(es){
@@ -393,6 +426,7 @@ module.exports = {
 		});
 	},
 	
+	//view attendance for an event
 	view_attendance: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}}).success(function(event){
 			db.Attendance.findAll({where: {EventId: event.id}}).success(function(att){
@@ -418,6 +452,7 @@ module.exports = {
 		});
 	},
 	
+	//view feedback for an event
 	view_trainer_feedback: function(req, res) {
 		db.TrainerFeedback.find({ where: {EventId: parseInt(req.param('event_id'))} }).success(function(tf) {
 			if(tf) {
@@ -429,6 +464,9 @@ module.exports = {
 		});
 	},
 	
+	//called from coordinator/dashboard.ejs
+	//coordinator can refresh today's events, to get updated trainers' location coordinates
+	//also to get event status and view feedback/attendance if an event is completed
 	refresh_today_events: function(req, res) {
 		var d = get_date_with_time_zone(new Date());
 		
@@ -483,6 +521,7 @@ module.exports = {
 		});
 	},
 	
+	//list conflicting events
 	get_conflict_events: function(req, res) {
 		db.Event.findAll({where: ['status = \'Trainer Conflict\' AND type = \'Class Training\' AND date >= ? AND "endDate" <= ?', req.param('date1'), req.param('date2')]}).success(function(cnt){
 			res.send(cnt, {
@@ -491,6 +530,7 @@ module.exports = {
 		});
 	},
 	
+	//get trainer's location coordinates
 	get_trainer_location: function(req, res) {
 		db.Event.find({where: {id: parseInt(req.param('event_id'))}}).success(function(event){
 			db.TrainerLocation.findAll({where: ['"EventId" = ?', event.id], order: 'id ASC'}).success(function(tl){
@@ -499,6 +539,7 @@ module.exports = {
 		});
 	},
 	
+	//interface to create bulk schedule
 	create_new_schedule_bulk: function(req, res) {
 		db.Skill.findAll().success(function(skills){
 			db.Organization.findAll({where: ['type = ? AND ("IstarCoordinatorId" IS NULL OR "IstarCoordinatorId" = ?)', 'College', parseInt(req.param('user_id'))]}).success(function(orgs){
@@ -512,6 +553,9 @@ module.exports = {
 		});
 	},
 	
+	//create bulk schedule
+	//get time estimate on when an event is likely to end
+	//also create event pointers in "EventSkill" table
 	do_create_new_schedule_bulk: function(req, res) {
 		var time1 = get_formatted_time(req.param('startTime'));
 		var time2 = get_formatted_time(req.param('endTime'));
@@ -552,6 +596,7 @@ module.exports = {
 		});
 	},
 	
+	//get the module count for a skill
 	get_no_of_modules_for_skill: function(req, res) {
 		db.SkillModulePlaylist.findAll({where: {SkillId: parseInt(req.param('skill_id'))}}).success(function(cnt){
 			res.send(cnt, {
